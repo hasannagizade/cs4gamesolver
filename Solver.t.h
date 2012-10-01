@@ -49,3 +49,16 @@ State Solver< State >::nextBestState()
 {
 	return nextBestState( current ).config;
 }
+
+/** @brief Human turn */
+template< typename State >
+bool Solver< State >::supplyNextState( State& future )
+{
+	if( State::areSubsequent( current, future ) )
+	{
+		current=future;
+		
+		return true;
+	}
+	else return false;
+}
