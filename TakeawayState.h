@@ -38,7 +38,7 @@ class TakeawayState
 		@param thingsInPile the number of things in the pile
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit TakeawayState( int thingsInPile, bool weAreUp=true );
+		explicit TakeawayState( int thingsInPile=0, bool weAreUp=true );
 		
 		/**
 		Destroys the game state.

@@ -21,7 +21,7 @@ const State& Solver< State >::getCurrentState() const
 
 /** @brief Solver/bruteforcer */
 template< typename State >
-const State& Solver< State >::nextBestState( State& state ) const
+typename Solver< State >::StatePlusScore Solver< State >::nextBestState( State& state ) const
 {
 	StatePlusScore decision;
 	

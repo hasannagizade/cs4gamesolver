@@ -29,7 +29,7 @@ template< typename State > class Solver
 		@param state the <tt>State</tt> begin evaluated
 		@return the preferred position and score
 		*/
-		const State& nextBestState( State& state ) const;
+		StatePlusScore nextBestState( State& state ) const;
 
 	public:
 		/**
