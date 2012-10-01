@@ -7,6 +7,7 @@ Represents the Takeaway game state at some fixed point in time.
 #define TAKEAWAYSTATE_H
 
 #include <vector>
+#include <cassert>
 using namespace std;
 
 class TakeawayState
@@ -42,7 +43,7 @@ class TakeawayState
 		/**
 		Destroys the game state.
 		*/
-		~TakeawayState();
+		~TakeawayState( void );
 		
 		/**
 		Judges whether the game is over.
@@ -67,6 +68,23 @@ class TakeawayState
 		@return whatever might happen next
 		*/
 		const vector< TakeawayState > successors( void ) const;
+		
+		/**
+		Determines whether two game states are subsequent.
+		@param first the original state
+		@param next the new state
+		@return whether they would appear in a game in sequence
+		*/
+		static bool areSubsequent( const TakeawayState& first, const TakeawayState& next);
+		
+		/**
+		Finds the move made to get between two game states.
+		@pre The states must be exactly one move apart.
+		@param first the original state
+		@param next the new state
+		@return the number of stones taken, or <tt>0</tt> if the question was invalid
+		*/
+		static int diff( const TakeawayState& first, const TakeawayState& next );
 };
 
 #endif

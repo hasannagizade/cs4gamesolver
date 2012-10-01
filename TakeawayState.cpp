@@ -39,3 +39,21 @@ const vector< TakeawayState > TakeawayState::successors() const
 	
 	return possibilities;
 }
+
+/** @brief Are these subsequent? */
+bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawayState& next )
+{
+	int taken=next.pileSize-first.pileSize;
+	
+	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN;
+}
+
+/** @brief What just happened? */
+int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next )
+{
+	assert( areSubsequent( first, next ) );
+	if( areSubsequent( first, next ) )
+		return next.pileSize-first.pileSize;
+	else //!areSubsequent( first, next )
+		return 0;
+}
