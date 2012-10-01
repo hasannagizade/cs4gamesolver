@@ -12,9 +12,16 @@ Solver< State >::Solver( State& initial ):
 template< typename State >
 Solver< State >::~Solver() {}
 
+/** @brief Current state */
+template< typename State >
+const State& Solver< State >::getCurrentState() const
+{
+	return current;
+}
+
 /** @brief Solver/bruteforcer */
 template< typename State >
-State Solver< State >::nextBestState( State& state )
+const State& Solver< State >::nextBestState( State& state ) const
 {
 	StatePlusScore decision;
 	
@@ -45,7 +52,7 @@ State Solver< State >::nextBestState( State& state )
 
 /** @brief Solver frontend */
 template< typename State >
-State Solver< State >::nextBestState()
+const State& Solver< State >::nextBestState()
 {
 	return nextBestState( current ).config;
 }

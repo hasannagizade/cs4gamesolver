@@ -70,6 +70,12 @@ class TakeawayState
 		const vector< TakeawayState > successors( void ) const;
 		
 		/**
+		Retrieves the pile size.
+		@return the pile size
+		*/
+		int getPileSize( void ) const;
+		
+		/**
 		Determines whether two game states are subsequent.
 		@param first the original state
 		@param next the new state

@@ -40,6 +40,12 @@ const vector< TakeawayState > TakeawayState::successors() const
 	return possibilities;
 }
 
+/** @brief How many remain? */
+int TakeawayState::getPileSize( void ) const
+{
+	return pileSize;
+}
+
 /** @brief Are these subsequent? */
 bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawayState& next )
 {

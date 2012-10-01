@@ -29,7 +29,7 @@ template< typename State > class Solver
 		@param state the <tt>State</tt> begin evaluated
 		@return the preferred position and score
 		*/
-		State nextBestState( State& state );
+		const State& nextBestState( State& state ) const;
 
 	public:
 		/**
@@ -44,10 +44,16 @@ template< typename State > class Solver
 		~Solver( void );
 		
 		/**
+		Queries for the current state.
+		@return the current <tt>State</tt>
+		*/
+		const State& getCurrentState( void ) const;
+		
+		/**
 		Advances the game to the most favorable state.
 		@return the new <tt>State</tt>
 		*/
-		State nextBestState( void );
+		const State& nextBestState( void );
 		
 		/**
 		Manually make <i>one</i> move and advances the game to the specified outcome state.
