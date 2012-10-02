@@ -17,6 +17,9 @@ template< typename State > class Solver
 		*/
 		struct StatePlusScore
 		{
+			/** Constructor */
+			StatePlusScore(): config(), value( 0 ) {}
+			
 			/** The state */
 			State config;
 			
@@ -25,12 +28,12 @@ template< typename State > class Solver
 		};
 		
 		/**
-		Helper for game solving.
+		Determines the ideal end-of-turn state given the state at the beginning of the turn.
 		@param state the <tt>State</tt> begin evaluated
 		@return the preferred position and score
 		*/
 		StatePlusScore nextBestState( State& state ) const;
-
+	
 	public:
 		/**
 		Makes a <tt>Solver</tt> over a specific type of <tt>State</tt>.

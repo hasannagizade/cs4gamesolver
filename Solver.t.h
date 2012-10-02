@@ -1,5 +1,6 @@
 /** @author Sol Boucher <slb1566@rit.edu> */
 //included from "Solver.h"
+#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -34,18 +35,23 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( State& 
 	{
 		vector< State > successors=state.successors();
 		
-		decision.value=0;
-		for(typename vector< State >::iterator follower=successors.begin(); follower<successors.end(); ++follower)
+		bool decisionMade=false;
+		for( typename vector< State >::iterator follower=successors.begin(); follower<successors.end(); ++follower )
 		{
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
-			if( ofTheMoment.value>decision.value )
+			if( !decisionMade || ofTheMoment.value>decision.value )
 			{
-				ofTheMoment.config=*follower;
-				decision=ofTheMoment;
+				decision.config=*follower;
+				decisionMade=true;
 			}
+			decision.value+=ofTheMoment.value;
 		}
 	}
+	
+	#ifdef DEBUG
+		cout<<"Victory rating for "<<state.str()<<" is "<<decision.value<<endl;
+	#endif
 	
 	return decision;
 }
@@ -54,7 +60,9 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( State& 
 template< typename State >
 const State& Solver< State >::nextBestState()
 {
-	return nextBestState( current ).config;
+	current=nextBestState( current ).config;
+	
+	return current;
 }
 
 /** @brief Human turn */
