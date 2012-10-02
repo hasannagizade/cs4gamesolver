@@ -29,17 +29,17 @@ template< typename State > class Solver
 		
 		/**
 		Determines the ideal end-of-turn state given the state at the beginning of the turn.
-		@param state the <tt>State</tt> begin evaluated
+		@param state the <tt>State</tt> being evaluated
 		@return the preferred position and score
 		*/
-		StatePlusScore nextBestState( State& state ) const;
+		StatePlusScore nextBestState( const State& state ) const;
 	
 	public:
 		/**
 		Makes a <tt>Solver</tt> over a specific type of <tt>State</tt>.
 		@param initial the initial game <tt>State</tt>
 		*/
-		Solver( State& initial );
+		Solver( const State& initial );
 		
 		/**
 		Destroys the <tt>Solver</tt>.
@@ -63,7 +63,7 @@ template< typename State > class Solver
 		@param move the outcome of the move
 		@return <tt>true</tt> if only one move was made, <tt>false</tt> otherwise
 		*/
-		bool supplyNextState( State& future );
+		bool supplyNextState( const State& future );
 };
 
 #include "Solver.t.h"

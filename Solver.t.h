@@ -6,7 +6,7 @@ using namespace std;
 
 /** @brief Constructor */
 template< typename State >
-Solver< State >::Solver( State& initial ):
+Solver< State >::Solver( const State& initial ):
 	current( initial ) {}
 
 /** @brief Destructor */
@@ -22,7 +22,7 @@ const State& Solver< State >::getCurrentState() const
 
 /** @brief Solver/bruteforcer */
 template< typename State >
-typename Solver< State >::StatePlusScore Solver< State >::nextBestState( State& state ) const
+typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const State& state ) const
 {
 	StatePlusScore decision;
 	
@@ -67,7 +67,7 @@ const State& Solver< State >::nextBestState()
 
 /** @brief Human turn */
 template< typename State >
-bool Solver< State >::supplyNextState( State& future )
+bool Solver< State >::supplyNextState( const State& future )
 {
 	if( State::areSubsequent( current, future ) )
 	{
