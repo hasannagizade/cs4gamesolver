@@ -12,7 +12,7 @@ using namespace std;
 
 class TakeawayState
 {
-	private: //gameplay constants
+	public: //gameplay constants
 		/** The maximum number of items a player may take per turn. */
 		static const int MAX_TAKEN=3;
 		
@@ -41,6 +41,14 @@ class TakeawayState
 		explicit TakeawayState( int thingsInPile=0, bool weAreUp=true );
 		
 		/**
+		Creates the move resulting from taking away a specified number of objects.  This makes the most sense when a positive number of things are taken, and preferably a legal number; however, this is not required.
+		@post The new state reflects the fact that it is now the opposite player's turn.
+		@param baseState the starting state
+		@param stolen the number of objects that have been taken
+		*/
+		TakeawayState( const TakeawayState& baseState, int stolen );
+		
+		/**
 		Destroys the game state.
 		*/
 		~TakeawayState( void );
@@ -58,10 +66,10 @@ class TakeawayState
 		Score scoreGame( void ) const;
 		
 		/**
-		Determines whether we are trying to win.
+		Determines whether it is our turn.
 		@return whether the "good guy" is taking his turn
 		*/
-		bool wantToWin( void ) const;
+		bool computersTurn( void ) const;
 		
 		/**
 		Returns all possible successor states.

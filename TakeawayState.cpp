@@ -9,6 +9,10 @@ using namespace std;
 TakeawayState::TakeawayState( int thingsInPile, bool weAreUp ):
 	pileSize( thingsInPile ), ourTurn( weAreUp ) {}
 
+/** @brief Advancing constructor */
+TakeawayState::TakeawayState( const TakeawayState& baseState, int stolen ):
+	pileSize( baseState.pileSize-stolen ), ourTurn( !baseState.ourTurn ) {}
+
 /** @brief Destructor */
 TakeawayState::~TakeawayState() {}
 
@@ -28,7 +32,7 @@ TakeawayState::Score TakeawayState::scoreGame() const
 }
 
 /** @brief Is it our turn? */
-bool TakeawayState::wantToWin() const
+bool TakeawayState::computersTurn() const
 {
 	return ourTurn;
 }
@@ -80,13 +84,18 @@ bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawaySta
 {
 	int taken=first.pileSize-next.pileSize;
 	
-	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN;
+	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN && next.pileSize>=0;
 }
 
 /** @brief What just happened? */
 int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next )
 {
+	#ifdef DEBUG
+		cout<<"Diffing "<<first.str()<<" and "<<next.str()<<endl;
+	#endif
+	
 	bool subsequentStates=areSubsequent( first, next );
+	
 	assert( subsequentStates );
 	if( subsequentStates )
 		return first.pileSize-next.pileSize;
