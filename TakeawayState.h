@@ -6,8 +6,8 @@ Represents the Takeaway game state at some fixed point in time.
 #ifndef TAKEAWAYSTATE_H
 #define TAKEAWAYSTATE_H
 
+#include <string>
 #include <vector>
-#include <cassert>
 using namespace std;
 
 class TakeawayState
@@ -74,6 +74,12 @@ class TakeawayState
 		@return the pile size
 		*/
 		int getPileSize( void ) const;
+		
+		/**
+		Produces a synopsis of this <tt>State</tt>'s particulars.
+		@return the <tt>string</tt> representation
+		*/
+		string str( void ) const;
 		
 		/**
 		Determines whether two game states are subsequent.

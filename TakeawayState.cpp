@@ -1,5 +1,9 @@
 /** @author Sol Boucher <slb1566@rit.edu> */
 #include "TakeawayState.h"
+#include <cassert>
+#include <iostream>
+#include <sstream>
+using namespace std;
 
 /** @brief Constructor */
 TakeawayState::TakeawayState( int thingsInPile, bool weAreUp ):
@@ -17,9 +21,9 @@ bool TakeawayState::gameOver() const
 /** @brief Who won? */
 TakeawayState::Score TakeawayState::scoreGame() const
 {
-	if(gameOver())
-		if(ourTurn) return LOSS;
-		else /*!ourTurn*/ return VICTORY;
+	if( gameOver() )
+		if( ourTurn ) return VICTORY;
+		else /*!ourTurn*/ return LOSS;
 	else /*!gameOver()*/ return TIE;
 }
 
@@ -32,10 +36,24 @@ bool TakeawayState::wantToWin() const
 /** @brief What might happen next? */
 const vector< TakeawayState > TakeawayState::successors() const
 {
+	#ifdef DEBUG
+		cout<<"Success calculating successors for "<<str()<<'\n';
+	#endif
+	
 	vector< TakeawayState > possibilities;
 	
-	for(int take=1; take<=MAX_TAKEN; take++)
-		possibilities.push_back( TakeawayState( pileSize+1, !ourTurn ) );
+	for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pileSize; ++take )
+	{
+		possibilities.push_back( TakeawayState( pileSize-take, !ourTurn ) );
+		
+		#ifdef DEBUG
+			cout<<'\t'<<possibilities.back().str()<<'\n';
+		#endif
+	}
+	
+	#ifdef DEBUG
+		cout.flush();
+	#endif
 	
 	return possibilities;
 }
@@ -44,6 +62,17 @@ const vector< TakeawayState > TakeawayState::successors() const
 int TakeawayState::getPileSize( void ) const
 {
 	return pileSize;
+}
+
+/** @brief Textualizes */
+string TakeawayState::str() const
+{
+	stringstream assembler;
+	
+	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<"'s turn and "<<pileSize<<" pennies remain.";
+	assembler.flush();
+	
+	return assembler.str();
 }
 
 /** @brief Are these subsequent? */
