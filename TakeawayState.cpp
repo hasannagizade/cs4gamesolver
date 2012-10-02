@@ -7,7 +7,7 @@ using namespace std;
 
 /** @brief Constructor */
 TakeawayState::TakeawayState( int thingsInPile, bool weAreUp ):
-	pileSize(thingsInPile), ourTurn(weAreUp) {}
+	pileSize( thingsInPile ), ourTurn( weAreUp ) {}
 
 /** @brief Destructor */
 TakeawayState::~TakeawayState() {}
@@ -59,7 +59,7 @@ const vector< TakeawayState > TakeawayState::successors() const
 }
 
 /** @brief How many remain? */
-int TakeawayState::getPileSize( void ) const
+int TakeawayState::getPileSize() const
 {
 	return pileSize;
 }

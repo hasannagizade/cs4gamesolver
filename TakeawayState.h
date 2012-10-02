@@ -87,7 +87,7 @@ class TakeawayState
 		@param next the new state
 		@return whether they would appear in a game in sequence
 		*/
-		static bool areSubsequent( const TakeawayState& first, const TakeawayState& next);
+		static bool areSubsequent( const TakeawayState& first, const TakeawayState& next );
 		
 		/**
 		Finds the move made to get between two game states.
