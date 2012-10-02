@@ -78,7 +78,7 @@ string TakeawayState::str() const
 /** @brief Are these subsequent? */
 bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawayState& next )
 {
-	int taken=next.pileSize-first.pileSize;
+	int taken=first.pileSize-next.pileSize;
 	
 	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN;
 }
@@ -86,9 +86,10 @@ bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawaySta
 /** @brief What just happened? */
 int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next )
 {
-	assert( areSubsequent( first, next ) );
-	if( areSubsequent( first, next ) )
-		return next.pileSize-first.pileSize;
+	bool subsequentStates=areSubsequent( first, next );
+	assert( subsequentStates );
+	if( subsequentStates )
+		return first.pileSize-next.pileSize;
 	else //!areSubsequent( first, next )
 		return 0;
 }
