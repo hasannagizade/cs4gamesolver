@@ -5,36 +5,74 @@ The Takeaway game.
 */
 #include "Solver.h"
 #include "TakeawayState.h"
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
 int main( int argc, char** argv )
 {
-	if( argc<2 || argc>3 || ( argc==3 && strcmp( argv[2], "play" )!=0 ) ) //bad arguments
+	//check argument count and switches
+	if( argc<2 || argc>3 || ( argc==3 && strcmp( argv[1], "play" )!=0 ) ) //bad arguments
 	{
 		cerr<<"USAGE: takeaway [play] num_pennies"<<endl;
 		
 		return 1; //I have failed, Master
 	}
-	else if( argc==2 ) //advisory mode
+	
+	int startingNumber=atoi( argv[argc-1] );
+	
+	//check initial pile count
+	if( startingNumber<=0 )
 	{
-		int startingNumber=atoi( argv[1] );
+		cerr<<"FATAL: argument num_pennies must be a natural number"<<endl;
 		
-		if( startingNumber<=0 )
+		return 1; //certain death
+	}
+	
+	//all systems go
+	if( argc==2 ) //advisory mode
+	{
+		TakeawayState starting( startingNumber ); //our turn
+		Solver< TakeawayState > game( starting );
+		
+		cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState() )<<" pennies ";
+		cout<<"to leave "<<game.getCurrentState().getPileSize()<<" for the opponent."<<endl;
+	}
+	else //argc==3 ... interactive mode
+	{
+		TakeawayState current( startingNumber, false ); //human's turn
+		Solver< TakeawayState > game( current );
+		
+		do
 		{
-			cerr<<"FATAL: argument num_pennies must be a natural number"<<endl;
+			cout<<game.getCurrentState().str()<<endl;
 			
-			return 1; //certain death
+			if( game.getCurrentState().computersTurn() )
+			{
+				current=game.getCurrentState();
+				cout<<"Computer: takes "<<TakeawayState::diff( current, game.nextBestState() )<<" pennies"<<endl;
+			}
+			else //player's turn
+			{
+				int response;
+				
+				do
+				{
+					cout<<"You take how many ["<<TakeawayState::MIN_TAKEN<<','<</*min( TakeawayState::MAX_TAKEN, game.getCurrentState().getPileSize() )*/( game.getCurrentState().getPileSize()>=TakeawayState::MAX_TAKEN ? TakeawayState::MAX_TAKEN : game.getCurrentState().getPileSize() )<<"] ? ";
+					cout.flush();
+					cin>>response;
+				}
+				while( !game.supplyNextState( TakeawayState( game.getCurrentState(), response ) ) ); //tried and failed to make the given move
+				
+				cout<<"Human: took "<<response<<" pennies"<<endl;
+			}
 		}
-		else
-		{
-			TakeawayState starting( atoi( argv[1] ) );
-			Solver< TakeawayState > game( starting );
-			
-			cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState() )<<" pennies ";
-			cout<<"to leave "<<game.getCurrentState().getPileSize()<<" for the opponent."<<endl;
-		}
+		while( !game.getCurrentState().gameOver() );
+		
+		cout<<"No pennies remain."<<endl;
+		cout<<"=================="<<endl;
+		cout<<( game.getCurrentState().scoreGame()==TakeawayState::VICTORY ? "Computer wins" : "You win" )<<"!  (Your score was "<<-game.getCurrentState().scoreGame()<<".)"<<endl;
 	}
 }
