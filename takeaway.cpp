@@ -24,7 +24,7 @@ int main( int argc, char** argv )
 	int startingNumber=atoi( argv[argc-1] );
 	
 	//check initial pile count
-	if( startingNumber<=0 )
+	if( startingNumber<0 )
 	{
 		cerr<<"FATAL: argument num_pennies must be a natural number"<<endl;
 		
@@ -37,15 +37,20 @@ int main( int argc, char** argv )
 		TakeawayState starting( startingNumber ); //our turn
 		Solver< TakeawayState > game( starting );
 		
-		cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState() )<<" pennies ";
-		cout<<"to leave "<<game.getCurrentState().getPileSize()<<" for the opponent."<<endl;
+		if( starting.gameOver() )
+			cout<<"There are no pennies; you have already won."<<endl;
+		else
+		{
+			cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState() )<<" pennies ";
+			cout<<"to leave "<<game.getCurrentState().getPileSize()<<" for the opponent."<<endl;
+		}
 	}
 	else //argc==3 ... interactive mode
 	{
 		TakeawayState current( startingNumber, false ); //human's turn
 		Solver< TakeawayState > game( current );
 		
-		do
+		while( !game.getCurrentState().gameOver() )
 		{
 			cout<<game.getCurrentState().str()<<endl;
 			
@@ -69,7 +74,6 @@ int main( int argc, char** argv )
 				cout<<"Human: took "<<response<<" pennies"<<endl;
 			}
 		}
-		while( !game.getCurrentState().gameOver() );
 		
 		cout<<"No pennies remain."<<endl;
 		cout<<"=================="<<endl;
