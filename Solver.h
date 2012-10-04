@@ -17,14 +17,24 @@ template< typename State > class Solver
 		*/
 		struct StatePlusScore
 		{
-			/** Constructor */
-			StatePlusScore(): config(), value( 0 ) {}
-			
 			/** The state */
 			State config;
 			
 			/** The score */
-			int value;
+			typename State::Score value;
+			
+			/**
+			Constructor; assumes that the <tt>State::Score</tt>'s default (zero) value indicates a balanced (or at least undetermined-as-yet) match.
+			@param initial the starting <tt>State</tt>
+			*/
+			StatePlusScore( State initial );
+			
+			/**
+			Checks whether the player whose turn this is would prefer to have the <tt>alternative</tt> score.  Assumes that higher scores are better for the computer player, regardless of who's up.
+			@param alternative the other score we're offering the player
+			@return whether our <tt>State<tt>'s player prefers the score it's been offered
+			*/
+			bool prefersScore( typename State::Score alternative ) const;
 		};
 		
 		/**
