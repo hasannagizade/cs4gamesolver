@@ -1,12 +1,15 @@
 CXX=g++ -Wall
 
-default: takeaway
+default: takeaway kayles
 
 debug: CXX+=-DDEBUG
-debug: takeaway
+debug: takeaway kayles
 
 takeaway: takeaway.o TakeawayState.o Solver.h.gch
 	$(CXX) -o takeaway takeaway.o TakeawayState.o Solver.h
+
+kayles: kayles.o KaylesState.o Solver.h.gch
+	$(CXX) -o kayles kayles.o KaylesState.o Solver.h
 
 %.o: %.h %.cpp Solver.h.gch
 	$(CXX) -c $*.cpp
@@ -18,4 +21,4 @@ clean:
 	- rm *.o *.h.gch
 
 realclean: clean
-	- rm takeaway
+	- rm takeaway kayles
