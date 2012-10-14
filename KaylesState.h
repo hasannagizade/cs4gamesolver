@@ -9,7 +9,6 @@ Represents the Kayles game state at some fixed point in time.
 #include <string>
 #include <utility>
 #include <vector>
-using namespace std;
 
 class KaylesState
 {
@@ -30,7 +29,7 @@ class KaylesState
 		};
 	
 	private: //state
-		vector<int> pins;
+		std::vector<int> pins;
 		bool ourTurn;
 	
 	public: //behavior
@@ -39,7 +38,7 @@ class KaylesState
 		@param startingPins the initial pin arrangement
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit KaylesState( const vector<int>& startingPins=vector<int>(), bool weAreUp=true );
+		explicit KaylesState( const std::vector<int>& startingPins=std::vector<int>(), bool weAreUp=true );
 		
 		/**
 		Creates the move resulting from taking away a specified number of pins.  This makes the most sense when a positive number of them are taken, and preferably a legal number; however, this is not required.
@@ -91,13 +90,13 @@ class KaylesState
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const vector< KaylesState > successors( void ) const;
+		const std::vector< KaylesState > successors( void ) const;
 		
 		/**
 		Produces a synopsis of this <tt>State</tt>'s particulars.
 		@return the <tt>string</tt> representation
 		*/
-		string str( void ) const;
+		std::string str( void ) const;
 		
 		/**
 		Determines whether two game states are subsequent.
@@ -114,7 +113,7 @@ class KaylesState
 		@param next the new state
 		@return a <tt>pair</tt> containing the group from which one or more pins were removed and how many were taken, or an empty <tt>pair</tt> in the case of a poorly-phrased question
 		*/
-		static pair< int, int > diff( const KaylesState& first, const KaylesState& next );
+		static std::pair< int, int > diff( const KaylesState& first, const KaylesState& next );
 };
 
 #endif

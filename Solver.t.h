@@ -2,7 +2,6 @@
 //included from "Solver.h"
 #include <iostream>
 #include <vector>
-using namespace std;
 
 /** @brief Constructor */
 template< typename State >
@@ -19,7 +18,7 @@ Solver< State >::StatePlusScore::StatePlusScore( State initial ):
 	config( initial ), value()
 {
 	#ifdef DEBUG
-		cout<<"New SPS w/ score of "<<value<<endl;
+		std::cout<<"New SPS w/ score of "<<value<<endl;
 	#endif
 }
 
@@ -54,16 +53,16 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const S
 	}
 	else //!state.gameOver()
 	{
-		vector< State > successors=state.successors();
+		std::vector< State > successors=state.successors();
 		
-		for( typename vector< State >::iterator follower=successors.begin(); follower<successors.end(); ++follower )
+		for( typename std::vector< State >::iterator follower=successors.begin(); follower<successors.end(); ++follower )
 		{
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
 			if( bestConfig==NULL || decision.prefersScore( ofTheMoment.value ) )
 			{
 				#ifdef DEBUG
-					cout<<"Deciding on "<<ofTheMoment.config.str()<<endl;
+					std::cout<<"Deciding on "<<ofTheMoment.config.str()<<endl;
 				#endif
 				
 				bestConfig=&*follower;
@@ -73,7 +72,7 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const S
 		decision.config=*bestConfig;
 	
 	#ifdef DEBUG
-		cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<" for victory rating "<<decision.value<<endl;
+		std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<" for victory rating "<<decision.value<<endl;
 	#endif
 	}
 	

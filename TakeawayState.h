@@ -8,7 +8,6 @@ Represents the Takeaway game state at some fixed point in time.
 
 #include <string>
 #include <vector>
-using namespace std;
 
 class TakeawayState
 {
@@ -75,7 +74,7 @@ class TakeawayState
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const vector< TakeawayState > successors( void ) const;
+		const std::vector< TakeawayState > successors( void ) const;
 		
 		/**
 		Retrieves the pile size.
@@ -87,7 +86,7 @@ class TakeawayState
 		Produces a synopsis of this <tt>State</tt>'s particulars.
 		@return the <tt>string</tt> representation
 		*/
-		string str( void ) const;
+		std::string str( void ) const;
 		
 		/**
 		Determines whether two game states are subsequent.
