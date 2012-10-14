@@ -7,7 +7,7 @@
 using namespace std;
 
 /** @brief Constructor */
-KaylesState::KaylesState( const vector<int>& startingPins, bool weAreUp ):
+KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
 	pins( startingPins ), ourTurn( weAreUp ) {}
 
 /** @brief Advancing constructor */

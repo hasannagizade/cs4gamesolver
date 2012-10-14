@@ -29,7 +29,7 @@ class KaylesState
 		};
 	
 	private: //state
-		std::vector<int> pins;
+		std::vector< int > pins;
 		bool ourTurn;
 	
 	public: //behavior
@@ -38,7 +38,7 @@ class KaylesState
 		@param startingPins the initial pin arrangement
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit KaylesState( const std::vector<int>& startingPins=std::vector<int>(), bool weAreUp=true );
+		explicit KaylesState( const std::vector< int >& startingPins=std::vector< int >(), bool weAreUp=true );
 		
 		/**
 		Creates the move resulting from taking away a specified number of pins.  This makes the most sense when a positive number of them are taken, and preferably a legal number; however, this is not required.
