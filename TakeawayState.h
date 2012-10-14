@@ -28,7 +28,10 @@ class TakeawayState
 		};
 	
 	private: //state
+		/** The number of objects left in the pile */
 		int pileSize;
+		
+		/** Whether the computer player is up */
 		bool ourTurn;
 	
 	public: //behavior

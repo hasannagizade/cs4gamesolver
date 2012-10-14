@@ -30,7 +30,10 @@ class KaylesState
 		};
 	
 	private: //state
+		/** Stores one pin count per group of pins */
 		std::vector< int > pins;
+		
+		/** Whether the computer player is up */
 		bool ourTurn;
 	
 	public: //behavior
