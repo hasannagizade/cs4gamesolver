@@ -24,7 +24,8 @@ Solver< State >::StatePlusScore::StatePlusScore( State initial ):
 
 /** @brief What would the current player say? */
 template< typename State >
-bool Solver< State >::StatePlusScore::prefersScore( typename State::Score alternative ) const
+bool Solver< State >::StatePlusScore::prefersScore( typename State::Score
+	alternative ) const
 {
 	if( config.computersTurn() )
 		return alternative>value; //the machine accepts a machine win
@@ -41,7 +42,8 @@ const State& Solver< State >::getCurrentState() const
 
 /** @brief Solver/bruteforcer */
 template< typename State >
-typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const State& state ) const
+typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
+	State& state ) const
 {
 	StatePlusScore decision( state );
 	State* bestConfig=NULL;
@@ -55,11 +57,13 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const S
 	{
 		std::vector< State > successors=state.successors();
 		
-		for( typename std::vector< State >::iterator follower=successors.begin(); follower<successors.end(); ++follower )
+		for( typename std::vector< State >::iterator follower=successors.begin
+			(); follower<successors.end(); ++follower )
 		{
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
-			if( bestConfig==NULL || decision.prefersScore( ofTheMoment.value ) )
+			if( bestConfig==NULL || decision.prefersScore( ofTheMoment.value )
+				)
 			{
 				#ifdef DEBUG
 					std::cout<<"Deciding on "<<ofTheMoment.config.str()<<endl;
@@ -72,7 +76,8 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const S
 		decision.config=*bestConfig;
 	
 	#ifdef DEBUG
-		std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<" for victory rating "<<decision.value<<endl;
+		std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<
+			" for victory rating "<<decision.value<<endl;
 	#endif
 	}
 	

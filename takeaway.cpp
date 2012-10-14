@@ -14,7 +14,8 @@ using namespace std;
 int main( int argc, char** argv )
 {
 	//check argument count and switches
-	if( argc<2 || argc>3 || ( argc==3 && strcmp( argv[1], "play" )!=0 ) ) //bad arguments
+	if( argc<2 || argc>3 || ( argc==3 && strcmp( argv[1], "play" )!=0 ) ) //ba
+		//d arguments
 	{
 		cerr<<"USAGE: takeaway [play] num_pennies"<<endl;
 		
@@ -41,8 +42,10 @@ int main( int argc, char** argv )
 			cout<<"There are no pennies; you have already won."<<endl;
 		else
 		{
-			cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState() )<<" pennies ";
-			cout<<"to leave "<<game.getCurrentState().getPileSize()<<" for the opponent."<<endl;
+			cout<<"Take "<<TakeawayState::diff( starting, game.nextBestState()
+				)<<" pennies ";
+			cout<<"to leave "<<game.getCurrentState().getPileSize()<<
+				" for the opponent."<<endl;
 		}
 	}
 	else //argc==3 ... interactive mode
@@ -57,7 +60,8 @@ int main( int argc, char** argv )
 			if( game.getCurrentState().computersTurn() )
 			{
 				current=game.getCurrentState();
-				cout<<"Computer: takes "<<TakeawayState::diff( current, game.nextBestState() )<<" pennies"<<endl;
+				cout<<"Computer: takes "<<TakeawayState::diff( current, game.
+					nextBestState() )<<" pennies"<<endl;
 			}
 			else //player's turn
 			{
@@ -65,11 +69,18 @@ int main( int argc, char** argv )
 				
 				do
 				{
-					cout<<"You take how many ["<<TakeawayState::MIN_TAKEN<<','<</*min( TakeawayState::MAX_TAKEN, game.getCurrentState().getPileSize() )*/( game.getCurrentState().getPileSize()>=TakeawayState::MAX_TAKEN ? TakeawayState::MAX_TAKEN : game.getCurrentState().getPileSize() )<<"] ? ";
+					cout<<"You take how many ["<<TakeawayState::MIN_TAKEN<<','
+						<</*min( TakeawayState::MAX_TAKEN, game.getCurrentStat
+						e().getPileSize() )*/( game.getCurrentState().
+						getPileSize()>=TakeawayState::MAX_TAKEN ?
+						TakeawayState::MAX_TAKEN : game.getCurrentState().
+						getPileSize() )<<"] ? ";
 					cout.flush();
 					cin>>response;
 				}
-				while( !game.supplyNextState( TakeawayState( game.getCurrentState(), response ) ) ); //tried and failed to make the given move
+				while( !game.supplyNextState( TakeawayState( game.
+					getCurrentState(), response ) ) ); //tried and failed to m
+					//ake the given move
 				
 				cout<<"Human: took "<<response<<" pennies"<<endl;
 			}
@@ -77,6 +88,8 @@ int main( int argc, char** argv )
 		
 		cout<<"No pennies remain."<<endl;
 		cout<<"=================="<<endl;
-		cout<<( game.getCurrentState().scoreGame()==TakeawayState::VICTORY ? "Computer wins" : "You win" )<<"!  (Your score was "<<-game.getCurrentState().scoreGame()<<".)"<<endl;
+		cout<<( game.getCurrentState().scoreGame()==TakeawayState::VICTORY ?
+			"Computer wins" : "You win" )<<"!  (Your score was "<<-game.
+			getCurrentState().scoreGame()<<".)"<<endl;
 	}
 }

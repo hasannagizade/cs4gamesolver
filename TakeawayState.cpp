@@ -73,22 +73,26 @@ string TakeawayState::str() const
 {
 	stringstream assembler;
 	
-	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<"'s turn and "<<pileSize<<" pennies remain.";
+	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<
+		"'s turn and "<<pileSize<<" pennies remain.";
 	assembler.flush();
 	
 	return assembler.str();
 }
 
 /** @brief Are these subsequent? */
-bool TakeawayState::areSubsequent( const TakeawayState& first, const TakeawayState& next )
+bool TakeawayState::areSubsequent( const TakeawayState& first, const
+	TakeawayState& next )
 {
 	int taken=first.pileSize-next.pileSize;
 	
-	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN && next.pileSize>=0;
+	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN
+		&& next.pileSize>=0;
 }
 
 /** @brief What just happened? */
-int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next )
+int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next
+	)
 {
 	#ifdef DEBUG
 		cout<<"Diffing "<<first.str()<<" and "<<next.str()<<endl;

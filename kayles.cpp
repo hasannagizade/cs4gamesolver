@@ -16,7 +16,8 @@ using namespace std;
 int main( int argc, char** argv )
 {
 	//check argument count and switches
-	if( argc<2 || ( !isdigit( argv[1][0] ) && strcmp( argv[1], "play" )!=0 ) ) //bad arguments
+	if( argc<2 || ( !isdigit( argv[1][0] ) && strcmp( argv[1], "play" )!=0 ) )
+		//bad arguments
 	{
 		cerr<<"USAGE: kayles [play] num_pins_1 num_pins_2 ..."<<endl;
 		
@@ -26,7 +27,8 @@ int main( int argc, char** argv )
 	vector< int > world;
 	
 	//collect line counts
-	for( unsigned int line=isdigit( argv[1][0] ) ? 1 : 2; line<(unsigned)argc; ++line)
+	for( unsigned int line=isdigit( argv[1][0] ) ? 1 : 2; line<(unsigned)argc;
+		++line)
 		world.push_back( atoi( argv[line] ) );
 	
 	//all systems go
@@ -42,7 +44,8 @@ int main( int argc, char** argv )
 			KaylesState outcome=game.nextBestState();
 			pair< int, int > advice=KaylesState::diff( starting, outcome );
 			
-			cout<<"Target "<<advice.second<<" pins from line "<<advice.first<<endl;
+			cout<<"Target "<<advice.second<<" pins from line "<<advice.first<<
+				endl;
 		}
 	}
 	else //interactive mode
@@ -57,9 +60,11 @@ int main( int argc, char** argv )
 			if( game.getCurrentState().computersTurn() )
 			{
 				current=game.getCurrentState();
-				pair< int, int > delta=KaylesState::diff( current, game.nextBestState() );
+				pair< int, int > delta=KaylesState::diff( current, game.
+					nextBestState() );
 				
-				cout<<"Computer: downs "<<delta.second<<" pins from line "<<delta.first<<endl;
+				cout<<"Computer: downs "<<delta.second<<" pins from line "<<
+					delta.first<<endl;
 			}
 			else //player's turn
 			{
@@ -67,14 +72,20 @@ int main( int argc, char** argv )
 				
 				do
 				{
-					cout<<"For which nonempty line do you bowl? [0,"<<game.getCurrentState().groupsOfPins()<<") ? ";
+					cout<<"For which nonempty line do you bowl? [0,"<<game.
+						getCurrentState().groupsOfPins()<<") ? ";
 					cout.flush();
 					cin>>line;
-					cout<<"You take how many ["<<KaylesState::MIN_TAKEN<<','<<( game.getCurrentState().pinsInGroup( line )>=KaylesState::MAX_TAKEN ? KaylesState::MAX_TAKEN : game.getCurrentState().pinsInGroup( line ) )<<"] ? ";
+					cout<<"You take how many ["<<KaylesState::MIN_TAKEN<<','<<
+						( game.getCurrentState().pinsInGroup( line )>=
+						KaylesState::MAX_TAKEN ? KaylesState::MAX_TAKEN : game
+							.getCurrentState().pinsInGroup( line ) )<<"] ? ";
 					cout.flush();
 					cin>>greed;
 				}
-				while( !game.supplyNextState( KaylesState( game.getCurrentState(), line, greed ) ) ); //tried and failed to make the given move
+				while( !game.supplyNextState( KaylesState( game.
+					getCurrentState(), line, greed ) ) ); //tried and failed t
+					//o make the given move
 				
 				cout<<"Human: downed "<<greed<<" pins from line "<<line<<endl;
 			}
@@ -82,6 +93,8 @@ int main( int argc, char** argv )
 		
 		cout<<"No pins remain."<<endl;
 		cout<<"=================="<<endl;
-		cout<<( game.getCurrentState().scoreGame()==KaylesState::VICTORY ? "Computer wins" : "You win" )<<"!  (Your score was "<<-game.getCurrentState().scoreGame()<<".)"<<endl;
+		cout<<( game.getCurrentState().scoreGame()==KaylesState::VICTORY ?
+			"Computer wins" : "You win" )<<"!  (Your score was "<<-game.
+				getCurrentState().scoreGame()<<".)"<<endl;
 	}
 }

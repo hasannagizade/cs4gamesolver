@@ -13,7 +13,8 @@ Represents the Kayles game state at some fixed point in time.
 class KaylesState
 {
 	public: //gameplay constants
-		/** The maximum number of pins a player may topple per turn. */
+		/** The maximum number of pins a player may topple per turn.
+			*/
 		static const int MAX_TAKEN=2;
 		
 		/** The minimum number of pins permissible to topple. */
@@ -38,17 +39,24 @@ class KaylesState
 		@param startingPins the initial pin arrangement
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit KaylesState( const std::vector< int >& startingPins=std::vector< int >(), bool weAreUp=true );
+		explicit KaylesState( const std::vector< int >& startingPins=
+			std::vector< int >(), bool weAreUp=true );
 		
 		/**
-		Creates the move resulting from taking away a specified number of pins.  This makes the most sense when a positive number of them are taken, and preferably a legal number; however, this is not required.
+		Creates the move resulting from taking away a specified number
+			of pins.  This makes the most sense when a positive nu
+			mber of them are taken, and preferably a legal number;
+			however, this is not required.
 		@pre the <tt>position</tt> is in range
-		@post The new state reflects the fact that it is now the opposite player's turn.
+		@post The new state reflects the fact that it is now the oppos
+			ite player's turn.
 		@param baseState the state on which to base this new one
 		@param position the group of pins affected
-		@param taken the number of from that group that were knocked down
+		@param taken the number of from that group that were knocked d
+			own
 		*/
-		KaylesState( const KaylesState& baseState, unsigned int position, int taken );
+		KaylesState( const KaylesState& baseState, unsigned int
+			position, int taken );
 		
 		/**
 		Destroys the game state.
@@ -62,8 +70,11 @@ class KaylesState
 		bool gameOver( void ) const;
 		
 		/**
-		Devines the match score, which is only meaningful if the game is over.
-		@return the score: <tt>Score::VICTORY</tt> for our victory, <tt>Score::LOSS</tt> for opponent's victory, or <tt>Score::TIE</tt> for an unterminated game
+		Devines the match score, which is only meaningful if the game 
+			is over.
+		@return the score: <tt>Score::VICTORY</tt> for our victory, <t
+			t>Score::LOSS</tt> for opponent's victory, or <tt>Scor
+			e::TIE</tt> for an unterminated game
 		*/
 		Score scoreGame( void ) const;
 		
@@ -82,7 +93,8 @@ class KaylesState
 		/**
 		Counts the pins in a group.
 		@param group the group to examine
-		@return how many pins occupy it, or <tt>-1</tt> if it doesn't exist
+		@return how many pins occupy it, or <tt>-1</tt> if it doesn't
+			exist
 		*/
 		int pinsInGroup( unsigned int group ) const;
 		
@@ -104,16 +116,21 @@ class KaylesState
 		@param next the new state
 		@return whether they would appear in a game in sequence
 		*/
-		static bool areSubsequent( const KaylesState& first, const KaylesState& next );
+		static bool areSubsequent( const KaylesState& first, const
+			KaylesState& next );
 		
 		/**
 		Finds the move made to get between two game states.
 		@pre The states must be exactly one move apart.
 		@param first the original state
 		@param next the new state
-		@return a <tt>pair</tt> containing the group from which one or more pins were removed and how many were taken, or an empty <tt>pair</tt> in the case of a poorly-phrased question
+		@return a <tt>pair</tt> containing the group from which one or
+			more pins were removed and how many were taken, or an 
+			empty <tt>pair</tt> in the case of a poorly-phrased qu
+			estion
 		*/
-		static std::pair< int, int > diff( const KaylesState& first, const KaylesState& next );
+		static std::pair< int, int > diff( const KaylesState& first,
+			const KaylesState& next );
 };
 
 #endif

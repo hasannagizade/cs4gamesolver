@@ -11,7 +11,8 @@ KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
 	pins( startingPins ), ourTurn( weAreUp ) {}
 
 /** @brief Advancing constructor */
-KaylesState::KaylesState( const KaylesState& baseState, unsigned int position, int taken ):
+KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
+	int taken ):
 	pins( baseState.pins ), ourTurn( !baseState.ourTurn )
 {
 	#ifdef DEBUG
@@ -28,7 +29,8 @@ KaylesState::~KaylesState() {}
 /** @brief Are we out of objects? */
 bool KaylesState::gameOver() const
 {
-	for( vector< int >::const_iterator group=pins.begin(); group!=pins.end(); ++group )
+	for( vector< int >::const_iterator group=pins.begin(); group!=pins.end();
+		++group )
 		if( *group!=0 ) return false;
 	
 	return true;
@@ -72,7 +74,8 @@ const vector< KaylesState > KaylesState::successors() const
 	vector< KaylesState > possibilities;
 	
 	for( unsigned int group=0; group<pins.size(); ++group )
-		for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pins[group]; ++take )
+		for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pins[group]; ++take
+			)
 		{
 			possibilities.push_back( KaylesState( *this, group, take ) );
 			
@@ -93,8 +96,10 @@ string KaylesState::str() const
 {
 	stringstream assembler;
 	
-	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<"'s turn and the pins are: ";
-	for( vector< int >::const_iterator group=pins.begin(); group<pins.end(); ++group )
+	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<
+		"'s turn and the pins are: ";
+	for( vector< int >::const_iterator group=pins.begin(); group<pins.end();
+		++group )
 		assembler<<*group<<' ';
 	assembler.flush();
 	
@@ -102,11 +107,14 @@ string KaylesState::str() const
 }
 
 /** @brief Are these subsequent? */
-bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState& next )
+bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
+	next )
 {
-	if( first.ourTurn==next.ourTurn || first.pins.size()!=next.pins.size() ) return false;
+	if( first.ourTurn==next.ourTurn || first.pins.size()!=next.pins.size() )
+		return false;
 	
-	bool seenDifference=false; //whether we've already found the move that was made
+	bool seenDifference=false; //whether we've already found the move that was
+		//made
 	
 	for( unsigned int group=0; group<first.pins.size(); ++group )
 		if( first.pins[group]!=next.pins[group] )
@@ -117,7 +125,8 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState& ne
 			{
 				int difference=first.pins[group]-next.pins[group];
 				
-				if( difference<MIN_TAKEN || difference>MAX_TAKEN || next.pins[group]<0 ) return false;
+				if( difference<MIN_TAKEN || difference>MAX_TAKEN || next.pins[
+					group]<0 ) return false;
 				else seenDifference=true;
 			}
 		}
@@ -126,7 +135,8 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState& ne
 }
 
 /** @brief What just happened? */
-pair< int, int > KaylesState::diff( const KaylesState& first, const KaylesState& next )
+pair< int, int > KaylesState::diff( const KaylesState& first, const
+	KaylesState& next )
 {
 	#ifdef DEBUG
 		cout<<"Diffing "<<first.str()<<" and "<<next.str()<<endl;
@@ -139,7 +149,8 @@ pair< int, int > KaylesState::diff( const KaylesState& first, const KaylesState&
 	{
 		for( unsigned int group=0; group<first.pins.size(); ++group )
 			if( first.pins[group]!=next.pins[group] )
-				return pair< int, int >( group, first.pins[group]-next.pins[group] );
+				return pair< int, int >( group, first.pins[group]-next.pins
+					[group] );
 	}
 	//else !areSubsequent( first, next )
 		return pair< int, int>();

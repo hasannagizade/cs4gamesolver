@@ -24,21 +24,27 @@ template< typename State > class Solver
 			typename State::Score value;
 			
 			/**
-			Constructor; assumes that the <tt>State::Score</tt>'s default (zero) value indicates a balanced (or at least undetermined-as-yet) match.
+			Constructor; assumes that the <tt>State::Score</tt>'s default (zer
+				o) value indicates a balanced (or at least undetermined-as-yet
+				) match.
 			@param initial the starting <tt>State</tt>
 			*/
 			StatePlusScore( State initial );
 			
 			/**
-			Checks whether the player whose turn this is would prefer to have the <tt>alternative</tt> score.  Assumes that higher scores are better for the computer player, regardless of who's up.
+			Checks whether the player whose turn this is would prefer to have 
+				the <tt>alternative</tt> score.  Assumes that higher scores ar
+				e better for the computer player, regardless of who's up.
 			@param alternative the other score we're offering the player
-			@return whether our <tt>State<tt>'s player prefers the score it's been offered
+			@return whether our <tt>State<tt>'s player prefers the score it's 
+				been offered
 			*/
 			bool prefersScore( typename State::Score alternative ) const;
 		};
 		
 		/**
-		Determines the ideal end-of-turn state given the state at the beginning of the turn.
+		Determines the ideal end-of-turn state given the state at the beginnin
+			g of the turn.
 		@param state the <tt>State</tt> being evaluated
 		@return the preferred position and score
 		*/
@@ -69,9 +75,11 @@ template< typename State > class Solver
 		const State& nextBestState( void );
 		
 		/**
-		Manually make <i>one</i> move and advances the game to the specified outcome state.
+		Manually make <i>one</i> move and advances the game to the specified o
+			utcome state.
 		@param move the outcome of the move
-		@return <tt>true</tt> if only one move was made, <tt>false</tt> otherwise
+		@return <tt>true</tt> if only one move was made, <tt>false</tt> otherw
+			ise
 		*/
 		bool supplyNextState( const State& future );
 };
