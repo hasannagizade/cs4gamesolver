@@ -6,7 +6,7 @@
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	size( INITIAL_SIZE ) {}
+	size( INITIAL_SIZE ), table() {}
 
 /** @brief Destructor */
 template< class Content >
@@ -21,13 +21,30 @@ int HashTable< Content >::index( const Content& object ) const
 {
 	int hashCode=object.hash(), targetIndex=hashCode%size;
 	
-	if( hashCode==table[targetIndex].hash() ) //the object is, in fact, at that index
+	if( hashCode==table[targetIndex]->hash() ) //the object is, in fact, at that index
 		return targetIndex;
 	else //use open addressing to find it
-		//TODO loop (wrappnig if necessary) until we see either the object or NULL, or we've returned to targetIndex
-			//in the former case, return the index
-			//in the intermediate case, return one less than the additive inverse of the current index
-			//in the latter case, return -size-1 ... since the table is full, add will have to expand it and copy all the pointers over
+	{
+		for( int index=(targetIndex+1)%size; index!=targetIndex; index=(targetIndex+1)%size )
+		{
+			if( table[index]==NULL ) //found a spot
+				return -index-1;
+			else if( hashCode==table[index]->hash() ) //found what were looking for
+				return index;
+		}
+		
+		return -size-1;
+	}
+}
+
+/** @brief Expands the table */
+template< class Content >
+void HashTable< Content >::grow()
+{
+	int newSize=size*GROWTH_FACTOR;
+	Content* table[newSize];
+	
+	//TODO resize the array and repopulate the new one
 }
 
 /** @brief Adds an element */
@@ -41,7 +58,7 @@ void HashTable< Content >::add( const Content& object )
 	
 	index=-index-1;
 	if( index==size ) //out of space
-		//TODO resize the array and repopulate the new one (probably fair game for a separate private member function
+		//TODO call grow, then index again, then place the copy
 	else
 		table[index]=new Content(object);
 }
@@ -61,7 +78,7 @@ Content HashTable< Content >::matching( const Content& object ) const
 	
 	assert( index>=0 ); //present in table
 	
-	return table[index];
+	return *table[index];
 }
 
 /** @brief Current *utilized* size */

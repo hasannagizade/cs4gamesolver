@@ -10,11 +10,14 @@ template< class Content >
 class HashTable
 {
 	private:
+		/** The table's growth factor */
+		static const unsigned int GROWTH_FACTOR=2;
+		
 		/** The array's current size */
 		unsigned int size;
 		
 		/** The table of member objects */
-		Content* table[];
+		Content* table[INITIAL_SIZE];
 		
 		/**
 		Finds the index occupied by the specified object.
@@ -23,9 +26,14 @@ class HashTable
 		*/
 		int index( const Content& object ) const;
 	
+		/**
+		Enlarges the table to hold more elements.
+		*/
+		void grow( void );
+	
 	public:
 		/** The table's initial size */
-		static const unsigned int INITIAL_SIZE;
+		static const unsigned int INITIAL_SIZE=100;
 		
 		/**
 		Create a <tt>HashTable</tt>.
