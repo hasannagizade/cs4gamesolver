@@ -1,5 +1,5 @@
 /**
-A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void)</tt> method.
+A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void) const</tt> method.
 
 @author Sol Boucher <slb1566@rit.edu>
 */
@@ -10,23 +10,27 @@ template< class Content >
 class HashTable
 {
 	private:
+		/** The array's current size */
+		unsigned int size;
+		
 		/** The table of member objects */
 		Content* table[];
 		
 		/**
 		Finds the index occupied by the specified object.
 		@param object the instance for which to search
-		@return the corresponding index, or <tt>-1</tt> if a copy is not present
+		@return the corresponding index, the additive inverse of one more than the would-be index if the object isn't present, or <tt>-size-1</tt> if the table is full
 		*/
 		int index( const Content& object ) const;
 	
 	public:
+		/** The table's initial size */
+		static const unsigned int INITIAL_SIZE;
+		
 		/**
 		Create a <tt>HashTable</tt>.
-		@param size the table's initial size
-		@pre <tt>size</tt> is positive
 		*/
-		explicit HashTable( int size );
+		HashTable( void );
 		
 		/**
 		Destroys a <tt>HashTable</tt>.
@@ -37,8 +41,9 @@ class HashTable
 		/**
 		Copies an object into the table.
 		@param object the instance to add
+		@pre No version of this instance is already in the table.
 		*/
-		int add( const Content& object );
+		void add( const Content& object );
 		
 		/**
 		Checks whether an object is in the table.
