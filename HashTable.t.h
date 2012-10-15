@@ -61,10 +61,11 @@ void HashTable< Content >::add( const Content& object )
 	if( index>=0 ) return;
 	
 	index=-index-1;
-	if( index==size ) //out of space
-		//TODO call grow, then index again, then place the copy
-	else
-		table[index]=new Content(object);
+	if( index==size ) {//out of space
+		HashTable::grow();
+		index = index( object );
+	}
+	table[index]=new Content(object);
 }
 
 /** @brief Contains an element? */
