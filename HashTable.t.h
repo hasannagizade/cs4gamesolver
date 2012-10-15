@@ -41,10 +41,14 @@ int HashTable< Content >::index( const Content& object ) const
 template< class Content >
 void HashTable< Content >::grow()
 {
-	int newSize=size*GROWTH_FACTOR;
-	Content* table[newSize];
+	unsigned int oldSize=size;
+	Content* oldTable=table;
 	
-	//TODO resize the array and repopulate the new one
+	size=oldSize*GROWTH_FACTOR;
+	table[size];
+	
+	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex )
+		newTable[-index(*oldTable[oldIndex])-1]=oldTable[oldIndex];
 }
 
 /** @brief Adds an element */
