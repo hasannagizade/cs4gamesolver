@@ -1,12 +1,15 @@
-/** @author Sol Boucher <slb1566@rit.edu> */
+/** @author Sol Boucher <slb1566@rit.edu> 
+ *  @author Kyle Savarese <kms7341@rit.edu>
+ */
 //included from "HashTable.h"
 
 #include <cassert>
+#include <cstddef>
 
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	size( INITIAL_SIZE ), table() {}
+	_size( INITIAL_SIZE ), table() {}
 
 /** @brief Destructor */
 template< class Content >
@@ -19,13 +22,13 @@ HashTable< Content >::~HashTable()
 template< class Content >
 int HashTable< Content >::index( const Content& object ) const
 {
-	int hashCode=object.hash(), targetIndex=hashCode%size;
+	int hashCode=object.hash(), targetIndex=hashCode%_size;
 	
 	if( hashCode==table[targetIndex]->hash() ) //the object is, in fact, at that index
 		return targetIndex;
 	else //use open addressing to find it
 	{
-		for( int index=(targetIndex+1)%size; index!=targetIndex; index=(targetIndex+1)%size )
+		for( int index=(targetIndex+1)%_size; index!=targetIndex; index=(targetIndex+1)%_size )
 		{
 			if( table[index]==NULL ) //found a spot
 				return -index-1;
@@ -33,7 +36,7 @@ int HashTable< Content >::index( const Content& object ) const
 				return index;
 		}
 		
-		return -size-1;
+		return -_size-1;
 	}
 }
 
@@ -41,14 +44,14 @@ int HashTable< Content >::index( const Content& object ) const
 template< class Content >
 void HashTable< Content >::grow()
 {
-	unsigned int oldSize=size;
+	unsigned int oldSize=_size;
 	Content* oldTable=table;
 	
-	size=oldSize*GROWTH_FACTOR;
-	table[size];
+	_size=oldSize*GROWTH_FACTOR;
+	table[_size];
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex )
-		newTable[-index(*oldTable[oldIndex])-1]=oldTable[oldIndex];
+		table[-index(*oldTable[oldIndex])-1]=oldTable[oldIndex];
 }
 
 /** @brief Adds an element */
@@ -61,7 +64,7 @@ void HashTable< Content >::add( const Content& object )
 	if( index>=0 ) return;
 	
 	index=-index-1;
-	if( index==size ) {//out of space
+	if( index==_size ) {//out of space
 		HashTable::grow();
 		index = index( object );
 	}
@@ -92,7 +95,7 @@ unsigned int HashTable< Content >::size( void ) const
 {
 	unsigned int found=0;
 	
-	for( int index=0; index<size; ++index )
+	for( int index=0; index<_size; ++index )
 		if( table[index]!=NULL )
 			++found;
 	
@@ -115,7 +118,7 @@ bool HashTable< Content >::remove( const Content& object )
 template< class Content >
 void HashTable< Content >::purge()
 {
-	for( unsigned int index=0; index<size; ++index )
+	for( unsigned int index=0; index<_size; ++index )
 		if( table[index]!=NULL )
 			delete table[index];
 }

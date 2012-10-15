@@ -1,6 +1,7 @@
 /**
 A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void) const</tt> method.
 
+@author Kyle Savarese <kms7341@rit.edu>
 @author Sol Boucher <slb1566@rit.edu>
 */
 #ifndef HASHTABLE_H
@@ -9,12 +10,15 @@ A hash table implementation to store copies of objects providing a <tt>public</t
 template< class Content >
 class HashTable
 {
-	private:
+	private:	
+		/** The table's initial size */
+		static const unsigned int INITIAL_SIZE=100;
+		
 		/** The table's growth factor */
 		static const unsigned int GROWTH_FACTOR=2;
 		
 		/** The array's current size */
-		unsigned int size;
+		unsigned int _size;
 		
 		/** The table of member objects */
 		Content* table[INITIAL_SIZE];
@@ -32,9 +36,6 @@ class HashTable
 		void grow( void );
 	
 	public:
-		/** The table's initial size */
-		static const unsigned int INITIAL_SIZE=100;
-		
 		/**
 		Create a <tt>HashTable</tt>.
 		*/
