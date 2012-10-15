@@ -39,6 +39,12 @@ class Integer
 		@return the <tt>value</tt> itself
 		*/
 		int hash( void ) const;
+		
+		/**
+		Check the <tt>flag</tt>.
+		@return whether we're <tt>flag</tt>ged
+		*/
+		bool isFlagged( void ) const;
 };
 
 #endif
