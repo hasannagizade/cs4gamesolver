@@ -78,4 +78,6 @@ class HashTable
 		void purge( void );
 };
 
+#include "HashTable.t.h"
+
 #endif
