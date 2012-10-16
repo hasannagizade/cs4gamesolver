@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <iostream>
 
 /** @brief Constructor */
 template< class Content >
@@ -28,12 +29,12 @@ int HashTable< Content >::index( const Content& object ) const
 		return targetIndex;
 	else //use open addressing to find it
 	{
-		for( int index=(targetIndex+1)%_size; index!=targetIndex; index=(targetIndex+1)%_size )
+		for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(targetIndex+1)%_size )
 		{
-			if( table[index]==NULL ) //found a spot
-				return -index-1;
-			else if( hashCode==table[index]->hash() ) //found what were looking for
-				return index;
+			if( table[_index]==NULL ) //found a spot
+				return -_index-1;
+			else if( hashCode==table[_index]->hash() ) //found what were looking for
+				return _index;
 		}
 		
 		return -_size-1;
@@ -45,30 +46,32 @@ template< class Content >
 void HashTable< Content >::grow()
 {
 	unsigned int oldSize=_size;
-	Content* oldTable=table;
+	Content* oldTable=*table;
 	
 	_size=oldSize*GROWTH_FACTOR;
 	table[_size];
 	
-	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex )
-		table[-index(*oldTable[oldIndex])-1]=oldTable[oldIndex];
+	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
+		Content oldData = (oldTable[oldIndex]);
+		table[-index( ( oldTable[oldIndex] ) )-1] = new Content(oldData);
+	}
 }
 
 /** @brief Adds an element */
 template< class Content >
 void HashTable< Content >::add( const Content& object )
 {
-	int index=index( object );
+	int _index=index( object );
+	std::cout << "INDEX: " << _index << std::endl;	
+	assert(_index<0 ); //not already present
+	if( _index>=0 ) return;
 	
-	assert( index<0 ); //not already present
-	if( index>=0 ) return;
-	
-	index=-index-1;
-	if( index==_size ) {//out of space
-		HashTable::grow();
-		index = index( object );
+	_index=-_index-1;
+	if( _index==_size ) {//out of space
+		grow();
+		_index = index( object );
 	}
-	table[index]=new Content(object);
+	table[_index]=new Content(object);
 }
 
 /** @brief Contains an element? */
@@ -82,11 +85,11 @@ bool HashTable< Content >::contains( const Content& object ) const
 template< class Content >
 Content HashTable< Content >::matching( const Content& object ) const
 {
-	int index=index( object );
+	int _index=index( object );
 	
-	assert( index>=0 ); //present in table
+	assert( _index>=0 ); //present in table
 	
-	return *table[index];
+	return *table[_index];
 }
 
 /** @brief Current *utilized* size */
@@ -95,8 +98,8 @@ unsigned int HashTable< Content >::size( void ) const
 {
 	unsigned int found=0;
 	
-	for( int index=0; index<_size; ++index )
-		if( table[index]!=NULL )
+	for( int _index=0; _index<_size; ++_index )
+		if( table[_index]!=NULL )
 			++found;
 	
 	return found;
@@ -106,11 +109,11 @@ unsigned int HashTable< Content >::size( void ) const
 template< class Content >
 bool HashTable< Content >::remove( const Content& object )
 {
-	int index=index( object );
+	int _index=index( object );
 	
-	if( index<0 ) return false; //didn't find it
+	if( _index<0 ) return false; //didn't find it
 	
-	delete table[index];
+	delete table[_index];
 	return true;
 }
 
@@ -118,7 +121,7 @@ bool HashTable< Content >::remove( const Content& object )
 template< class Content >
 void HashTable< Content >::purge()
 {
-	for( unsigned int index=0; index<_size; ++index )
-		if( table[index]!=NULL )
-			delete table[index];
+	for( unsigned int _index=0; _index<_size; ++_index )
+		if( table[_index]!=NULL )
+			delete table[_index];
 }
