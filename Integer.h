@@ -41,6 +41,13 @@ class Integer
 		int hash( void ) const;
 		
 		/**
+		The identity check
+		@param another <tt>Integer</tt>
+		@return whether the <tt>value</tt>s are the same
+		*/
+		bool operator==( const Integer& another ) const;
+		
+		/**
 		Check the <tt>flag</tt>.
 		@return whether we're <tt>flag</tt>ged
 		*/

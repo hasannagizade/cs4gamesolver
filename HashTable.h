@@ -1,5 +1,5 @@
 /**
-A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void) const</tt> method.
+A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void) const</tt> and <tt>public operator==(const Content&) const</tt> methods.
 
 @author Kyle Savarese <kms7341@rit.edu>
 @author Sol Boucher <slb1566@rit.edu>

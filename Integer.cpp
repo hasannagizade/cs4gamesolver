@@ -18,6 +18,12 @@ int Integer::hash() const
 	return value;
 }
 
+/** Identity */
+bool Integer::operator==( const Integer& another ) const
+{
+	return this->value==another.value;
+}
+
 /** Flag check */
 bool Integer::isFlagged() const
 {

@@ -30,7 +30,7 @@ int HashTable< Content >::index( const Content& object ) const
 		return -targetIndex-1;
 	else //there's something at the requested location
 	{
-		if( hashCode==table[targetIndex]->hash() ) //the supplied object is, in fact, at that index
+		if( *table[targetIndex]==object ) //the supplied object is, in fact, at that index
 			return targetIndex;
 		else //use open addressing to find it
 		{
@@ -38,7 +38,7 @@ int HashTable< Content >::index( const Content& object ) const
 			{
 				if( table[_index]==NULL ) //found a spot
 					return -_index-1;
-				else if( hashCode==table[_index]->hash() ) //found what were looking for
+				else if( *table[_index]==object ) //found what were looking for
 					return _index;
 			}
 			
