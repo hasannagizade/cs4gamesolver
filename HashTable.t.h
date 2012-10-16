@@ -128,5 +128,8 @@ void HashTable< Content >::purge()
 {
 	for( unsigned int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
+		{
 			delete table[_index];
+			table[_index]=NULL;
+		}
 }
