@@ -16,7 +16,7 @@ template< class Content >
 HashTable< Content >::~HashTable()
 {
 	purge();
-	delete[] table;
+	//delete[] table; //TODO if it grew, it crashes here ... but does it leak without?
 	table=NULL;
 }
 
@@ -132,6 +132,7 @@ void HashTable< Content >::purge()
 	for( int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
 		{
+			std::cout<<"Index "<<_index<<" Value "<<table[_index]<<std::endl;
 			delete table[_index];
 			table[_index]=NULL;
 		}
