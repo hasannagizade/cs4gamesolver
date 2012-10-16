@@ -34,7 +34,7 @@ int HashTable< Content >::index( const Content& object ) const
 			return targetIndex;
 		else //use open addressing to find it
 		{
-			for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(targetIndex+1)%_size )
+			for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(_index+1)%_size )
 			{
 				if( table[_index]==NULL ) //found a spot
 					return -_index-1;
