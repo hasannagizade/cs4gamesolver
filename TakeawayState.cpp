@@ -80,6 +80,12 @@ string TakeawayState::str() const
 	return assembler.str();
 }
 
+/** @brief Hashing */
+int TakeawayState::hash() const
+{
+	return ( ( ourTurn ? 1 : 0 )<<1 )+pileSize;
+}
+
 /** @brief Are these subsequent? */
 bool TakeawayState::areSubsequent( const TakeawayState& first, const
 	TakeawayState& next )

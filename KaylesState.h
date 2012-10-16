@@ -35,6 +35,9 @@ class KaylesState
 		
 		/** Whether the computer player is up */
 		bool ourTurn;
+		
+		/** Caches the current hash code */
+		int hashCode;
 	
 	public: //behavior
 		/**
@@ -113,6 +116,11 @@ class KaylesState
 		*/
 		std::string str( void ) const;
 		
+		/**Hashes the <tt>State</tt>.
+		@return a hash code 
+		*/
+		int hash( void ) const;
+		
 		/**
 		Determines whether two game states are subsequent.
 		@param first the original state
@@ -134,6 +142,12 @@ class KaylesState
 		*/
 		static std::pair< int, int > diff( const KaylesState& first,
 			const KaylesState& next );
+	
+	private: //helpers
+		/**
+		Recomputes hash code; must be called every time <tt>pins</tt> is mutated.
+		*/
+		void cacheHash( void );
 };
 
 #endif

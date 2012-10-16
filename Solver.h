@@ -40,6 +40,12 @@ template< typename State > class Solver
 				been offered
 			*/
 			bool prefersScore( typename State::Score alternative ) const;
+			
+			/**
+			Retrieves hash code.
+			@return our <tt>State</tt>'s hash code
+			*/
+			int hash( void ) const;
 		};
 		
 		/**

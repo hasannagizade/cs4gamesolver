@@ -98,6 +98,12 @@ class TakeawayState
 		std::string str( void ) const;
 		
 		/**
+		Hashes the <tt>State</tt>.
+		@return a hash code
+		*/
+		int hash( void ) const;
+		
+		/**
 		Determines whether two game states are subsequent.
 		@param first the original state
 		@param next the new state

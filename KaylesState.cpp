@@ -1,6 +1,7 @@
 /** @author Sol Boucher <slb1566@rit.edu> */
 #include "KaylesState.h"
 #include <cassert>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <utility>
@@ -8,12 +9,15 @@ using namespace std;
 
 /** @brief Constructor */
 KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
-	pins( startingPins ), ourTurn( weAreUp ) {}
+	pins( startingPins ), ourTurn( weAreUp ), hashCode( 0 )
+{
+	cacheHash();
+}
 
 /** @brief Advancing constructor */
 KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 	int taken ):
-	pins( baseState.pins ), ourTurn( !baseState.ourTurn )
+	pins( baseState.pins ), ourTurn( !baseState.ourTurn ), hashCode( 0 )
 {
 	#ifdef DEBUG
 		cout<<"Advancing state w/ pos "<<position<<" , taking "<<taken<<endl;
@@ -21,6 +25,7 @@ KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 	
 	assert( position>=0 && position<baseState.pins.size() );
 	pins[position]-=taken;
+	cacheHash();
 }
 
 /** @brief Destructor */
@@ -106,6 +111,12 @@ string KaylesState::str() const
 	return assembler.str();
 }
 
+/** @brief Hashing */
+int KaylesState::hash() const
+{
+	return hashCode;
+}
+
 /** @brief Are these subsequent? */
 bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 	next )
@@ -154,4 +165,18 @@ pair< int, int > KaylesState::diff( const KaylesState& first, const
 	}
 	//else !areSubsequent( first, next )
 		return pair< int, int>();
+}
+
+/** Sorting */
+void KaylesState::cacheHash()
+{
+	vector< int > sorted;
+	
+	for( vector< int >::iterator element=pins.begin(); element!=pins.end(); ++element )
+		sorted.push_back(*element);
+	sort< vector< int >::iterator >( sorted.begin(), sorted.end() );
+	
+	hashCode=0;
+	for( vector< int >::iterator count=sorted.begin(); count!=sorted.end(); ++count )
+		hashCode+=*count<<( count-sorted.begin() );
 }

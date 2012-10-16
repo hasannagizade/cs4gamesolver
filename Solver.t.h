@@ -18,7 +18,7 @@ Solver< State >::StatePlusScore::StatePlusScore( State initial ):
 	config( initial ), value()
 {
 	#ifdef DEBUG
-		std::cout<<"New SPS w/ score of "<<value<<endl;
+		std::cout<<"New SPS w/ score of "<<value<<std::endl;
 	#endif
 }
 
@@ -31,6 +31,13 @@ bool Solver< State >::StatePlusScore::prefersScore( typename State::Score
 		return alternative>value; //the machine accepts a machine win
 	else //human's turn
 		return alternative<value; //the human rejects a machine win
+}
+
+/** @brief Configuration's hash code */
+template< typename State >
+int Solver< State >::StatePlusScore::hash() const
+{
+	return config.hash();
 }
 
 /** @brief Current state */
@@ -66,7 +73,7 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 				)
 			{
 				#ifdef DEBUG
-					std::cout<<"Deciding on "<<ofTheMoment.config.str()<<endl;
+					std::cout<<"Deciding on "<<ofTheMoment.config.str()<<std::endl;
 				#endif
 				
 				bestConfig=&*follower;
@@ -77,7 +84,7 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 	
 	#ifdef DEBUG
 		std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<
-			" for victory rating "<<decision.value<<endl;
+			" for victory rating "<<decision.value<<std::endl;
 	#endif
 	}
 	
