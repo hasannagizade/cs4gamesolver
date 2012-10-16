@@ -2,7 +2,6 @@
  *  @author Kyle Savarese <kms7341@rit.edu>
  */
 //included from "HashTable.h"
-
 #include <cassert>
 #include <cstddef>
 #include <iostream>
@@ -10,13 +9,15 @@
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table() {}
+	_size( INITIAL_SIZE ), table( new Content*[INITIAL_SIZE] ) {}
 
 /** @brief Destructor */
 template< class Content >
 HashTable< Content >::~HashTable()
 {
 	purge();
+	delete[] table;
+	table=NULL;
 }
 
 /** @brief Find the index or intended index */
@@ -54,12 +55,14 @@ void HashTable< Content >::grow()
 	Content* oldTable=*table;
 	
 	_size=oldSize*GROWTH_FACTOR;
-	table[_size];
+	table=new Content*[_size];
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
 		Content oldData = (oldTable[oldIndex]);
 		table[-index( ( oldTable[oldIndex] ) )-1] = new Content(oldData);
 	}
+	
+	delete[] oldTable;
 }
 
 /** @brief Adds an element */

@@ -20,8 +20,8 @@ class HashTable
 		/** The array's current size */
 		unsigned int _size;
 		
-		/** The table of member objects */
-		Content* table[INITIAL_SIZE];
+		/** The array of member objects */
+		Content** table;
 		
 		/**
 		Finds the index occupied by the specified object.
