@@ -25,19 +25,24 @@ int HashTable< Content >::index( const Content& object ) const
 {
 	int hashCode=object.hash(), targetIndex=hashCode%_size;
 	
-	if( hashCode==table[targetIndex]->hash() ) //the object is, in fact, at that index
-		return targetIndex;
-	else //use open addressing to find it
+	if( table[targetIndex]==NULL ) //the requested index is free for the taking
+		return -targetIndex-1;
+	else //there's something at the requested location
 	{
-		for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(targetIndex+1)%_size )
+		if( hashCode==table[targetIndex]->hash() ) //the supplied object is, in fact, at that index
+			return targetIndex;
+		else //use open addressing to find it
 		{
-			if( table[_index]==NULL ) //found a spot
-				return -_index-1;
-			else if( hashCode==table[_index]->hash() ) //found what were looking for
-				return _index;
+			for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(targetIndex+1)%_size )
+			{
+				if( table[_index]==NULL ) //found a spot
+					return -_index-1;
+				else if( hashCode==table[_index]->hash() ) //found what were looking for
+					return _index;
+			}
+			
+			return -_size-1;
 		}
-		
-		return -_size-1;
 	}
 }
 
