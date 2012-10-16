@@ -51,7 +51,7 @@ int HashTable< Content >::index( const Content& object ) const
 template< class Content >
 void HashTable< Content >::grow()
 {
-	unsigned int oldSize=_size;
+	int oldSize=_size;
 	Content* oldTable=*table;
 	
 	_size=oldSize*GROWTH_FACTOR;
@@ -102,9 +102,9 @@ Content HashTable< Content >::matching( const Content& object ) const
 
 /** @brief Current *utilized* size */
 template< class Content >
-unsigned int HashTable< Content >::size( void ) const
+int HashTable< Content >::size( void ) const
 {
-	unsigned int found=0;
+	int found=0;
 	
 	for( int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
@@ -129,7 +129,7 @@ bool HashTable< Content >::remove( const Content& object )
 template< class Content >
 void HashTable< Content >::purge()
 {
-	for( unsigned int _index=0; _index<_size; ++_index )
+	for( int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
 		{
 			delete table[_index];

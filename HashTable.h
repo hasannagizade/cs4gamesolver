@@ -12,13 +12,13 @@ class HashTable
 {
 	private:	
 		/** The table's initial size */
-		static const unsigned int INITIAL_SIZE=100;
+		static const int INITIAL_SIZE=100;
 		
 		/** The table's growth factor */
-		static const unsigned int GROWTH_FACTOR=2;
+		static const int GROWTH_FACTOR=2;
 		
 		/** The array's current size */
-		unsigned int _size;
+		int _size;
 		
 		/** The array of member objects */
 		Content** table;
@@ -71,7 +71,7 @@ class HashTable
 		/**
 		Determines the current number of objects stored in the table.
 		*/
-		unsigned int size( void ) const;
+		int size( void ) const;
 		
 		/**
 		Removes the table's copy of the specified object.
