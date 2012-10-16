@@ -52,14 +52,14 @@ template< class Content >
 void HashTable< Content >::grow()
 {
 	int oldSize=_size;
-	Content* oldTable=*table;
+	Content** oldTable=table;
 	
 	_size=oldSize*GROWTH_FACTOR;
 	table=new Content*[_size];
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
-		Content oldData = (oldTable[oldIndex]);
-		table[-index( ( oldTable[oldIndex] ) )-1] = new Content(oldData);
+		Content* oldData = oldTable[oldIndex];
+		table[-index( *oldData )-1] = oldData;
 	}
 	
 	delete[] oldTable;
@@ -77,7 +77,7 @@ void HashTable< Content >::add( const Content& object )
 	_index=-_index-1;
 	if( _index==_size ) {//out of space
 		grow();
-		_index = index( object );
+		_index = -index( object )-1;
 	}
 	table[_index]=new Content(object);
 }
