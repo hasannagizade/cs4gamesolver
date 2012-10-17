@@ -9,14 +9,20 @@
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table( new Content*[INITIAL_SIZE] ) {}
+	_size( INITIAL_SIZE ), table( new Content*[INITIAL_SIZE] )
+{
+	for( int index=0; index<_size; ++index )
+		table[index]=NULL;
+}
 
 /** @brief Destructor */
 template< class Content >
 HashTable< Content >::~HashTable()
 {
 	purge();
-	//delete[] table; //TODO if it grew, it crashes here ... but does it leak without?
+	std::cout<<"About to delete"<<std::endl;
+	delete[] table; //TODO if it grew, it crashes here ... but does it leak without?
+	std::cout<<"Just deleted"<<std::endl;
 	table=NULL;
 }
 
@@ -56,6 +62,9 @@ void HashTable< Content >::grow()
 	
 	_size=oldSize*GROWTH_FACTOR;
 	table=new Content*[_size];
+	
+	for( int _index=0; _index<_size; ++_index )
+		table[_index]=NULL;
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
 		Content* oldData = oldTable[oldIndex];
