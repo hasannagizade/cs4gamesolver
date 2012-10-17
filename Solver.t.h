@@ -40,6 +40,14 @@ int Solver< State >::StatePlusScore::hash() const
 	return config.hash();
 }
 
+/** @brief Configuration's identity verification */
+template< typename State >
+bool Solver< State >::StatePlusScore::operator==( const StatePlusScore&
+	another ) const
+{
+	return this->config==another.config;
+}
+
 /** @brief Current state */
 template< typename State >
 const State& Solver< State >::getCurrentState() const

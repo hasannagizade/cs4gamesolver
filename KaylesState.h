@@ -36,6 +36,9 @@ class KaylesState
 		/** Whether the computer player is up */
 		bool ourTurn;
 		
+		/** Caches the sorted pin groups */
+		std::vector< int > sorted;
+		
 		/** Caches the current hash code */
 		int hashCode;
 	
@@ -116,10 +119,20 @@ class KaylesState
 		*/
 		std::string str( void ) const;
 		
-		/**Hashes the <tt>State</tt>.
+		/**
+		Hashes the <tt>State</tt>.
+		@pre <tt>hashCode</tt> is up to date
 		@return a hash code 
 		*/
 		int hash( void ) const;
+		
+		/**
+		Checks identity
+		@pre <tt>sorted</tt> is up to date
+		@param another comparable <tt>State</tt>
+		@return whether the turns and pin groups are the same
+		*/
+		bool operator==( const KaylesState& another ) const;
 		
 		/**
 		Determines whether two game states are subsequent.

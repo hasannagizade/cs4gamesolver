@@ -86,6 +86,12 @@ int TakeawayState::hash() const
 	return ( ( ourTurn ? 1 : 0 )<<1 )+pileSize;
 }
 
+/** @brief Same state? */
+bool TakeawayState::operator==( const TakeawayState& another ) const
+{
+	return this->ourTurn==another.ourTurn && this->pileSize==another.pileSize;
+}
+
 /** @brief Are these subsequent? */
 bool TakeawayState::areSubsequent( const TakeawayState& first, const
 	TakeawayState& next )

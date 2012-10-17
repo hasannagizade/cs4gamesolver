@@ -104,6 +104,13 @@ class TakeawayState
 		int hash( void ) const;
 		
 		/**
+		Checks identity
+		@param another comparable <tt>State</tt>
+		@return whether the turns and <tt>pileSize</tt>s are the same
+		*/
+		bool operator==( const TakeawayState& another ) const;
+		
+		/**
 		Determines whether two game states are subsequent.
 		@param first the original state
 		@param next the new state

@@ -46,6 +46,13 @@ template< typename State > class Solver
 			@return our <tt>State</tt>'s hash code
 			*/
 			int hash( void ) const;
+			
+			/**
+			Verifies equivalent identities.
+			@param another <tt>StatePlusScore</tt> instance
+			@return whether our <tt>State</tt>s identify
+			*/
+			bool operator==( const StatePlusScore& another ) const;
 		};
 		
 		/**
