@@ -20,9 +20,7 @@ template< class Content >
 HashTable< Content >::~HashTable()
 {
 	purge();
-	std::cout<<"About to delete"<<std::endl;
-	delete[] table; //TODO if it grew, it crashes here ... but does it leak without?
-	std::cout<<"Just deleted"<<std::endl;
+	delete[] table;
 	table=NULL;
 }
 
@@ -131,6 +129,8 @@ bool HashTable< Content >::remove( const Content& object )
 	if( _index<0 ) return false; //didn't find it
 	
 	delete table[_index];
+	table[_index]=NULL;
+	
 	return true;
 }
 
