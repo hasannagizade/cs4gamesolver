@@ -39,7 +39,7 @@ int main( int argc, char** argv )
 	else { //Play mode
 		string played;
 		unsigned int i;
-		for ( i = 0; !isdigit(s[i]); i++ ) {
+		for ( i = 0; !isdigit(s[i]) && s[i] != '-'; i++ ) {
 			played += s[i];
 		}
 		string num;

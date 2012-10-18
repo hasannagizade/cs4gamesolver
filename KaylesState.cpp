@@ -149,7 +149,7 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 			}
 		}
 	
-	return true;
+	return seenDifference;
 }
 
 /** @brief What just happened? */

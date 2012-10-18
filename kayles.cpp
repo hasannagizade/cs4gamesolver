@@ -104,7 +104,7 @@ int main( int argc, char** argv )
 						getCurrentState().groupsOfPins()<<") ? ";
 					cout.flush();
 					cin>>line;
-					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() )
+					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() || game.getCurrentState().pinsInGroup( line ) == 0 )
 					{
 						line = -1;
 						continue;
