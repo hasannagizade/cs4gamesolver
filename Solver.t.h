@@ -70,8 +70,9 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 	}
 	else if( remembered.contains( decision ) ) //we've evaluated this whole case before
 	{
-		cout<<"Memoization saved us work for "<<state.str()<<endl;
-		
+		#ifdef DEBUG
+			cout<<"Memoization saved us work for "<<state.str()<<endl;
+		#endif
 		return remembered.matching( decision );
 	}
 	else //this situation is new to us
