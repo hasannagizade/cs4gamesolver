@@ -104,6 +104,11 @@ int main( int argc, char** argv )
 						getCurrentState().groupsOfPins()<<") ? ";
 					cout.flush();
 					cin>>line;
+					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() )
+					{
+						line = -1;
+						continue;
+					}
 					cout<<"You take how many ["<<KaylesState::MIN_TAKEN<<','<<
 						( game.getCurrentState().pinsInGroup( line )>=
 						KaylesState::MAX_TAKEN ? KaylesState::MAX_TAKEN : game
@@ -111,7 +116,7 @@ int main( int argc, char** argv )
 					cout.flush();
 					cin>>greed;
 				}
-				while( !game.supplyNextState( KaylesState( game.
+				while( line == -1 || !game.supplyNextState( KaylesState( game.
 					getCurrentState(), line, greed ) ) ); //tried and failed t
 					//o make the given move
 				
