@@ -5,11 +5,13 @@
 #include <cassert>
 #include <cstddef>
 #include <iostream>
+#include <utility>
+using namespace std;
 
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table( new Content*[INITIAL_SIZE] )
+	_size( INITIAL_SIZE ), table( new pair< Content, Content >*[INITIAL_SIZE] )
 {
 	for( int index=0; index<_size; ++index )
 		table[index]=NULL;
@@ -34,7 +36,7 @@ int HashTable< Content >::index( const Content& object ) const
 		return -targetIndex-1;
 	else //there's something at the requested location
 	{
-		if( *table[targetIndex]==object ) //the supplied object is, in fact, at that index
+		if( table[targetIndex]->first==object ) //the supplied object is, in fact, at that index
 			return targetIndex;
 		else //use open addressing to find it
 		{
@@ -42,7 +44,7 @@ int HashTable< Content >::index( const Content& object ) const
 			{
 				if( table[_index]==NULL ) //found a spot
 					return -_index-1;
-				else if( *table[_index]==object ) //found what were looking for
+				else if( table[_index]->first==object ) //found what we're looking for
 					return _index;
 			}
 			
@@ -56,17 +58,17 @@ template< class Content >
 void HashTable< Content >::grow()
 {
 	int oldSize=_size;
-	Content** oldTable=table;
+	pair< Content, Content >** oldTable=table;
 	
 	_size=oldSize*GROWTH_FACTOR;
-	table=new Content*[_size];
+	table=new pair< Content, Content >*[_size];
 	
 	for( int _index=0; _index<_size; ++_index )
 		table[_index]=NULL;
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
-		Content* oldData = oldTable[oldIndex];
-		table[-index( *oldData )-1] = oldData;
+		pair< Content, Content >* oldData = oldTable[oldIndex];
+		table[-index( oldData->first )-1] = oldData;
 	}
 	
 	delete[] oldTable;
@@ -74,19 +76,23 @@ void HashTable< Content >::grow()
 
 /** @brief Adds an element */
 template< class Content >
-void HashTable< Content >::add( const Content& object )
+void HashTable< Content >::add( const Content& key, const Content& value )
 {
-	int _index=index( object );
+	int _index=index( key );
 	std::cout << "INDEX: " << _index << std::endl;	
 	assert(_index<0 ); //not already present
 	if( _index>=0 ) return;
 	
 	_index=-_index-1;
 	if( _index==_size ) {//out of space
+		std::cout<<"old size: "<<_size<<std::endl;
 		grow();
-		_index = -index( object )-1;
+		std::cout<<"new size: "<<_size<<std::endl;
+		std::cout<<"red size: "<<_index<<std::endl;
+		_index = -index( key )-1;
+		std::cout<<"blue size: "<<_index<<std::endl;
 	}
-	table[_index]=new Content(object);
+	table[_index]=new pair< Content, Content >( Content( key ), Content( value ) );
 }
 
 /** @brief Contains an element? */
@@ -104,7 +110,7 @@ Content HashTable< Content >::matching( const Content& object ) const
 	
 	assert( _index>=0 ); //present in table
 	
-	return *table[_index];
+	return table[_index]->second;
 }
 
 /** @brief Current *utilized* size */
@@ -134,7 +140,7 @@ bool HashTable< Content >::remove( const Content& object )
 	//slide everything displaced by this element down:
 	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL && checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
 	{
-		int idealLocation=index( *table[checkIndex] );
+		int idealLocation=index( table[checkIndex]->first );
 		
 		if( idealLocation<0 ) //can move to a better place
 		{
@@ -153,7 +159,7 @@ void HashTable< Content >::purge()
 	for( int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
 		{
-			std::cout<<"Index "<<_index<<" Value "<<table[_index]<<std::endl;
+			std::cout<<"Index "<<_index<<" Key "<<( table[_index]->first ).hash()<<" Value "<<( table[_index]->second ).hash()<<std::endl;
 			delete table[_index];
 			table[_index]=NULL;
 		}

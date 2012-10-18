@@ -7,6 +7,8 @@ A hash table implementation to store copies of objects providing a <tt>public</t
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include <utility>
+
 template< class Content >
 class HashTable
 {
@@ -21,11 +23,11 @@ class HashTable
 		int _size;
 		
 		/** The array of member objects */
-		Content** table;
+		std::pair< Content, Content >** table;
 		
 		/**
-		Finds the index occupied by the specified object.
-		@param object the instance for which to search
+		Finds the index occupied by the specified value.
+		@param object the value for which to search
 		@return the corresponding index, the additive inverse of one more than the would-be index if the object isn't present, or <tt>-size-1</tt> if the table is full
 		*/
 		int index( const Content& object ) const;
@@ -48,23 +50,24 @@ class HashTable
 		~HashTable( void );
 		
 		/**
-		Copies an object into the table.
-		@param object the instance to add
-		@pre No version of this instance is already in the table.
+		Copies a pair of objects into the table.
+		@param key the keying object
+		@param value the referred object
+		@pre No identical <tt>key</tt> is already in the table.
 		*/
-		void add( const Content& object );
+		void add( const Content& key, const Content& value );
 		
 		/**
-		Checks whether an object is in the table.
-		@param object the instance for which to search
+		Checks whether a key is in the table.
+		@param object the key for which to search
 		@return whether the object was found
 		*/
 		bool contains( const Content& object ) const;
 		
 		/**
-		Retrieves a copy of the table's version of the specified object.
-		@param object the caller's instance
-		@pre The table contains a version of <tt>object</tt>.
+		Retrieves a copy of the table's value corresponding to the specified key.
+		@param object the caller's copy of a key
+		@pre The table contains a copy of <tt>object</tt>.
 		*/
 		Content matching( const Content& object ) const;
 		
@@ -74,8 +77,8 @@ class HashTable
 		int size( void ) const;
 		
 		/**
-		Removes the table's copy of the specified object.
-		@param object the object to remove
+		Removes the specified key and the value corresponding to it.
+		@param object the key to remove
 		@return whether the object was found
 		*/
 		bool remove( const Content& object );
