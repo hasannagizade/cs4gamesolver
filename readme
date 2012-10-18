@@ -40,3 +40,11 @@ Format of Command-line Argument
 ===============================
 Each of the num_pins argument referenced in the two subsections on program mode is required to be a positive integer.
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+Design
+======
+First, we created the idea of a State that is a base for States used by the two games (TakeawayState and KaylesState).  No such generic State actually exists, but specific implementations of these two games do.  These provide several common utilities for users.  Most significant is successors(), which returns a vector of all possible next states from the current state.  Each state also contains a hash function necessary for the HashTable that does the memoization storage for the game.  It can also check if the current state represents a terminal state, can return the score of the game( for terminal states ), can return a string representation, and compare for equality with other states of the same type.  Additionally, each state class is expected to provide convenience functions for use in the main programs (areSubsequent and diff).
+
+The Solver is templeted around states.  It knows what the current state is, can tell the nextBestState, accept requests for a next state, and advance to the next state.  The Solver loop recursively traverses the game tree in a brute force fashion, constructing the memoization table while passing around a struct called StatePlusScore.  The "Score" of a state is defined by the individual game state class.  The states are not expected to reverse the board. The Score will always return from one player's point of view, and assumes that the computer wants to win.  A score is "good" if the computer thinks that the move benefits it. 
+
+Implementing a new game can be done by implementing a new state class that defines all applicable functions and defines scores such that preferred states for the computer have higher scores than less desired states.
