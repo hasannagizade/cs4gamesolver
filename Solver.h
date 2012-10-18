@@ -6,6 +6,8 @@ A game tree traverser for two-player, perfect knowledge contests.
 #ifndef SOLVER_H
 #define SOLVER_H
 
+#include "HashTable.h"
+
 template< typename State > class Solver
 {
 	private:
@@ -54,6 +56,9 @@ template< typename State > class Solver
 			*/
 			bool operator==( const StatePlusScore& another ) const;
 		};
+		
+		/** Previously-determined states for memoization */
+		mutable HashTable< StatePlusScore > remembered;
 		
 		/**
 		Determines the ideal end-of-turn state given the state at the beginnin

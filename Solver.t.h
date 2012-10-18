@@ -6,7 +6,7 @@
 /** @brief Constructor */
 template< typename State >
 Solver< State >::Solver( const State& initial ):
-	current( initial ) {}
+	current( initial ), remembered() {}
 
 /** @brief Destructor */
 template< typename State >
@@ -68,7 +68,13 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 		decision.config=state;
 		decision.value=state.scoreGame();
 	}
-	else //!state.gameOver()
+	else if( remembered.contains( decision ) ) //we've evaluated this whole case before
+	{
+		cout<<"Memoization saved us work for "<<state.str()<<endl;
+		
+		return remembered.matching( decision );
+	}
+	else //this situation is new to us
 	{
 		std::vector< State > successors=state.successors();
 		
@@ -88,12 +94,14 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 				decision.value=ofTheMoment.value;
 			}
 		}
+		
 		decision.config=*bestConfig;
-	
-	#ifdef DEBUG
-		std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<
-			" for victory rating "<<decision.value<<std::endl;
-	#endif
+		remembered.add( StatePlusScore( state ), decision ); //cherish this moment
+		
+		#ifdef DEBUG
+			std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<
+				" for victory rating "<<decision.value<<std::endl;
+		#endif
 	}
 	
 	return decision;
