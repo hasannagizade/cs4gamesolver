@@ -2,30 +2,57 @@
 The Takeaway game.
 
 @author Sol Boucher <slb1566@rit.edu>
+@author Kyle Savarese <kms7341@rit.edu>
 */
 #include "Solver.h"
 #include "TakeawayState.h"
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
+#include <sstream>
 #include <iostream>
 using namespace std;
 
 int main( int argc, char** argv )
 {
+	const char* PLAY = "play";
+	const int MIN_ARGS = 2;
+	const int PLAY_ARGS = 3;
+	const int MIN_PENNIES = 0;
 	//check argument count and switches
-	if( argc<2 || argc>3 || ( argc==3 && strcmp( argv[1], "play" )!=0 ) ) //ba
+	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS && strcmp( argv[1], PLAY )!=0 ) ) //ba
 		//d arguments
 	{
 		cerr<<"USAGE: takeaway [play] num_pennies"<<endl;
 		
 		return 1; //I have failed, Master
 	}
-	
-	int startingNumber=atoi( argv[argc-1] );
+	string s = "";
+	for ( int i = 1; i < argc; i++ ) {
+		s+= argv[i];
+	}
+	stringstream in( s, ios_base::in);
+	int startingNumber;
+	if ( argc==MIN_ARGS ) { //Not in play mode
+		in >> startingNumber;
+	}
+	else { //Play mode
+		string played;
+		unsigned int i;
+		for ( i = 0; !isdigit(s[i]); i++ ) {
+			played += s[i];
+		}
+		string num;
+		while ( i < s.size() ) {
+			num += s[i];
+			i++;
+		}
+		stringstream in2( num, ios_base::in);
+		in2 >> startingNumber;
+	}
 	
 	//check initial pile count
-	if( startingNumber<0 )
+	if( startingNumber< MIN_PENNIES )
 	{
 		cerr<<"FATAL: argument num_pennies must be a natural number"<<endl;
 		
@@ -33,7 +60,7 @@ int main( int argc, char** argv )
 	}
 	
 	//all systems go
-	if( argc==2 ) //advisory mode
+	if( argc==MIN_ARGS ) //advisory mode
 	{
 		TakeawayState starting( startingNumber ); //our turn
 		Solver< TakeawayState > game( starting );
