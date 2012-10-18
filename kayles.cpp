@@ -2,6 +2,7 @@
 The Kayles game.
 
 @author Sol Boucher <slb1566@rit.edu>
+@author Kyle Savarese <kms7341@rit.edu>
 */
 #include "Solver.h"
 #include "KaylesState.h"
@@ -11,26 +12,53 @@ The Kayles game.
 #include <algorithm>
 #include <iostream>
 #include <utility>
+#include <sstream>
 using namespace std;
 
 int main( int argc, char** argv )
 {
+	const int MIN_ARGS = 2;
+	const char* PLAY = "play";
 	//check argument count and switches
-	if( argc<2 || ( !isdigit( argv[1][0] ) && strcmp( argv[1], "play" )!=0 ) )
+	if( argc<MIN_ARGS || ( !isdigit( argv[1][0] ) && strcmp( argv[1], PLAY )!=0 ) )
 		//bad arguments
 	{
 		cerr<<"USAGE: kayles [play] num_pins_1 num_pins_2 ..."<<endl;
 		
 		return 1; //I have failed, Master
 	}
-	
-	vector< int > world;
-	
 	//collect line counts
-	for( unsigned int line=isdigit( argv[1][0] ) ? 1 : 2; line<(unsigned)argc;
-		++line)
-		world.push_back( atoi( argv[line] ) );
-	
+	string s = "";
+	for ( int i = 1; i < argc; i++ ) {
+		s += argv[i];
+		s += " ";
+	}
+	stringstream in( s, ios_base::in );
+	vector< int > world;
+	int data;
+	if( isdigit( argv[1][0] ) ) { //Not in play mode
+		while ( in >> data ) {
+			world.push_back( data );
+		}
+	}
+	else { //Play mode
+		string played;
+		unsigned int i;
+		for ( i = 0; !isdigit(s[i]); i++ ) {
+			played += s[i];
+		}
+		string num;
+		while ( i < s.size() ) {
+			num += s[i];
+			i++;
+		}
+		cout << num << endl;
+		stringstream in2( num, ios_base::in );
+		while( in2 >> data ) {
+			world.push_back( data );
+		}	
+	}
+
 	//all systems go
 	if( isdigit( argv[1][0] ) ) //advisory mode
 	{
