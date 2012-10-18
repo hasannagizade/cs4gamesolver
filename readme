@@ -1,6 +1,7 @@
 Sol Boucher <slb1566@rit.edu>
+Kyle Savarese <kms7341@rit.edu>
 CS4 4003-334 2121 Healy
-Project Submission 1
+Project Submission 2
 
 The Take Away Game
 ==================
@@ -19,4 +20,23 @@ $ ./takeaway play num_pennies
 Format of Command-line Argument
 ===============================
 The num_pennies argument referenced in the two subsections on program mode is required to be a positive integer.
+The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+The Kayles Game
+===============
+This program is a coach and simulator for the Kayles game, and can be run in either of two modes:
+
+Coach (Advisory) Mode
+---------------------
+In this mode, given the current state of the game, the program advises the user the optimal number of pins to take on this turn and from which line.  This functionality is the default when invoked as follos:
+$ ./kayles num_pins_1 num_pins_2 ...
+
+Simulator (Interactive) Mode
+----------------------------
+This mode allows the user to duel the computer to the death.  The human player is allowed to go first, and she is asked to enter an integer within the given constraints on this and each subsequent turn.  (If her input is out of range, she will be prompted again, although the result of entering non-integral requests is undefined.)  The computer takes turns with her, and always plays perfectly.  Thus, it should be noted that not all games are actually winnable.  In order to enter this (more exciting and less cheap [from the opponent's perspective, at least]) mode, invoke the executable as:
+$ ./kayles play num_pins_1 num_pins_2 ...
+
+Format of Command-line Argument
+===============================
+Each of the num_pins argument referenced in the two subsections on program mode is required to be a positive integer.
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
