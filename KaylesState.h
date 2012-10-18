@@ -36,9 +36,6 @@ class KaylesState
 		/** Whether the computer player is up */
 		bool ourTurn;
 		
-		/** Caches the sorted pin groups */
-		std::vector< int > sorted;
-		
 		/** Caches the current hash code */
 		int hashCode;
 	

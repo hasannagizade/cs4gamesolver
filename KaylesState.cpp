@@ -120,8 +120,8 @@ int KaylesState::hash() const
 /** @brief Same state? */
 bool KaylesState::operator==( const KaylesState& another ) const
 {
-	return this->ourTurn==another.ourTurn && this->sorted.size()==another.sorted.size() &&
-		equal( this->sorted.begin(), this->sorted.end(), another.sorted.begin() );
+	return this->ourTurn==another.ourTurn && this->pins.size()==another.pins.size() &&
+		equal( this->pins.begin(), this->pins.end(), another.pins.begin() );
 }
 
 /** @brief Are these subsequent? */
@@ -177,13 +177,7 @@ pair< int, int > KaylesState::diff( const KaylesState& first, const
 /** Sorting */
 void KaylesState::cacheHash()
 {
-	if( sorted.size() ) sorted.clear();
-	
-	for( vector< int >::iterator element=pins.begin(); element!=pins.end(); ++element )
-		sorted.push_back(*element);
-	sort< vector< int >::iterator >( sorted.begin(), sorted.end() );
-	
-	hashCode=( ourTurn ? 1 : 0 )<<sorted.size();
-	for( vector< int >::iterator count=sorted.begin(); count!=sorted.end(); ++count )
-		hashCode+=*count<<( count-sorted.begin() );
+	hashCode=( ourTurn ? 1 : 0 )<<pins.size();
+	for( vector< int >::iterator count=pins.begin(); count!=pins.end(); ++count )
+		hashCode+=*count<<( count-pins.begin() );
 }
