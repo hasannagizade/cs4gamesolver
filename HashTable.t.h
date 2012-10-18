@@ -4,7 +4,6 @@
 //included from "HashTable.h"
 #include <cassert>
 #include <cstddef>
-#include <iostream>
 #include <utility>
 using namespace std;
 
@@ -79,18 +78,13 @@ template< class Content >
 void HashTable< Content >::add( const Content& key, const Content& value )
 {
 	int _index=index( key );
-	std::cout << "INDEX: " << _index << std::endl;	
 	assert(_index<0 ); //not already present
 	if( _index>=0 ) return;
 	
 	_index=-_index-1;
 	if( _index==_size ) {//out of space
-		std::cout<<"old size: "<<_size<<std::endl;
 		grow();
-		std::cout<<"new size: "<<_size<<std::endl;
-		std::cout<<"red size: "<<_index<<std::endl;
 		_index = -index( key )-1;
-		std::cout<<"blue size: "<<_index<<std::endl;
 	}
 	table[_index]=new pair< Content, Content >( Content( key ), Content( value ) );
 }
@@ -159,7 +153,6 @@ void HashTable< Content >::purge()
 	for( int _index=0; _index<_size; ++_index )
 		if( table[_index]!=NULL )
 		{
-			std::cout<<"Index "<<_index<<" Key "<<( table[_index]->first ).hash()<<" Value "<<( table[_index]->second ).hash()<<std::endl;
 			delete table[_index];
 			table[_index]=NULL;
 		}
