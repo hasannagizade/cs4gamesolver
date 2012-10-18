@@ -131,6 +131,18 @@ bool HashTable< Content >::remove( const Content& object )
 	delete table[_index];
 	table[_index]=NULL;
 	
+	//slide everything displaced by this element down:
+	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL && checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
+	{
+		int idealLocation=index( *table[checkIndex] );
+		
+		if( idealLocation<0 ) //can move to a better place
+		{
+			table[-idealLocation-1]=table[checkIndex];
+			table[checkIndex]=NULL;
+		}
+	}
+	
 	return true;
 }
 
