@@ -39,6 +39,14 @@ int main( int argc, char** argv )
 	if( isdigit( argv[1][0] ) ) { //Not in play mode
 		while ( in >> data ) {
 			world.push_back( data );
+			if ( data < 0 ) {
+				cerr << data << " is not a valid number of pins." << endl;
+				return 0;
+			}
+		}
+		if ( !in.eof() ) {
+			cerr << in.get() << " is not a valid number of pins." << endl;
+			return 0;
 		}
 	}
 	else { //Play mode
@@ -56,7 +64,15 @@ int main( int argc, char** argv )
 		stringstream in2( num, ios_base::in );
 		while( in2 >> data ) {
 			world.push_back( data );
-		}	
+			if ( data < 0 ) {
+				cerr << data << " is not a valid number of pins." << endl;
+				return 0;
+			}
+		}
+		if ( !in2.eof() ) {
+			cerr << in2.get() << " is not a valid number of pins." << endl;
+			return 0;
+		}
 	}
 
 	//all systems go

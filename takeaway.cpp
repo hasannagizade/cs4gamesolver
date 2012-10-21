@@ -34,7 +34,10 @@ int main( int argc, char** argv )
 	stringstream in( s, ios_base::in);
 	int startingNumber;
 	if ( argc==MIN_ARGS ) { //Not in play mode
-		in >> startingNumber;
+		if ( !( in >> startingNumber ) ) {
+			cerr << argv[1] << " is an invalid number of pennies." << endl;
+			return 0;
+		}
 	}
 	else { //Play mode
 		string played;
@@ -48,7 +51,10 @@ int main( int argc, char** argv )
 			i++;
 		}
 		stringstream in2( num, ios_base::in);
-		in2 >> startingNumber;
+		if ( !( in2 >> startingNumber) ) {
+			cerr << argv[2] << " is an invalid number of pennies." << endl;
+			return 0;
+		}
 	}
 	
 	//check initial pile count
