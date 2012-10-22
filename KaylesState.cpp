@@ -23,7 +23,7 @@ KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 		cout<<"Advancing state w/ pos "<<position<<" , taking "<<taken<<endl;
 	#endif
 	
-	assert( position>=0 && position<baseState.pins.size() );
+	assert( position<baseState.pins.size() );
 	pins[position]-=taken;
 	cacheHash();
 }
@@ -65,7 +65,7 @@ int KaylesState::groupsOfPins() const
 /** @brief How many pins? */
 int KaylesState::pinsInGroup( unsigned int group ) const
 {
-	if( group<0 || group>=pins.size() ) return -1;
+	if( group>=pins.size() ) return -1;
 	else return pins[group];
 }
 

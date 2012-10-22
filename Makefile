@@ -1,4 +1,4 @@
-CXX=g++ -Wall
+CXX=g++ -Wextra
 
 default: takeaway kayles
 
