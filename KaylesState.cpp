@@ -11,21 +11,45 @@ using namespace std;
 KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
 	pins( startingPins ), ourTurn( weAreUp ), hashCode( 0 )
 {
+	//eliminate unnecessary zeros:
+	for( vector< int >::iterator spot=pins.begin() ; spot!=pins.end(); ++spot )
+		if( *spot==0 )
+			spot=pins.erase( spot );
+	
 	cacheHash();
 }
 
 /** @brief Advancing constructor */
 KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
-	int taken ):
-	pins( baseState.pins ), ourTurn( !baseState.ourTurn ), hashCode( 0 )
+	int taken, int which ):
+	pins(), ourTurn( !baseState.ourTurn ), hashCode( 0 )
 {
 	#ifdef DEBUG
 		cout<<"Advancing state w/ pos "<<position<<" , taking "<<taken<<endl;
 	#endif
 	
-	assert( position<baseState.pins.size() );
-	pins[position]-=taken;
-	cacheHash();
+	assert( position<baseState.pins.size() && which>=0 && taken>=MIN_TAKEN && taken<=MAX_TAKEN && which+taken<=baseState.pins[position] );
+	
+	for( vector< int >::const_iterator spot=baseState.pins.begin(); spot!=baseState.pins.end(); ++spot )
+	{
+		if( spot-baseState.pins.begin()==position ) //this is the one to remove
+		{
+			if( taken!=*spot ) //there'll be survivors
+			{
+				if( which==0 || which+taken==*spot ) //taking from the edge of the group
+					pins.push_back( *spot-taken ); //just deduct the number taken
+				else //taking from the middle
+				{ //split the group in "half"
+					pins.push_back( position-1 );
+					pins.push_back( *spot-position-taken );
+				}
+			}
+			//else don't bother to copy anything
+		}
+		else pins.push_back( *spot );
+	}
+	
+	cacheHash(); //be efficient
 }
 
 /** @brief Destructor */
@@ -34,11 +58,7 @@ KaylesState::~KaylesState() {}
 /** @brief Are we out of objects? */
 bool KaylesState::gameOver() const
 {
-	for( vector< int >::const_iterator group=pins.begin(); group!=pins.end();
-		++group )
-		if( *group!=0 ) return false;
-	
-	return true;
+	return pins.size()==0;
 }
 
 /** @brief Who won? */
@@ -79,15 +99,15 @@ const vector< KaylesState > KaylesState::successors() const
 	vector< KaylesState > possibilities;
 	
 	for( unsigned int group=0; group<pins.size(); ++group )
-		for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pins[group]; ++take
-			)
-		{
-			possibilities.push_back( KaylesState( *this, group, take ) );
-			
-			#ifdef DEBUG
-				cout<<'\t'<<possibilities.back().str()<<'\n';
-			#endif
-		}
+		for( int start=0; start<pins[group]; ++start )
+			for( int take=MIN_TAKEN; take<=MAX_TAKEN && start+take<pins[group]; ++take )
+			{
+				possibilities.push_back( KaylesState( *this, group, start, take ) );
+				
+				#ifdef DEBUG
+					cout<<'\t'<<possibilities.back().str()<<'\n';
+				#endif
+			}
 	
 	#ifdef DEBUG
 		cout.flush();
@@ -102,7 +122,7 @@ string KaylesState::str() const
 	stringstream assembler;
 	
 	assembler<<"It is the "<<( ourTurn ? "computer" : "human" )<<
-		"'s turn and the pins are: ";
+		"'s turn and the pins groups are: ";
 	for( vector< int >::const_iterator group=pins.begin(); group<pins.end();
 		++group )
 		assembler<<*group<<' ';

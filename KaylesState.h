@@ -50,19 +50,19 @@ class KaylesState
 		
 		/**
 		Creates the move resulting from taking away a specified number
-			of pins.  This makes the most sense when a positive nu
-			mber of them are taken, and preferably a legal number;
-			however, this is not required.
-		@pre the <tt>position</tt> is in range
+			of pins.
+		@pre The <tt>position</tt> is in range, <tt>which</tt> makes s
+			ense, and <tt>taken</tt> is legal.
 		@post The new state reflects the fact that it is now the oppos
 			ite player's turn.
 		@param baseState the state on which to base this new one
 		@param position the group of pins affected
 		@param taken the number of from that group that were knocked d
 			own
+		@param which the first pin from that group to be removed
 		*/
 		KaylesState( const KaylesState& baseState, unsigned int
-			position, int taken );
+			position, int which, int taken );
 		
 		/**
 		Destroys the game state.
