@@ -112,17 +112,27 @@ int main( int argc, char** argv )
 			}
 			else //player's turn
 			{
-				int line, greed;
-				
+				int line, greed, target;
+			  	vector< int > nextState;	
 				do
 				{
+					nextState.empty();
 					cout<<"For which nonempty line do you bowl? [0,"<<game.
 						getCurrentState().groupsOfPins()<<") ? ";
 					cout.flush();
 					cin>>line;
-					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() || game.getCurrentState().pinsInGroup( line ) == 0 )
+					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() 
+						|| game.getCurrentState().pinsInGroup( line ) == 0 )
 					{
 						line = -1;
+						continue;
+					}
+					cout<<"What pin number do you target [0,"
+						<<game.getCurrentState().pinsInGroup(line)<<") ? ";
+					cout.flush();
+					cin>>target;
+					if ( 0 > target || target >= game.getCurrentState().pinsInGroup(line) ) {
+						target = -1;
 						continue;
 					}
 					cout<<"You take how many pins ["<<KaylesState::MIN_TAKEN<<','<<
@@ -131,12 +141,28 @@ int main( int argc, char** argv )
 							.getCurrentState().pinsInGroup( line ) )<<"] ? ";
 					cout.flush();
 					cin>>greed;
+					if ( KaylesState::MIN_TAKEN > greed || greed > KaylesState::MAX_TAKEN || 
+						greed > game.getCurrentState().pinsInGroup( line ) - target) {
+						greed = -1;
+						continue;
+					}
+					for ( int pos = 0; pos < game.getCurrentState().groupsOfPins(); pos++) {
+						if ( pos == line ) {
+							nextState.push_back( target );
+							nextState.push_back( game.getCurrentState().
+								pinsInGroup( pos ) - target - greed );
+						}
+						else {
+							nextState.push_back( game.getCurrentState().
+								pinsInGroup( pos ) );
+						}
+					}
 				}
-				while( line == -1 || !game.supplyNextState( KaylesState( game.
-					getCurrentState(), line, greed ) ) ); //tried and failed t
+				while( line == -1 || target == -1 || greed == -1 || 
+					!game.supplyNextState( KaylesState (nextState, true) ) ); //tried and failed t
 					//o make the given move
 				
-				cout<<"Human: downed "<<greed<<" pins from line "<<line<<endl;
+				cout<<"Human: downed "<<greed<<" pins from line "<<line<<" starting at "<<target<<endl;
 			}
 		}
 		

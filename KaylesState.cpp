@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+#define DEBUG
 using namespace std;
 
 /** @brief Constructor */
@@ -144,7 +145,8 @@ bool KaylesState::operator==( const KaylesState& another ) const
 bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 	next )
 {
-	if( first.ourTurn==next.ourTurn || ( first.pins.size()!=next.pins.size() + 1 && next.pins.size() != first.pins.size() + 1 ) )
+	if( first.ourTurn==next.ourTurn || ( first.pins.size()!=next.pins.size() + 1 
+		&& next.pins.size() != first.pins.size() + 1 && first.pins.size()!=next.pins.size() ) )
 		return false;
 	
 	int diff = 0;
@@ -165,15 +167,15 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 					cout << "difference: " << difference << endl;
 				#endif
 
-				if( difference<MIN_TAKEN || difference>MAX_TAKEN || next.pins[
-					group]<0 ) return false;
+				if( difference<MIN_TAKEN || difference>MAX_TAKEN || next.pins[group]<0 ) 
+					return false;
 				else seenDifference=true;
 
 				diff = 1;
 			}
 		}
 	}  	}
-	else { // first.pins.size() < next.pins.size()
+	else if ( next.pins.size() > first.pins.size() ) { 
 	for ( unsigned int group = 0; group < first.pins.size(); ++group ) {
 		if( first.pins[group] != next.pins[group + diff] ) {
 			if ( seenDifference ) {
@@ -194,6 +196,20 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 				else seenDifference=true;
 
 				diff = 1;
+			}
+		}
+	}	}
+	else {
+	for ( unsigned int group = 0; group < first.pins.size(); ++group) {
+		if( first.pins[group] != next.pins[group] ) {
+			if ( seenDifference ) 
+				return false;
+			else {
+				int difference = first.pins[group] - next.pins[group];
+
+				if( difference < MIN_TAKEN || difference > MAX_TAKEN || next.pins[group] < 0 )
+					return false;
+				else seenDifference = true;
 			}
 		}
 	}	}
