@@ -1,4 +1,6 @@
-/** @author Sol Boucher <slb1566@rit.edu> */
+/** @author Sol Boucher <slb1566@rit.edu>
+ *  @author Kyle Savarese <kms7341@rit.edu>
+ */
 #include "KaylesState.h"
 #include <cassert>
 #include <algorithm>
@@ -76,19 +78,33 @@ const vector< KaylesState > KaylesState::successors() const
 		cout<<"Success calculating successors for "<<str()<<'\n';
 	#endif
 	
+
 	vector< KaylesState > possibilities;
-	
-	for( unsigned int group=0; group<pins.size(); ++group )
-		for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pins[group]; ++take
-			)
-		{
-			possibilities.push_back( KaylesState( *this, group, take ) );
+	for( unsigned int group=0; group<pins.size(); ++group ) {
+		for( int pos = 0; pos < pins[group]; pos++ ) {
+			vector< int > nextChances( pins );
 			
+			nextChances[group] = pos;
+			nextChances.insert(nextChances.begin() + group + 1, pins[group] - 1 - pos);
+
+			possibilities.push_back( KaylesState( nextChances, !ourTurn ) );
+
 			#ifdef DEBUG
 				cout<<'\t'<<possibilities.back().str()<<'\n';
 			#endif
+
+			if ( pos < pins[group] - 1 ) {
+				nextChances[group + 1]--;
+				if( nextChances[group + 1] == 0 )
+					nextChances.erase(nextChances.begin() + group + 1);
+				possibilities.push_back( KaylesState( nextChances, !ourTurn ) );
+
+				#ifdef DEBUG
+					cout << '\t'<<possibilities.back().str()<<'\n';
+				#endif
+			}
 		}
-	
+	}
 	#ifdef DEBUG
 		cout.flush();
 	#endif
@@ -128,32 +144,65 @@ bool KaylesState::operator==( const KaylesState& another ) const
 bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 	next )
 {
-	if( first.ourTurn==next.ourTurn || first.pins.size()!=next.pins.size() )
+	if( first.ourTurn==next.ourTurn || ( first.pins.size()!=next.pins.size() + 1 && next.pins.size() != first.pins.size() + 1 ) )
 		return false;
 	
+	int diff = 0;
+
 	bool seenDifference=false; //whether we've already found the move that was
 		//made
-	
-	for( unsigned int group=0; group<first.pins.size(); ++group )
-		if( first.pins[group]!=next.pins[group] )
+	if ( first.pins.size() > next.pins.size()) {
+	for( unsigned int group=0; group<next.pins.size(); ++group ) {
+		if( first.pins[group + diff]!=next.pins[group] )
 		{
 			if( seenDifference )
 				return false; //cannot tolerate any more differences
 			else //offset==0
 			{
-				int difference=first.pins[group]-next.pins[group];
+				int difference=next.pins[group] - (first.pins[group] + first.pins[group + 1]);
 				
+				#ifdef DEBUG
+					cout << "difference: " << difference << endl;
+				#endif
+
 				if( difference<MIN_TAKEN || difference>MAX_TAKEN || next.pins[
 					group]<0 ) return false;
 				else seenDifference=true;
+
+				diff = 1;
 			}
 		}
+	}  	}
+	else { // first.pins.size() < next.pins.size()
+	for ( unsigned int group = 0; group < first.pins.size(); ++group ) {
+		if( first.pins[group] != next.pins[group + diff] ) {
+			if ( seenDifference ) {
+				#ifdef DEBUG
+					cout << "TWODIFFS" << endl;
+				#endif
+				return false;
+			}
+			else {
+				int difference = first.pins[group] - (next.pins[group] + next.pins[group + 1]);
+
+				#ifdef DEBUG
+					cout << "difference: " << difference << endl;
+				#endif
+
+				if ( difference < MIN_TAKEN || difference > MAX_TAKEN || next.pins[group] < 0 )
+					return false;
+				else seenDifference=true;
+
+				diff = 1;
+			}
+		}
+	}	}
 	
 	return seenDifference;
 }
 
 /** @brief What just happened? */
-pair< int, int > KaylesState::diff( const KaylesState& first, const
+vector< int > KaylesState::diff( const KaylesState& first, const
 	KaylesState& next )
 {
 	#ifdef DEBUG
@@ -163,15 +212,32 @@ pair< int, int > KaylesState::diff( const KaylesState& first, const
 	bool subsequentStates=areSubsequent( first, next );
 	
 	assert( subsequentStates );
+	vector< int > diffs;
 	if( subsequentStates )
 	{
-		for( unsigned int group=0; group<first.pins.size(); ++group )
-			if( first.pins[group]!=next.pins[group] )
-				return pair< int, int >( group, first.pins[group]-next.pins
-					[group] );
+		if ( first.pins.size() > next.pins.size() ) {
+		for( unsigned int group=0; group<first.pins.size(); ++group ) {
+			if( first.pins[group]!=next.pins[group] ) {
+				diffs.push_back( group );
+				diffs.push_back( first.pins[group] );
+				diffs.push_back( next.pins[group]-(first.pins[group]+first.pins[group+1]));
+				return diffs;
+			}
+		}
+		}
+		else {
+		for ( unsigned int group = 0; group<next.pins.size(); ++group ) {
+			if( first.pins[group]!=next.pins[group] ) {
+				diffs.push_back( group );
+				diffs.push_back( next.pins[group] );
+				diffs.push_back( first.pins[group]-(next.pins[group]+next.pins[group+1]));
+				return diffs;
+			}
+		}
+		}
 	}
 	//else !areSubsequent( first, next )
-		return pair< int, int>();
+		return vector< int >();
 }
 
 /** Sorting */

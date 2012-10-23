@@ -2,6 +2,7 @@
 Represents the Kayles game state at some fixed point in time.
 
 @author Sol Boucher <slb1566@rit.edu>
+@author Kyle Savarese <kms7341@rit.edu>
 */
 #ifndef KAYLESSTATE_H
 #define KAYLESSTATE_H
@@ -150,7 +151,7 @@ class KaylesState
 			empty <tt>pair</tt> in the case of a poorly-phrased qu
 			estion
 		*/
-		static std::pair< int, int > diff( const KaylesState& first,
+		static std::vector< int > diff( const KaylesState& first,
 			const KaylesState& next );
 	
 	private: //helpers

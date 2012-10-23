@@ -86,10 +86,10 @@ int main( int argc, char** argv )
 		else
 		{
 			KaylesState outcome=game.nextBestState();
-			pair< int, int > advice=KaylesState::diff( starting, outcome );
+			vector< int > advice=KaylesState::diff( starting, outcome );
 			
-			cout<<"Target "<<advice.second<<" pins from line "<<advice.first<<
-				endl;
+			cout<<"Target " <<advice[2]<<" pins starting at number "<<advice[1]
+				<<" from line "<<advice[0]<<endl;
 		}
 	}
 	else //interactive mode
@@ -104,11 +104,11 @@ int main( int argc, char** argv )
 			if( game.getCurrentState().computersTurn() )
 			{
 				current=game.getCurrentState();
-				pair< int, int > delta=KaylesState::diff( current, game.
+				vector< int > delta=KaylesState::diff( current, game.
 					nextBestState() );
 				
-				cout<<"Computer: downs "<<delta.second<<" pins from line "<<
-					delta.first<<endl;
+				cout<<"Computer: downs"<<delta[2]<<" pins starting at number "
+					<<delta[1]<<" from line "<<delta[0]<<endl;
 			}
 			else //player's turn
 			{
@@ -125,7 +125,7 @@ int main( int argc, char** argv )
 						line = -1;
 						continue;
 					}
-					cout<<"You take how many ["<<KaylesState::MIN_TAKEN<<','<<
+					cout<<"You take how many pins ["<<KaylesState::MIN_TAKEN<<','<<
 						( game.getCurrentState().pinsInGroup( line )>=
 						KaylesState::MAX_TAKEN ? KaylesState::MAX_TAKEN : game
 							.getCurrentState().pinsInGroup( line ) )<<"] ? ";
