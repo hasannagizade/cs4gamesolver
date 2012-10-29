@@ -63,7 +63,7 @@ class KaylesState
 			own
 		*/
 		KaylesState( const KaylesState& baseState, unsigned int
-			position, int taken );
+			position, int taken, int target );
 		
 		/**
 		Destroys the game state.

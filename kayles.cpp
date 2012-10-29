@@ -146,20 +146,10 @@ int main( int argc, char** argv )
 						greed = -1;
 						continue;
 					}
-					for ( int pos = 0; pos < game.getCurrentState().groupsOfPins(); pos++) {
-						if ( pos == line ) {
-							nextState.push_back( target );
-							nextState.push_back( game.getCurrentState().
-								pinsInGroup( pos ) - target - greed );
-						}
-						else {
-							nextState.push_back( game.getCurrentState().
-								pinsInGroup( pos ) );
-						}
-					}
 				}
 				while( line == -1 || target == -1 || greed == -1 || 
-					!game.supplyNextState( KaylesState (nextState, true) ) ); //tried and failed t
+					!game.supplyNextState( KaylesState ( game.getCurrentState(), 
+						line, greed, target ) ) ); //tried and failed t
 					//o make the given move
 				
 				cout<<"Human: downed "<<greed<<" pins from line "<<line<<" starting at "<<target<<endl;

@@ -1,13 +1,13 @@
 /** @author Sol Boucher <slb1566@rit.edu>
  *  @author Kyle Savarese <kms7341@rit.edu>
  */
+ #define DEBUG
 #include "KaylesState.h"
 #include <cassert>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <utility>
-#define DEBUG
 using namespace std;
 
 /** @brief Constructor */
@@ -19,15 +19,30 @@ KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
 
 /** @brief Advancing constructor */
 KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
-	int taken ):
-	pins( baseState.pins ), ourTurn( !baseState.ourTurn ), hashCode( 0 )
+	int taken, int target ):
+	ourTurn( !baseState.ourTurn ), hashCode( 0 )
 {
+	assert( position<baseState.pins.size() );
+	for ( int pos = 0; pos < baseState.groupsOfPins(); pos++) {
+		if ( (unsigned) pos == position ) {
+			if( target != 0 )
+				pins.push_back( target );
+			if( baseState.pinsInGroup( pos ) - target - taken ) {
+				pins.push_back( baseState.
+					pinsInGroup( pos ) - target - taken );
+			}
+		}
+		else {
+			if ( baseState.pinsInGroup( pos ) ) 
+				pins.push_back( baseState.pinsInGroup( pos ) );
+		}
+	}
+
 	#ifdef DEBUG
 		cout<<"Advancing state w/ pos "<<position<<" , taking "<<taken<<endl;
 	#endif
 	
 	assert( position<baseState.pins.size() );
-	pins[position]-=taken;
 	cacheHash();
 }
 
@@ -79,29 +94,14 @@ const vector< KaylesState > KaylesState::successors() const
 		cout<<"Success calculating successors for "<<str()<<'\n';
 	#endif
 	
-
 	vector< KaylesState > possibilities;
 	for( unsigned int group=0; group<pins.size(); ++group ) {
 		for( int pos = 0; pos < pins[group]; pos++ ) {
-			vector< int > nextChances( pins );
-			
-			nextChances[group] = pos;
-			nextChances.insert(nextChances.begin() + group + 1, pins[group] - 1 - pos);
-
-			possibilities.push_back( KaylesState( nextChances, !ourTurn ) );
-
-			#ifdef DEBUG
-				cout<<'\t'<<possibilities.back().str()<<'\n';
-			#endif
-
-			if ( pos < pins[group] - 1 ) {
-				nextChances[group + 1]--;
-				if( nextChances[group + 1] == 0 )
-					nextChances.erase(nextChances.begin() + group + 1);
-				possibilities.push_back( KaylesState( nextChances, !ourTurn ) );
+			for ( int taken = 1; pos + taken <= pins[group] && taken <=2; taken++ ) {
+				possibilities.push_back( KaylesState( KaylesState( pins, ourTurn ), group, taken, pos ) );
 
 				#ifdef DEBUG
-					cout << '\t'<<possibilities.back().str()<<'\n';
+					cout<<'\t'<<possibilities.back().str()<<'\n';
 				#endif
 			}
 		}
@@ -161,7 +161,7 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 				return false; //cannot tolerate any more differences
 			else //offset==0
 			{
-				int difference=next.pins[group] - (first.pins[group] + first.pins[group + 1]);
+				int difference = first.pins[group];
 				
 				#ifdef DEBUG
 					cout << "difference: " << difference << endl;
@@ -232,21 +232,32 @@ vector< int > KaylesState::diff( const KaylesState& first, const
 	if( subsequentStates )
 	{
 		if ( first.pins.size() > next.pins.size() ) {
-		for( unsigned int group=0; group<first.pins.size(); ++group ) {
+		for( unsigned int group=0; group<next.pins.size(); ++group ) {
 			if( first.pins[group]!=next.pins[group] ) {
 				diffs.push_back( group );
 				diffs.push_back( first.pins[group] );
-				diffs.push_back( next.pins[group]-(first.pins[group]+first.pins[group+1]));
+				diffs.push_back( next.pins[group] );
+				return diffs;
+			}
+		}
+		}
+		else if ( first.pins.size() < next.pins.size() ){
+		for ( unsigned int group = 0; group<first.pins.size(); ++group ) {
+			if( first.pins[group]!=next.pins[group] ) {
+				diffs.push_back( group );
+				diffs.push_back( next.pins[group] );
+				diffs.push_back( first.pins[group] - next.pins[group]
+					 - next.pins[ group+1 ] );
 				return diffs;
 			}
 		}
 		}
 		else {
-		for ( unsigned int group = 0; group<next.pins.size(); ++group ) {
+		for ( unsigned int group = 0; group<first.pins.size(); ++group ) {
 			if( first.pins[group]!=next.pins[group] ) {
 				diffs.push_back( group );
 				diffs.push_back( next.pins[group] );
-				diffs.push_back( first.pins[group]-(next.pins[group]+next.pins[group+1]));
+				diffs.push_back( first.pins[group] - next.pins[group] );
 				return diffs;
 			}
 		}
