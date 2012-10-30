@@ -174,7 +174,17 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 				diff = 1;
 			}
 		}
-	}  	}
+	}
+	if ( diff != 1 ) {
+		int difference = first.pins[first.pins.size() - 1];
+		#ifdef DEBUG
+			cout << "difference: " << difference << endl;
+		#endif
+		if( difference < MIN_TAKEN || difference > MAX_TAKEN )
+			return false;
+		else seenDifference = true;
+	}
+	}
 	else if ( next.pins.size() > first.pins.size() ) { 
 	for ( unsigned int group = 0; group < first.pins.size(); ++group ) {
 		if( first.pins[group] != next.pins[group + diff] ) {
@@ -198,7 +208,14 @@ bool KaylesState::areSubsequent( const KaylesState& first, const KaylesState&
 				diff = 1;
 			}
 		}
-	}	}
+	}
+	if ( diff != 1 ) {
+		int difference = next.pins[next.pins.size() - 1];
+		if( difference < MIN_TAKEN || difference > MAX_TAKEN )
+			return false;
+		else seenDifference = true;
+	}
+	}
 	else {
 	for ( unsigned int group = 0; group < first.pins.size(); ++group) {
 		if( first.pins[group] != next.pins[group] ) {
@@ -240,6 +257,10 @@ vector< int > KaylesState::diff( const KaylesState& first, const
 				return diffs;
 			}
 		}
+		diffs.push_back( next.pins.size() );
+		diffs.push_back( 0 );
+		diffs.push_back( first.pins[next.pins.size()] );
+		return diffs;
 		}
 		else if ( first.pins.size() < next.pins.size() ){
 		for ( unsigned int group = 0; group<first.pins.size(); ++group ) {
