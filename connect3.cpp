@@ -104,5 +104,47 @@ int main( int argc, char** argv )
 			else
 				cout<<"Place a piece in column "<<Connect3State::diff( config, game.nextBestState() )<<endl;
 		}
+		else //interact
+		{
+			Connect3State current( board.size(), height, board, false ); //human's turn
+			Solver< Connect3State > game( current );
+			
+			while( !game.getCurrentState().gameOver() )
+			{
+				cout<<game.getCurrentState().str()<<endl;
+				
+				if( game.getCurrentState().computersTurn() )
+				{
+					current=game.getCurrentState();
+					cout<<"Computer: augments column "<<Connect3State::diff( current, game.
+						nextBestState() )<<endl;
+				}
+				else //player's turn
+				{
+					int target;
+					vector< int > nextState;	
+					do
+					{
+						nextState.empty();
+						cout<<"To which incomplete column do you add? [0,"<<game.
+							getCurrentState().COLUMNS<<") ? ";
+						cout.flush();
+						cin>>target;
+					}
+					while( target<0 || (unsigned)target>=game.getCurrentState().COLUMNS ||
+						!game.supplyNextState( Connect3State ( game.getCurrentState(), 
+							target ) ) ); //tried and failed t
+						//o make the given move
+					
+					cout<<"Human: augmented column "<<target<<endl;
+				}
+			}
+			
+			cout<<"Game over."<<endl;
+			cout<<"=================="<<endl;
+			cout<<( game.getCurrentState().scoreGame()==Connect3State::VICTORY ?
+				"Computer wins" : "You win" )<<"!  (Your score was "<<-game.
+					getCurrentState().scoreGame()<<".)"<<endl;
+		}
 	}
 }
