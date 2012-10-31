@@ -141,10 +141,12 @@ int main( int argc, char** argv )
 				}
 			}
 			
+			cout<<endl;
 			cout<<"Game over."<<endl;
 			cout<<"=================="<<endl;
 			cout<<( game.getCurrentState().scoreGame()==Connect3State::VICTORY ?
-				"Computer wins" : "You win" )<<"!  (Your score was "<<-game.
+				"Computer wins" : ( game.getCurrentState().scoreGame()==Connect3State::LOSS ?
+				"You win" : "You tie" ) )<<"!  (Your score was "<<-game.
 					getCurrentState().scoreGame()<<".)"<<endl;
 		}
 	}
