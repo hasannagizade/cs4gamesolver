@@ -233,29 +233,34 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 		for( int deltaCol=-1; deltaCol<=1; ++deltaCol )
 			for( int deltaEl=-1; deltaEl<=1; ++deltaEl )
 				if( deltaCol!=0 || deltaEl!=0 )
-					for( int advance=1; advance<CONNECTABLE; ++advance )
 					{
-						int colIndex=baseCol+deltaCol*advance;
-						int elIndex=baseEl+deltaEl*advance;
-						
-						#ifdef DEBUG
-							cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
-						#endif
-						
-						if( colIndex<0 || (unsigned)colIndex>=board.size() || elIndex<0 || (unsigned)elIndex>=board[colIndex].size() || board[colIndex][elIndex]!=match )
-							break; //give up moving in this direction
-						else if( advance==CONNECTABLE-1 ) //&&board[colIndex][elIndex]==match
+						int inARow=0;
+						for( int advance=-CONNECTABLE+1; advance<CONNECTABLE; ++advance )
 						{
+							int colIndex=baseCol+deltaCol*advance;
+							int elIndex=baseEl+deltaEl*advance;
+							
 							#ifdef DEBUG
-								cout<<"Game ovah, bitches!"<<endl;
+								cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
 							#endif
 							
-							if( ourTurn ^ (match!=SYMBOLS[mySymbol]) )
-								return VICTORY;
-							else
-								return LOSS;
+							++inARow;
+							
+							if( colIndex<0 || (unsigned)colIndex>=board.size() || elIndex<0 || (unsigned)elIndex>=board[colIndex].size() || board[colIndex][elIndex]!=match )
+								inARow=0; //here's a discontinuity
+							else if( inARow==CONNECTABLE ) //&&board[colIndex][elIndex]==match
+							{
+								#ifdef DEBUG
+									cout<<"Game ovah, bitches!"<<endl;
+								#endif
+								
+								if( ourTurn ^ (match!=SYMBOLS[mySymbol]) )
+									return VICTORY;
+								else
+									return LOSS;
+							}
+							//else we need more matches to make CONNECTABLE of them
 						}
-						//else we need more matches to make CONNECTABLE of them
 					}
 	}
 	else //check the entire board
