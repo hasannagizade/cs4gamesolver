@@ -9,7 +9,7 @@
 using namespace std;
 
 /** @brief Board symbols */
-const char SYMBOLS[]={'X', 'O'};
+const char Connect3State::SYMBOLS[2]={'X', 'O'};
 
 /** @brief Constructor */
 Connect3State::Connect3State( unsigned int columnCount, unsigned int elementCount,
@@ -90,7 +90,13 @@ string Connect3State::str() const
 		for( vector< vector< char > >::const_iterator col=board.begin();
 			col!=board.end();
 			++col )
-			assembler<<( (unsigned)el<col->size() ? ( *col )[el] : PRINTHOLDER )<<PRINTVBAR;
+		{
+			if( (unsigned)el<col->size() )
+				assembler<<(*col)[el];
+			else
+				assembler<<PRINTHOLDER;
+			assembler<<PRINTVBAR;
+		}
 	}
 	//print the footer below the statie info:
 	assembler<<PRINTFOOTER;
@@ -184,7 +190,13 @@ int Connect3State::diff( const Connect3State& first, const
 	return -1;
 }
 
-/** Sorting */
+/** @brief Board-building check */
+bool Connect3State::validChar( char character )
+{
+	return character==SYMBOLS[0] || character==SYMBOLS[1];
+}
+
+/** @brief Sorting */
 void Connect3State::cacheHash()
 {
 	hashCode=( ourTurn ? 1 : 0 )<<COLUMNS*ELEMENTS;
@@ -193,7 +205,7 @@ void Connect3State::cacheHash()
 			hashCode+=( *el )<<( ELEMENTS*( col-board.begin() )+( el-col->begin() ) );
 }
 
-/** Compute winner */
+/** @brief Compute winner */
 Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 {
 	if( baseEl==-1 ) baseEl=board[baseCol].size()-1;

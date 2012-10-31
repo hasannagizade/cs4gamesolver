@@ -7,7 +7,6 @@ Represents the Connect-3 game state at some fixed point in time.
 #define CONNECT3STATE_H
 
 #include <string>
-#include <utility>
 #include <vector>
 
 class Connect3State
@@ -20,7 +19,7 @@ class Connect3State
 		static const char PLACEHOLDER='.';
 		
 		/** The characters appearing in the game board */
-		static const char SYMBOLS[];
+		static const char SYMBOLS[2];
 		
 		/** The character printed for each empty space */
 		static const char PRINTHOLDER=' ';
@@ -89,7 +88,6 @@ class Connect3State
 		*/
 		Connect3State( const Connect3State& baseState,
 			unsigned int column );
-		
 		/**
 		Destroys the game state.
 		*/
@@ -169,6 +167,14 @@ class Connect3State
 		*/
 		static int diff( const Connect3State& first,
 			const Connect3State& next );
+	
+		/**
+		Determines whether the given character is a valid board marking.
+		Note that <tt>PLACEHOLDER</tt> is *not* valid.
+		@param character to check
+		@return whether it should be present 
+		*/
+		static bool validChar( char character );
 	
 	private: //helpers
 		/**
