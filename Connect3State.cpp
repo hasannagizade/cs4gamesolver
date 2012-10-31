@@ -46,11 +46,17 @@ Connect3State::~Connect3State() {}
 /** @brief Are we out of objects? */
 bool Connect3State::gameOver() const
 {
+	bool boardFull=true;
+	
 	for( vector< vector< char > >::const_iterator column=board.begin();
 		column!=board.end(); ++column )
-		if( column->size()<ELEMENTS ) return false; //column not complete
+		if( column->size()<ELEMENTS )
+		{
+			boardFull=false; //column not complete
+			break;
+		}
 	
-	return finalOutcome!=TIE; //has anyone won?
+	return boardFull || finalOutcome!=TIE; //has anyone won?
 }
 
 /** @brief Who won? */
@@ -215,26 +221,31 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 		
 		for( int deltaCol=-1; deltaCol<=1; ++deltaCol )
 			for( int deltaEl=-1; deltaEl<=1; ++deltaEl )
-				for( int advance=1; advance<CONNECTABLE; ++advance )
-				{
-					int colIndex=baseCol+deltaCol*advance;
-					int elIndex=baseEl+deltaEl*advance;
-					
-					#ifdef DEBUG
-						cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
-					#endif
-					
-					if( colIndex<0 || (unsigned)colIndex>=board.size() || elIndex<0 || (unsigned)elIndex>=board[colIndex].size() || board[colIndex][elIndex]!=match )
-						break; //give up moving in this direction
-					else if( advance==CONNECTABLE-1 ) //&&board[colIndex][elIndex]==match
+				if( deltaCol!=0 || deltaEl!=0 )
+					for( int advance=1; advance<CONNECTABLE; ++advance )
 					{
-						if( ourTurn ^ (match!=SYMBOLS[MY_SYMBOL]) )
-							return LOSS;
-						else
-							return VICTORY;
+						int colIndex=baseCol+deltaCol*advance;
+						int elIndex=baseEl+deltaEl*advance;
+						
+						#ifdef DEBUG
+							cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
+						#endif
+						
+						if( colIndex<0 || (unsigned)colIndex>=board.size() || elIndex<0 || (unsigned)elIndex>=board[colIndex].size() || board[colIndex][elIndex]!=match )
+							break; //give up moving in this direction
+						else if( advance==CONNECTABLE-1 ) //&&board[colIndex][elIndex]==match
+						{
+							#ifdef DEBUG
+								cout<<"Game ovah, bitches!"<<endl;
+							#endif
+							
+							if( ourTurn ^ (match!=SYMBOLS[MY_SYMBOL]) )
+								return VICTORY;
+							else
+								return LOSS;
+						}
+						//else we need more matches to make CONNECTABLE of them
 					}
-					//else we need more matches to make CONNECTABLE of them
-				}
 	}
 	else //check the entire board
 		for( unsigned int col=0; col<board.size(); ++col )
