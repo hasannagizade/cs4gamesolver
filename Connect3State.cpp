@@ -15,7 +15,7 @@ const char Connect3State::SYMBOLS[2]={'X', 'O'};
 Connect3State::Connect3State( unsigned int columnCount, unsigned int elementCount,
 	const std::vector< std::vector< char > >& original, bool weAreUp ):
 	COLUMNS( columnCount ), ELEMENTS( elementCount ),
-	mySymbol( weAreUp ? 0 : 1 ), board( original ), ourTurn( weAreUp) 
+	mySymbol( 0 ), board( original ), ourTurn( weAreUp) 
 {
 	assert( board.size()==COLUMNS );
 	for( vector< vector< char > >::iterator col=board.begin(); col!=board.end();
@@ -68,6 +68,14 @@ Connect3State::Score Connect3State::scoreGame() const
 bool Connect3State::computersTurn() const
 {
 	return ourTurn;
+}
+
+/** @brief Will it fit? */
+bool Connect3State::hasSpaceAt( unsigned int column ) const
+{
+	assert( column<COLUMNS );
+	
+	return board[column].size()<ELEMENTS; //room to grow
 }
 
 /** @brief What might happen next? */

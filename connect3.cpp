@@ -132,6 +132,7 @@ int main( int argc, char** argv )
 						cin>>target;
 					}
 					while( target<0 || (unsigned)target>=game.getCurrentState().COLUMNS ||
+						!game.getCurrentState().hasSpaceAt( target ) ||
 						!game.supplyNextState( Connect3State ( game.getCurrentState(), 
 							target ) ) ); //tried and failed t
 						//o make the given move

@@ -115,6 +115,15 @@ class Connect3State
 		bool computersTurn( void ) const;
 		
 		/**
+		Asks whether there's space in a particular column to accomodat
+			e another piece.
+		@pre <tt>column</tt> is in range.
+		@param column dat column
+		@return whether it'll fit
+		*/
+		bool hasSpaceAt( unsigned int column ) const;
+		
+		/**
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
