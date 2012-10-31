@@ -14,8 +14,8 @@ const char Connect3State::SYMBOLS[2]={'X', 'O'};
 /** @brief Constructor */
 Connect3State::Connect3State( unsigned int columnCount, unsigned int elementCount,
 	const std::vector< std::vector< char > >& original, bool weAreUp ):
-	MY_SYMBOL( weAreUp ? 0 : 1 ), COLUMNS( columnCount ), ELEMENTS( elementCount ),
-	board( original ), ourTurn( weAreUp) 
+	COLUMNS( columnCount ), ELEMENTS( elementCount ),
+	mySymbol( weAreUp ? 0 : 1 ), board( original ), ourTurn( weAreUp) 
 {
 	assert( board.size()==COLUMNS );
 	for( vector< vector< char > >::iterator col=board.begin(); col!=board.end();
@@ -28,13 +28,12 @@ Connect3State::Connect3State( unsigned int columnCount, unsigned int elementCoun
 
 /** @brief Advancing constructor */
 Connect3State::Connect3State( const Connect3State& baseState, unsigned int column ):
-	MY_SYMBOL( 1-baseState.MY_SYMBOL ),
 	COLUMNS( baseState.COLUMNS ), ELEMENTS( baseState.ELEMENTS ),
-	board( baseState.board ), ourTurn ( !baseState.ourTurn )
+	mySymbol( 1-baseState.mySymbol ), board( baseState.board ), ourTurn ( !baseState.ourTurn )
 {
 	assert( column<board.size() );
-	board[column].push_back( SYMBOLS[MY_SYMBOL] );
-	assert( board[column].size()<ELEMENTS );
+	board[column].push_back( SYMBOLS[1-mySymbol] ); //the other player placed it!
+	assert( board[column].size()<=ELEMENTS );
 	
 	finalOutcome=computeWinner( column );
 	cacheHash();
@@ -76,7 +75,7 @@ const vector< Connect3State > Connect3State::successors() const
 {
 	vector< Connect3State > possibilities;
 	for( unsigned int column=0; column<board.size(); ++column )
-		if( board[column].size()<ELEMENTS-1 )
+		if( board[column].size()<ELEMENTS )
 			possibilities.push_back( Connect3State( *this, column ) );
 	
 	return possibilities;
@@ -126,7 +125,7 @@ int Connect3State::hash() const
 /** @brief Same state? */
 bool Connect3State::operator==( const Connect3State& another ) const
 {
-	if( this->MY_SYMBOL!=another.MY_SYMBOL || this->COLUMNS!=another.COLUMNS ||
+	if( this->mySymbol!=another.mySymbol || this->COLUMNS!=another.COLUMNS ||
 		this->ELEMENTS!=another.ELEMENTS || this->ourTurn!=another.ourTurn ||
 		this->board.size()!=another.board.size() )
 		return false;
@@ -143,8 +142,12 @@ bool Connect3State::operator==( const Connect3State& another ) const
 /** @brief Assignment */
 Connect3State& Connect3State::operator=( const Connect3State& another )
 {
+	assert( this->COLUMNS==another.COLUMNS );
+	assert( this->ELEMENTS==another.ELEMENTS );
+	
 	if( this!=&another ) //don't copy over ourself
 	{
+		this->mySymbol=another.mySymbol;
 		this->board=another.board;
 		this->ourTurn=another.ourTurn;
 		this->finalOutcome=another.finalOutcome;
@@ -158,7 +161,7 @@ Connect3State& Connect3State::operator=( const Connect3State& another )
 bool Connect3State::areSubsequent( const Connect3State& first, const Connect3State&
 	next )
 {
-	if( first.MY_SYMBOL==next.MY_SYMBOL || first.COLUMNS!=next.COLUMNS ||
+	if( first.mySymbol==next.mySymbol || first.COLUMNS!=next.COLUMNS ||
 		first.ELEMENTS!=next.ELEMENTS || first.ourTurn==next.ourTurn ||
 		first.board.size()!=next.board.size() )
 		return false;
@@ -239,7 +242,7 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 								cout<<"Game ovah, bitches!"<<endl;
 							#endif
 							
-							if( ourTurn ^ (match!=SYMBOLS[MY_SYMBOL]) )
+							if( ourTurn ^ (match!=SYMBOLS[mySymbol]) )
 								return VICTORY;
 							else
 								return LOSS;

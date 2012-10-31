@@ -2,7 +2,7 @@ CXX=g++ -Wextra
 
 default: takeaway kayles connect3
 
-debug: CXX+=-DDEBUG
+debug: CXX+=-DDEBUG -ggdb
 debug: takeaway kayles connect3
 
 takeaway: takeaway.o TakeawayState.o Solver.h.gch

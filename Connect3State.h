@@ -30,9 +30,6 @@ class Connect3State
 		/** The character running along the bottom of the printout */
 		static const char PRINTFOOTER='-';
 		
-		/** The index of this player's symbol, guaranteed in range */
-		const int MY_SYMBOL;
-		
 		/** The major size */
 		const unsigned int COLUMNS;
 		
@@ -49,6 +46,9 @@ class Connect3State
 		};
 	
 	private: //state
+		/** The index of my symbol in <tt>SYMBOLS</tt> */
+		int mySymbol;
+		
 		/** Stores one pin count per group of pins */
 		std::vector< std::vector< char > > board;
 		
