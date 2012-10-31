@@ -97,13 +97,13 @@ string Connect3State::str() const
 				assembler<<PRINTHOLDER;
 			assembler<<PRINTVBAR;
 		}
+		assembler<<endl;
 	}
 	//print the footer below the statie info:
-	assembler<<PRINTFOOTER;
 	for( unsigned int col=0; col<COLUMNS; ++col )
 		assembler<<PRINTFOOTER<<PRINTFOOTER;
+	assembler<<PRINTFOOTER<<endl;
 	//print the column numbers:
-	assembler<<' ';
 	for( unsigned int col=0; col<COLUMNS; ++col )
 		assembler<<setw( 2 )<<col;
 	assembler.flush();
@@ -208,17 +208,21 @@ void Connect3State::cacheHash()
 /** @brief Compute winner */
 Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 {
-	if( baseEl==-1 ) baseEl=board[baseCol].size()-1;
-	char match=board[baseCol][baseEl];
-	
 	if( baseCol!=-1 ) //only check things related to the move that was just made
 	{
+		char match=board[baseCol][baseEl];
+		if( baseEl==-1 ) baseEl=board[baseCol].size()-1;
+		
 		for( int deltaCol=-1; deltaCol<=1; ++deltaCol )
 			for( int deltaEl=-1; deltaEl<=1; ++deltaEl )
 				for( int advance=1; advance<CONNECTABLE; ++advance )
 				{
 					int colIndex=baseCol+deltaCol*advance;
 					int elIndex=baseEl+deltaEl*advance;
+					
+					#ifdef DEBUG
+						cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
+					#endif
 					
 					if( colIndex<0 || (unsigned)colIndex>=board.size() || elIndex<0 || (unsigned)elIndex>=board[colIndex].size() || board[colIndex][elIndex]!=match )
 						break; //give up moving in this direction
@@ -236,6 +240,10 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 		for( unsigned int col=0; col<board.size(); ++col )
 			for( unsigned int el=0; el<board[col].size(); ++el )
 			{
+				#ifdef DEBUG
+					cout<<'<'<<col<<','<<el<<'>'<<endl;
+				#endif
+				
 				const Score& result=computeWinner( col, el );
 				
 				if( result!=TIE ) return result;
