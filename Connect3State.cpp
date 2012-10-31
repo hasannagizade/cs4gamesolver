@@ -219,8 +219,8 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 {
 	if( baseCol!=-1 ) //only check things related to the move that was just made
 	{
-		char match=board[baseCol][baseEl];
 		if( baseEl==-1 ) baseEl=board[baseCol].size()-1;
+		char match=board[baseCol][baseEl];
 		
 		for( int deltaCol=-1; deltaCol<=1; ++deltaCol )
 			for( int deltaEl=-1; deltaEl<=1; ++deltaEl )
