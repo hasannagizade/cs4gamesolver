@@ -99,6 +99,7 @@ class TakeawayState
 		
 		/**
 		Hashes the <tt>State</tt>.
+		@post The result is nonnegative.
 		@return a hash code
 		*/
 		int hash( void ) const;

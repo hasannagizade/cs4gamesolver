@@ -1,6 +1,7 @@
 /** @author Sol Boucher <slb1566@rit.edu> */
 #include "Connect3State.h"
 #include <cassert>
+#include <climits>
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
@@ -220,6 +221,8 @@ void Connect3State::cacheHash()
 	for( vector< vector< char > >::iterator col=board.begin(); col!=board.end(); ++col )
 		for( vector< char >::iterator el=col->begin(); el!=col->end(); ++el )
 			hashCode+=( *el )<<( ELEMENTS*( col-board.begin() )+( el-col->begin() ) );
+	hashCode=abs( hashCode );
+	assert( hashCode>=0 );
 }
 
 /** @brief Compute winner */

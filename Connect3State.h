@@ -138,6 +138,7 @@ class Connect3State
 		/**
 		Hashes the <tt>State</tt>.
 		@pre <tt>hashCode</tt> is up to date
+		@post The result is non-negative.
 		@return a hash code 
 		*/
 		int hash( void ) const;

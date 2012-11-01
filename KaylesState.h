@@ -120,6 +120,7 @@ class KaylesState
 		/**
 		Hashes the <tt>State</tt>.
 		@pre <tt>hashCode</tt> is up to date
+		@post The result is nonnegative.
 		@return a hash code 
 		*/
 		int hash( void ) const;

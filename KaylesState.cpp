@@ -1,7 +1,6 @@
 /** @author Sol Boucher <slb1566@rit.edu>
  *  @author Kyle Savarese <kms7341@rit.edu>
  */
- #define DEBUG
 #include "KaylesState.h"
 #include <cassert>
 #include <algorithm>
@@ -294,4 +293,6 @@ void KaylesState::cacheHash()
 	hashCode=( ourTurn ? 1 : 0 )<<pins.size();
 	for( vector< int >::iterator count=pins.begin(); count!=pins.end(); ++count )
 		hashCode+=*count<<( count-pins.begin() );
+	hashCode=abs( hashCode );
+	assert( hashCode>=0 );
 }

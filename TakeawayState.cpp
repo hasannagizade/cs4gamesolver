@@ -83,7 +83,9 @@ string TakeawayState::str() const
 /** @brief Hashing */
 int TakeawayState::hash() const
 {
-	return ( ( ourTurn ? 1 : 0 )<<1 )+pileSize;
+	int res=( ( ourTurn ? 1 : 0 )<<1 )+pileSize;
+	assert( res>=0 );
+	return res;
 }
 
 /** @brief Same state? */
