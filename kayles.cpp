@@ -107,7 +107,7 @@ int main( int argc, char** argv )
 				vector< int > delta=KaylesState::diff( current, game.
 					nextBestState() );
 				
-				cout<<"Computer: downs"<<delta[2]<<" pins starting at number "
+				cout<<"Computer: downs "<<delta[2]<<" pins starting at number "
 					<<delta[1]<<" from line "<<delta[0]<<endl;
 			}
 			else //player's turn

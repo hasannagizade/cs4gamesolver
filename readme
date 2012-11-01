@@ -1,7 +1,7 @@
 Sol Boucher <slb1566@rit.edu>
 Kyle Savarese <kms7341@rit.edu>
 CS4 4003-334 2121 Healy
-Project Submission 2
+Project Submission 3
 
 The Take Away Game
 ==================
@@ -18,7 +18,7 @@ This mode allows the user to duel the computer to the death.  The human player i
 $ ./takeaway play num_pennies
 
 Format of Command-line Argument
-===============================
+-------------------------------
 The num_pennies argument referenced in the two subsections on program mode is required to be a positive integer.
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
 
@@ -28,7 +28,7 @@ This program is a coach and simulator for the Kayles game, and can be run in eit
 
 Coach (Advisory) Mode
 ---------------------
-In this mode, given the current state of the game, the program advises the user the optimal number of pins to take on this turn and from which line.  This functionality is the default when invoked as follos:
+In this mode, given the current state of the game, the program advises the user the optimal number of pins to take on this turn and from which line.  This functionality is the default when invoked as follows:
 $ ./kayles num_pins_1 num_pins_2 ...
 
 Simulator (Interactive) Mode
@@ -36,9 +36,33 @@ Simulator (Interactive) Mode
 This mode allows the user to duel the computer to the death.  The human player is allowed to go first, and she is asked to enter an integer within the given constraints on this and each subsequent turn.  (If her input is out of range, she will be prompted again, although the result of entering non-integral requests is undefined.)  The computer takes turns with her, and always plays perfectly.  Thus, it should be noted that not all games are actually winnable.  In order to enter this (more exciting and less cheap [from the opponent's perspective, at least]) mode, invoke the executable as:
 $ ./kayles play num_pins_1 num_pins_2 ...
 
-Format of Command-line Argument
-===============================
-Each of the num_pins argument referenced in the two subsections on program mode is required to be a positive integer.
+Format of Command-line Arguments
+--------------------------------
+Each of the num_pins arguments referenced in the two subsections on program mode is required to be a positive integer.
+The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+The Connect-3 Game
+==================
+This program is a coach and simulator for the Connect-3 game, and can be run in either of two modes:
+
+Coach (Advisory) Mode
+---------------------
+In this mode, given the current state of the game, the program advises the user of an optimal move to make on this turn.  This functionality is the default when invoked as follows:
+$ ./connect3 <filename | ->
+
+Simulator (Interactive) Mode
+----------------------------
+This mode allows the user to duel the computer to the death.  The human player is allowed to go first, and she is asked to pick a legal move on this and each subsequent turn.  (If her input is out of range, she will be prompted again, although the result of entering non-integral requests is undefined.)  The computer takes turns with her, and always makes optimal moves assuming that she also does so.  In order to enter this (more exciting and less cheap [from the opponent's perspective, at least]) mode, invoke the executable as:
+$ ./connect3 play <filename | ->
+
+Format of Command-line Arguments
+--------------------------------
+If a - is provided as the primary argument, the program pauses and waits for a properly-formatted board data file to be fed in via standard input.  Substituting a filename instead results in an attempt to read this data from the specified path.
+The format for a board data file is as follows:
+
+width height
+[a line for every height, each of which consists of width chars]
+
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
 
 Design
@@ -47,4 +71,4 @@ First, we created the idea of a State that is a base for States used by the two 
 
 The Solver is templeted around states.  It knows what the current state is, can tell the nextBestState, accept requests for a next state, and advance to the next state.  The Solver loop recursively traverses the game tree in a brute force fashion, constructing the memoization table while passing around a struct called StatePlusScore.  The "Score" of a state is defined by the individual game state class.  The states are not expected to reverse the board. The Score will always return from one player's point of view, and assumes that the computer wants to win.  A score is "good" if the computer thinks that the move benefits it. 
 
-Implementing a new game can be done by implementing a new state class that defines all applicable functions and defines scores such that preferred states for the computer have higher scores than less desired states.
+Implementing a new game can be done by implementing a new state class that defines all applicable functions and defines scores such that preferred states for the computer have higher scores than less desired states.  (This is the exact procedure that was followed for Connect-3.)
