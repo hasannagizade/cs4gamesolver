@@ -1,5 +1,7 @@
 /**
-A hash table implementation to store copies of objects providing a <tt>public</tt> copy constructor and supporting the <tt>public int hash(void) const</tt> and <tt>public operator==(const Content&) const</tt> methods.
+A hash table implementation to store copies of objects providing a
+<tt>public</tt> copy constructor and supporting the <tt>public int hash(void)
+const</tt> and <tt>public operator==(const Content&) const</tt> methods.
 
 @author Sol Boucher <slb1566@rit.edu>
 @author Kyle Savarese <kms7341@rit.edu>
@@ -28,7 +30,9 @@ class HashTable
 		/**
 		Finds the index occupied by the specified value.
 		@param object the value for which to search
-		@return the corresponding index, the additive inverse of one more than the would-be index if the object isn't present, or <tt>-size-1</tt> if the table is full
+		@return the corresponding index, the additive inverse of one
+			more than the would-be index if the object isn't
+			present, or <tt>-size-1</tt> if the table is full
 		*/
 		int index( const Content& object ) const;
 	
@@ -45,7 +49,8 @@ class HashTable
 		
 		/**
 		Destroys a <tt>HashTable</tt>.
-		@post All the table's copies of the objects have been destroyed.
+		@post All the table's copies of the objects have been
+			destroyed.
 		*/
 		~HashTable( void );
 		
@@ -53,9 +58,10 @@ class HashTable
 		Copies a pair of objects into the table.
 		@param key the keying object
 		@param value the referred object
+		@return whether the operation succeeded
 		@pre No identical <tt>key</tt> is already in the table.
 		*/
-		void add( const Content& key, const Content& value );
+		bool add( const Content& key, const Content& value );
 		
 		/**
 		Checks whether a key is in the table.
@@ -65,7 +71,8 @@ class HashTable
 		bool contains( const Content& object ) const;
 		
 		/**
-		Retrieves a copy of the table's value corresponding to the specified key.
+		Retrieves a copy of the table's value corresponding to the
+			specified key.
 		@param object the caller's copy of a key
 		@pre The table contains a copy of <tt>object</tt>.
 		*/
@@ -85,7 +92,8 @@ class HashTable
 		
 		/**
 		Empties the table of all its entries.
-		@post All the table's copies of the objects have been destroyed.
+		@post All the table's copies of the objects have been
+			destroyed.
 		*/
 		void purge( void );
 };

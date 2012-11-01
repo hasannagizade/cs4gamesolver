@@ -4,13 +4,14 @@
 //included from "HashTable.h"
 #include <cassert>
 #include <cstddef>
+#include <new>
 #include <utility>
-using namespace std;
 
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table( new pair< Content, Content >*[INITIAL_SIZE] )
+	_size( INITIAL_SIZE ), table( new std::pair< Content,
+	Content >*[INITIAL_SIZE] )
 {
 	for( int index=0; index<_size; ++index )
 		table[index]=NULL;
@@ -31,19 +32,23 @@ int HashTable< Content >::index( const Content& object ) const
 {
 	int hashCode=object.hash(), targetIndex=hashCode%_size;
 	
-	if( table[targetIndex]==NULL ) //the requested index is free for the taking
+	if( table[targetIndex]==NULL ) //the requested index is free for the
+		//taking
 		return -targetIndex-1;
 	else //there's something at the requested location
 	{
-		if( table[targetIndex]->first==object ) //the supplied object is, in fact, at that index
+		if( table[targetIndex]->first==object ) //the supplied object
+			//is, in fact, at that index
 			return targetIndex;
 		else //use open addressing to find it
 		{
-			for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(_index+1)%_size )
+			for( int _index=(targetIndex+1)%_size;
+				_index!=targetIndex; _index=(_index+1)%_size )
 			{
 				if( table[_index]==NULL ) //found a spot
 					return -_index-1;
-				else if( table[_index]->first==object ) //found what we're looking for
+				else if( table[_index]->first==object )
+					 //found what we're looking for
 					return _index;
 			}
 			
@@ -57,16 +62,23 @@ template< class Content >
 void HashTable< Content >::grow()
 {
 	int oldSize=_size;
-	pair< Content, Content >** oldTable=table;
+	std::pair< Content, Content >** oldTable=table;
 	
 	_size=oldSize*GROWTH_FACTOR;
-	table=new pair< Content, Content >*[_size];
+	try
+	{
+		table=new std::pair< Content, Content >*[_size];
+	}
+	catch( const std::bad_alloc& noExceptions )
+	{
+		_size=oldSize;
+	}
 	
 	for( int _index=0; _index<_size; ++_index )
 		table[_index]=NULL;
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
-		pair< Content, Content >* oldData = oldTable[oldIndex];
+		std::pair< Content, Content >* oldData = oldTable[oldIndex];
 		table[-index( oldData->first )-1] = oldData;
 	}
 	
@@ -75,18 +87,28 @@ void HashTable< Content >::grow()
 
 /** @brief Adds an element */
 template< class Content >
-void HashTable< Content >::add( const Content& key, const Content& value )
+bool HashTable< Content >::add( const Content& key, const Content& value )
 {
-	int _index=index( key );
-	assert(_index<0 ); //not already present
-	if( _index>=0 ) return;
-	
-	_index=-_index-1;
-	if( _index==_size ) {//out of space
-		grow();
-		_index = -index( key )-1;
+	try
+	{
+		int _index=index( key );
+		assert(_index<0 ); //not already present
+		if( _index>=0 ) return false;
+		
+		_index=-_index-1;
+		if( _index==_size ) {//out of space
+			grow();
+			_index = -index( key )-1;
+		}
+		table[_index]=new std::pair< Content, Content >(
+			 Content( key ), Content( value ) );
 	}
-	table[_index]=new pair< Content, Content >( Content( key ), Content( value ) );
+	catch( const std::bad_alloc& noExceptions )
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 /** @brief Contains an element? */
@@ -132,7 +154,8 @@ bool HashTable< Content >::remove( const Content& object )
 	table[_index]=NULL;
 	
 	//slide everything displaced by this element down:
-	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL && checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
+	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL &&
+		checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
 	{
 		int idealLocation=index( table[checkIndex]->first );
 		
