@@ -53,9 +53,10 @@ class HashTable
 		Copies a pair of objects into the table.
 		@param key the keying object
 		@param value the referred object
+		@return whether the operation succeeded
 		@pre No identical <tt>key</tt> is already in the table.
 		*/
-		void add( const Content& key, const Content& value );
+		bool add( const Content& key, const Content& value );
 		
 		/**
 		Checks whether a key is in the table.

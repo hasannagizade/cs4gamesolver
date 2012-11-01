@@ -4,6 +4,7 @@
 //included from "HashTable.h"
 #include <cassert>
 #include <cstddef>
+#include <new>
 #include <utility>
 
 /** @brief Constructor */
@@ -59,7 +60,14 @@ void HashTable< Content >::grow()
 	std::pair< Content, Content >** oldTable=table;
 	
 	_size=oldSize*GROWTH_FACTOR;
-	table=new std::pair< Content, Content >*[_size];
+	try
+	{
+		table=new std::pair< Content, Content >*[_size];
+	}
+	catch( const std::bad_alloc& noExceptions )
+	{
+		_size=oldSize;
+	}
 	
 	for( int _index=0; _index<_size; ++_index )
 		table[_index]=NULL;
@@ -74,18 +82,27 @@ void HashTable< Content >::grow()
 
 /** @brief Adds an element */
 template< class Content >
-void HashTable< Content >::add( const Content& key, const Content& value )
+bool HashTable< Content >::add( const Content& key, const Content& value )
 {
-	int _index=index( key );
-	assert(_index<0 ); //not already present
-	if( _index>=0 ) return;
-	
-	_index=-_index-1;
-	if( _index==_size ) {//out of space
-		grow();
-		_index = -index( key )-1;
+	try
+	{
+		int _index=index( key );
+		assert(_index<0 ); //not already present
+		if( _index>=0 ) return false;
+		
+		_index=-_index-1;
+		if( _index==_size ) {//out of space
+			grow();
+			_index = -index( key )-1;
+		}
+		table[_index]=new std::pair< Content, Content >( Content( key ), Content( value ) );
 	}
-	table[_index]=new std::pair< Content, Content >( Content( key ), Content( value ) );
+	catch( const std::bad_alloc& noExceptions )
+	{
+		return false;
+	}
+	
+	return true;
 }
 
 /** @brief Contains an element? */
