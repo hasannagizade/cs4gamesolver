@@ -5,12 +5,11 @@
 #include <cassert>
 #include <cstddef>
 #include <utility>
-using namespace std;
 
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table( new pair< Content, Content >*[INITIAL_SIZE] )
+	_size( INITIAL_SIZE ), table( new std::pair< Content, Content >*[INITIAL_SIZE] )
 {
 	for( int index=0; index<_size; ++index )
 		table[index]=NULL;
@@ -57,16 +56,16 @@ template< class Content >
 void HashTable< Content >::grow()
 {
 	int oldSize=_size;
-	pair< Content, Content >** oldTable=table;
+	std::pair< Content, Content >** oldTable=table;
 	
 	_size=oldSize*GROWTH_FACTOR;
-	table=new pair< Content, Content >*[_size];
+	table=new std::pair< Content, Content >*[_size];
 	
 	for( int _index=0; _index<_size; ++_index )
 		table[_index]=NULL;
 	
 	for( int oldIndex=0; oldIndex<oldSize; ++oldIndex ) {
-		pair< Content, Content >* oldData = oldTable[oldIndex];
+		std::pair< Content, Content >* oldData = oldTable[oldIndex];
 		table[-index( oldData->first )-1] = oldData;
 	}
 	
@@ -86,7 +85,7 @@ void HashTable< Content >::add( const Content& key, const Content& value )
 		grow();
 		_index = -index( key )-1;
 	}
-	table[_index]=new pair< Content, Content >( Content( key ), Content( value ) );
+	table[_index]=new std::pair< Content, Content >( Content( key ), Content( value ) );
 }
 
 /** @brief Contains an element? */
