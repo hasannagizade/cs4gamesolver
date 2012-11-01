@@ -20,7 +20,8 @@ int main( int argc, char** argv )
 	const int MIN_ARGS = 2;
 	const char* PLAY = "play";
 	//check argument count and switches
-	if( argc<MIN_ARGS || ( !isdigit( argv[1][0] ) && strcmp( argv[1], PLAY )!=0 ) )
+	if( argc<MIN_ARGS || ( !isdigit( argv[1][0] ) &&
+		strcmp( argv[1], PLAY )!=0 ) )
 		//bad arguments
 	{
 		cerr<<"USAGE: kayles [play] num_pins_1 num_pins_2 ..."<<endl;
@@ -88,8 +89,8 @@ int main( int argc, char** argv )
 			KaylesState outcome=game.nextBestState();
 			vector< int > advice=KaylesState::diff( starting, outcome );
 			
-			cout<<"Target " <<advice[2]<<" pins starting at number "<<advice[1]
-				<<" from line "<<advice[0]<<endl;
+			cout<<"Target " <<advice[2]<<" pins starting at number "
+				<<advice[1]<<" from line "<<advice[0]<<endl;
 		}
 	}
 	else //interactive mode
@@ -107,8 +108,9 @@ int main( int argc, char** argv )
 				vector< int > delta=KaylesState::diff( current, game.
 					nextBestState() );
 				
-				cout<<"Computer: downs "<<delta[2]<<" pins starting at number "
-					<<delta[1]<<" from line "<<delta[0]<<endl;
+				cout<<"Computer: downs "<<delta[2]
+					<<" pins starting at number "<<delta[1]<<" from line "
+					<<delta[0]<<endl;
 			}
 			else //player's turn
 			{
@@ -121,8 +123,9 @@ int main( int argc, char** argv )
 						getCurrentState().groupsOfPins()<<") ? ";
 					cout.flush();
 					cin>>line;
-					if ( 0 > line || line >= game.getCurrentState().groupsOfPins() 
-						|| game.getCurrentState().pinsInGroup( line ) == 0 )
+					if ( 0 > line ||
+						line >= game.getCurrentState().groupsOfPins() ||
+						game.getCurrentState().pinsInGroup( line ) == 0 )
 					{
 						line = -1;
 						continue;
@@ -131,28 +134,32 @@ int main( int argc, char** argv )
 						<<game.getCurrentState().pinsInGroup(line)<<") ? ";
 					cout.flush();
 					cin>>target;
-					if ( 0 > target || target >= game.getCurrentState().pinsInGroup(line) ) {
+					if ( 0 > target ||
+						target >= game.getCurrentState().pinsInGroup(line) ) {
 						target = -1;
 						continue;
 					}
-					cout<<"You take how many pins ["<<KaylesState::MIN_TAKEN<<','<<
-						( game.getCurrentState().pinsInGroup( line )>=
+					cout<<"You take how many pins ["<<KaylesState::MIN_TAKEN
+						<<','<<( game.getCurrentState().pinsInGroup( line )>=
 						KaylesState::MAX_TAKEN ? KaylesState::MAX_TAKEN : game
 							.getCurrentState().pinsInGroup( line ) )<<"] ? ";
 					cout.flush();
 					cin>>greed;
-					if ( KaylesState::MIN_TAKEN > greed || greed > KaylesState::MAX_TAKEN || 
-						greed > game.getCurrentState().pinsInGroup( line ) - target) {
+					if ( KaylesState::MIN_TAKEN > greed ||
+						greed > KaylesState::MAX_TAKEN || 
+						greed > game.getCurrentState().pinsInGroup( line )
+						- target) {
 						greed = -1;
 						continue;
 					}
 				}
 				while( line == -1 || target == -1 || greed == -1 || 
-					!game.supplyNextState( KaylesState ( game.getCurrentState(), 
-						line, greed, target ) ) ); //tried and failed t
-					//o make the given move
+					!game.supplyNextState( KaylesState
+						( game.getCurrentState(), line, greed, target ) ) );
+						//tried and failed to make the given move
 				
-				cout<<"Human: downed "<<greed<<" pins from line "<<line<<" starting at "<<target<<endl;
+				cout<<"Human: downed "<<greed<<" pins from line "<<line
+					<<" starting at "<<target<<endl;
 			}
 		}
 		

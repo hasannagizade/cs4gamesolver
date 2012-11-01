@@ -64,7 +64,8 @@ class Connect3State
 	public: //behavior
 		/**
 		Creates a new game given its initial circumstances.
-		@pre <tt>original</tt> is column-major and doesn't exceed bounds
+		@pre <tt>original</tt> is column-major and doesn't exceed
+			bounds
 		@pre <tt>original</tt> contains only elements of SYMBOLS
 		@param columnCount how many columns per board
 		@param elementCount how many elements per column
@@ -179,7 +180,8 @@ class Connect3State
 			const Connect3State& next );
 	
 		/**
-		Determines whether the given character is a valid board marking.
+		Determines whether the given character is a valid board
+			marking.
 		Note that <tt>PLACEHOLDER</tt> is *not* valid.
 		@param character to check
 		@return whether it should be present 
@@ -188,19 +190,24 @@ class Connect3State
 	
 	private: //helpers
 		/**
-		Recomputes hash code; must be called every time <tt>pins</tt> is mutated.
+		Recomputes hash code; must be called every time <tt>pins</tt>
+		is mutated.
 		*/
 		void cacheHash( void );
 		
 		/**
 		Recomputes the game's winner; must be called after mutation.
-		It only checks the entire board if <tt>baseCol</tt> isn't supplied.
-		Otherwise, only combinations including <tt>baseCol</tt> are considered.
+		It only checks the entire board if <tt>baseCol</tt> isn't
+		supplied.
+		Otherwise, only combinations including <tt>baseCol</tt> are
+		considered.
 		@pre <tt>baseCol</tt>, if supplied, is positive and in range
-		@pre <tt>baseEl</tt> should normally be omitted, but must be in range
+		@pre <tt>baseEl</tt> should normally be omitted, but must be
+			in range
 		@param baseCol the column that was just modified
 		@param baseEl the corresponding element of that column
-		@return a score, with <tt>TIE</tt> representing a nonterminal state
+		@return a score, with <tt>TIE</tt> representing a nonterminal
+			state
 		*/
 		Score computeWinner( int baseCol=-1, int baseEl=-1 );
 };

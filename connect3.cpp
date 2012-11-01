@@ -11,7 +11,8 @@ The Connect-3 game.
 using namespace std;
 
 /** @brief Reads the encoded board <tt>save</tt> into <tt>use</tt> */
-static bool decodeBoard( istream& save, vector< vector< char > >& use, int& height )
+static bool decodeBoard( istream& save, vector< vector< char > >& use,
+	int& height )
 {
 	int width;
 	
@@ -31,7 +32,8 @@ static bool decodeBoard( istream& save, vector< vector< char > >& use, int& heig
 				col->pop_back(); //turn jagged
 			else if( !Connect3State::validChar( ( *col )[level] ) )
 			{
-				cerr<<"FATAL: Board contains invalid marker "<<( *col )[level]<<endl;
+				cerr<<"FATAL: Board contains invalid marker "<<( *col )[level]
+					<<endl;
 				
 				return false;
 			}
@@ -56,7 +58,8 @@ int main( int argc, char** argv )
 	const int SUCCESS=0; //return code
 	const int FAILURE=1; //return code
 	
-	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS && strcmp( argv[1], PLAY )!=0 ) )
+	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS &&
+		strcmp( argv[1], PLAY )!=0 ) )
 	{
 		cerr<<"USAGE: connect3 [play] -"<<endl;
 		
@@ -100,13 +103,17 @@ int main( int argc, char** argv )
 			
 			cout<<config.str()<<endl;
 			if( config.gameOver() )
-				cout<<"You have no move to make; you have already "<<( config.scoreGame()==Connect3State::VICTORY ? "won" : "lost" )<<'.'<<endl;
+				cout<<"You have no move to make; you have already "
+					<<( config.scoreGame()==Connect3State::VICTORY ?
+					"won" : "lost" )<<'.'<<endl;
 			else
-				cout<<"Place a piece in column "<<Connect3State::diff( config, game.nextBestState() )<<endl;
+				cout<<"Place a piece in column "<<Connect3State::diff( config,
+					game.nextBestState() )<<endl;
 		}
 		else //interact
 		{
-			Connect3State current( board.size(), height, board, false ); //human's turn
+			Connect3State current( board.size(), height, board, false );
+				 //human's turn
 			Solver< Connect3State > game( current );
 			
 			while( !game.getCurrentState().gameOver() )
@@ -116,8 +123,8 @@ int main( int argc, char** argv )
 				if( game.getCurrentState().computersTurn() )
 				{
 					current=game.getCurrentState();
-					cout<<"Computer: augments column "<<Connect3State::diff( current, game.
-						nextBestState() )<<endl;
+					cout<<"Computer: augments column "<<Connect3State::diff
+						( current, game.nextBestState() )<<endl;
 				}
 				else //player's turn
 				{
@@ -126,16 +133,17 @@ int main( int argc, char** argv )
 					do
 					{
 						nextState.empty();
-						cout<<"To which incomplete column do you add? [0,"<<game.
-							getCurrentState().COLUMNS<<") ? ";
+						cout<<"To which incomplete column do you add? [0,"
+							<<game.getCurrentState().COLUMNS<<") ? ";
 						cout.flush();
 						cin>>target;
 					}
-					while( target<0 || (unsigned)target>=game.getCurrentState().COLUMNS ||
+					while( target<0 ||
+						(unsigned)target>=game.getCurrentState().COLUMNS ||
 						!game.getCurrentState().hasSpaceAt( target ) ||
-						!game.supplyNextState( Connect3State ( game.getCurrentState(), 
-							target ) ) ); //tried and failed t
-						//o make the given move
+						!game.supplyNextState( Connect3State
+							( game.getCurrentState(), target ) ) ); //tried
+								//and failed to make the given move
 					
 					cout<<"Human: augmented column "<<target<<endl;
 				}
@@ -144,10 +152,11 @@ int main( int argc, char** argv )
 			cout<<endl;
 			cout<<"Game over."<<endl;
 			cout<<"=================="<<endl;
-			cout<<( game.getCurrentState().scoreGame()==Connect3State::VICTORY ?
-				"Computer wins" : ( game.getCurrentState().scoreGame()==Connect3State::LOSS ?
+			cout<<( game.getCurrentState().scoreGame()==Connect3State::VICTORY
+				? "Computer wins" :
+				( game.getCurrentState().scoreGame()==Connect3State::LOSS ?
 				"You win" : "You tie" ) )<<"!  (Your score was "<<-game.
-					getCurrentState().scoreGame()<<".)"<<endl;
+				getCurrentState().scoreGame()<<".)"<<endl;
 		}
 	}
 }

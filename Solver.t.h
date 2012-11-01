@@ -68,10 +68,12 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 		decision.config=state;
 		decision.value=state.scoreGame();
 	}
-	else if( remembered.contains( decision ) ) //we've evaluated this whole case before
+	else if( remembered.contains( decision ) ) //we've evaluated this whole
+		//case before
 	{
 		#ifdef DEBUG
-			std::cout<<"Memoization saved us work for "<<state.str()<<std::endl;
+			std::cout<<"Memoization saved us work for "<<state.str()
+				<<std::endl;
 		#endif
 		return remembered.matching( decision );
 	}
@@ -85,10 +87,16 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
 			#if DEBUG
-//				if( state==current ) //list successors for top-level game state only
+//				if( state==current ) //list successors for top-level game
+	//state only
 //				{
-//					cout<<"Successor: "<<follower->str()<<' '<<follower->COLUMNS<<' '<<follower->ELEMENTS<<' '<<follower->gameOver()<<' '<<follower->scoreGame()<<' '<<ofTheMoment.value<<endl;
-//					cout<<"\tFollowing: "<<ofTheMoment.config.str()<<' '<<ofTheMoment.config.COLUMNS<<' '<<ofTheMoment.config.ELEMENTS<<' '<<ofTheMoment.config.gameOver()<<' '<<ofTheMoment.config.scoreGame()<<' '<<ofTheMoment.value<<endl;
+//					cout<<"Successor: "<<follower->str()<<' '
+	//<<follower->COLUMNS<<' '<<follower->ELEMENTS<<' '<<follower->gameOver()
+	//<<' '<<follower->scoreGame()<<' '<<ofTheMoment.value<<endl;
+//					cout<<"\tFollowing: "<<ofTheMoment.config.str()<<' '
+	//<<ofTheMoment.config.COLUMNS<<' '<<ofTheMoment.config.ELEMENTS<<' '
+	//<<ofTheMoment.config.gameOver()<<' '<<ofTheMoment.config.scoreGame()
+	//<<' '<<ofTheMoment.value<<endl;
 //				}
 			#endif
 			
@@ -96,7 +104,8 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 				)
 			{
 				#ifdef DEBUG
-					std::cout<<"Deciding on "<<ofTheMoment.config.str()<<std::endl;
+					std::cout<<"Deciding on "<<ofTheMoment.config.str()
+						<<std::endl;
 				#endif
 				
 				bestConfig=&*follower;
@@ -105,11 +114,12 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 		}
 		
 		decision.config=*bestConfig;
-		remembered.add( StatePlusScore( state ), decision ); //cherish this moment
+		remembered.add( StatePlusScore( state ), decision ); //cherish this
+			//moment
 		
 		#ifdef DEBUG
-			std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()<<
-				" for victory rating "<<decision.value<<std::endl;
+			std::cout<<"Given "<<state.str()<<" chose "<<decision.config.str()
+				<<" for victory rating "<<decision.value<<std::endl;
 		#endif
 	}
 	

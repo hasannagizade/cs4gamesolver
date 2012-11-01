@@ -11,7 +11,8 @@ TakeawayState::TakeawayState( int thingsInPile, bool weAreUp ):
 
 /** @brief Advancing constructor */
 TakeawayState::TakeawayState( const TakeawayState& baseState, int stolen ):
-	pileSize( baseState.pileSize-stolen ), ourTurn( !baseState.ourTurn ) {}
+	pileSize( baseState.pileSize-stolen ), ourTurn( !baseState.ourTurn )
+	{}
 
 /** @brief Destructor */
 TakeawayState::~TakeawayState() {}
@@ -48,7 +49,8 @@ const vector< TakeawayState > TakeawayState::successors() const
 	
 	for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pileSize; ++take )
 	{
-		possibilities.push_back( TakeawayState( pileSize-take, !ourTurn ) );
+		possibilities.push_back( TakeawayState( pileSize-take,
+			!ourTurn ) );
 		
 		#ifdef DEBUG
 			cout<<'\t'<<possibilities.back().str()<<'\n';
@@ -91,7 +93,8 @@ int TakeawayState::hash() const
 /** @brief Same state? */
 bool TakeawayState::operator==( const TakeawayState& another ) const
 {
-	return this->ourTurn==another.ourTurn && this->pileSize==another.pileSize;
+	return this->ourTurn==another.ourTurn &&
+		this->pileSize==another.pileSize;
 }
 
 /** @brief Are these subsequent? */
@@ -100,8 +103,8 @@ bool TakeawayState::areSubsequent( const TakeawayState& first, const
 {
 	int taken=first.pileSize-next.pileSize;
 	
-	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN && taken<=MAX_TAKEN
-		&& next.pileSize>=0;
+	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN &&
+		taken<=MAX_TAKEN && next.pileSize>=0;
 }
 
 /** @brief What just happened? */

@@ -157,7 +157,8 @@ class KaylesState
 	
 	private: //helpers
 		/**
-		Recomputes hash code; must be called every time <tt>pins</tt> is mutated.
+		Recomputes hash code; must be called every time <tt>pins</tt> is
+			mutated.
 		*/
 		void cacheHash( void );
 };
