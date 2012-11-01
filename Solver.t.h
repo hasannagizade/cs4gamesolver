@@ -85,11 +85,11 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
 			#if DEBUG
-				if( state==current ) //list successors for top-level game state only
-				{
-					cout<<"Successor: "<<follower->str()<<' '<<follower->COLUMNS<<' '<<follower->ELEMENTS<<' '<<follower->gameOver()<<' '<<follower->scoreGame()<<' '<<ofTheMoment.value<<endl;
-					cout<<"\tFollowing: "<<ofTheMoment.config.str()<<' '<<ofTheMoment.config.COLUMNS<<' '<<ofTheMoment.config.ELEMENTS<<' '<<ofTheMoment.config.gameOver()<<' '<<ofTheMoment.config.scoreGame()<<' '<<ofTheMoment.value<<endl;
-				}
+//				if( state==current ) //list successors for top-level game state only
+//				{
+//					cout<<"Successor: "<<follower->str()<<' '<<follower->COLUMNS<<' '<<follower->ELEMENTS<<' '<<follower->gameOver()<<' '<<follower->scoreGame()<<' '<<ofTheMoment.value<<endl;
+//					cout<<"\tFollowing: "<<ofTheMoment.config.str()<<' '<<ofTheMoment.config.COLUMNS<<' '<<ofTheMoment.config.ELEMENTS<<' '<<ofTheMoment.config.gameOver()<<' '<<ofTheMoment.config.scoreGame()<<' '<<ofTheMoment.value<<endl;
+//				}
 			#endif
 			
 			if( bestConfig==NULL || decision.prefersScore( ofTheMoment.value )
