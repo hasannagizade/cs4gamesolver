@@ -10,7 +10,8 @@
 /** @brief Constructor */
 template< class Content >
 HashTable< Content >::HashTable():
-	_size( INITIAL_SIZE ), table( new std::pair< Content, Content >*[INITIAL_SIZE] )
+	_size( INITIAL_SIZE ), table( new std::pair< Content,
+	Content >*[INITIAL_SIZE] )
 {
 	for( int index=0; index<_size; ++index )
 		table[index]=NULL;
@@ -31,19 +32,23 @@ int HashTable< Content >::index( const Content& object ) const
 {
 	int hashCode=object.hash(), targetIndex=hashCode%_size;
 	
-	if( table[targetIndex]==NULL ) //the requested index is free for the taking
+	if( table[targetIndex]==NULL ) //the requested index is free for the
+		//taking
 		return -targetIndex-1;
 	else //there's something at the requested location
 	{
-		if( table[targetIndex]->first==object ) //the supplied object is, in fact, at that index
+		if( table[targetIndex]->first==object ) //the supplied object
+			//is, in fact, at that index
 			return targetIndex;
 		else //use open addressing to find it
 		{
-			for( int _index=(targetIndex+1)%_size; _index!=targetIndex; _index=(_index+1)%_size )
+			for( int _index=(targetIndex+1)%_size;
+				_index!=targetIndex; _index=(_index+1)%_size )
 			{
 				if( table[_index]==NULL ) //found a spot
 					return -_index-1;
-				else if( table[_index]->first==object ) //found what we're looking for
+				else if( table[_index]->first==object )
+					 //found what we're looking for
 					return _index;
 			}
 			
@@ -95,7 +100,8 @@ bool HashTable< Content >::add( const Content& key, const Content& value )
 			grow();
 			_index = -index( key )-1;
 		}
-		table[_index]=new std::pair< Content, Content >( Content( key ), Content( value ) );
+		table[_index]=new std::pair< Content, Content >(
+			 Content( key ), Content( value ) );
 	}
 	catch( const std::bad_alloc& noExceptions )
 	{
@@ -148,7 +154,8 @@ bool HashTable< Content >::remove( const Content& object )
 	table[_index]=NULL;
 	
 	//slide everything displaced by this element down:
-	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL && checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
+	for( int checkIndex=( _index+1 )%_size; table[checkIndex]!=NULL &&
+		checkIndex!=_index; checkIndex=( checkIndex+1 )%_size )
 	{
 		int idealLocation=index( table[checkIndex]->first );
 		
