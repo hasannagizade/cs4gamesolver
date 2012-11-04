@@ -23,7 +23,7 @@ KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 {
 	assert( position<baseState.pins.size() );
 	for ( int pos = 0; pos < baseState.groupsOfPins(); pos++) {
-		if ( (unsigned) pos == position ) {
+		if ( unsigned( pos ) == position ) {
 			if( target != 0 )
 				pins.push_back( target );
 			if( baseState.pinsInGroup( pos ) - target - taken ) {

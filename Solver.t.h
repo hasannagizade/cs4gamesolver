@@ -86,7 +86,7 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 		{
 			StatePlusScore ofTheMoment=nextBestState( *follower );
 			
-			#if DEBUG
+			#ifdef DEBUG
 //				if( state==current ) //list successors for top-level game
 	//state only
 //				{

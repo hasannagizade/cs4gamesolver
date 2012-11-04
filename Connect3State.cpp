@@ -109,7 +109,7 @@ string Connect3State::str() const
 			col!=board.end();
 			++col )
 		{
-			if( (unsigned)el<col->size() )
+			if( unsigned( el )<col->size() )
 				assembler<<(*col)[el];
 			else
 				assembler<<PRINTHOLDER;
@@ -257,9 +257,9 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 							
 							++inARow;
 							
-							if( colIndex<0 || (unsigned)colIndex>=board.size()
+							if( colIndex<0 || unsigned( colIndex )>=board.size()
 								|| elIndex<0 ||
-								(unsigned)elIndex>=board[colIndex].size() ||
+								unsigned( elIndex )>=board[colIndex].size() ||
 								board[colIndex][elIndex]!=match )
 								inARow=0; //here's a discontinuity
 							else if( inARow==CONNECTABLE )

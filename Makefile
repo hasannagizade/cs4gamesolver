@@ -1,4 +1,4 @@
-CXX=g++ -Wextra
+CXX=g++ -Wall -Wextra -Wundef -Wcast-qual -Wcast-align -Wold-style-cast -Wsign-promo -Wctor-dtor-privacy -Woverloaded-virtual -Wnon-virtual-dtor -Wfloat-equal -Wpointer-arith -Wunreachable-code -Wmissing-declarations -Wmissing-noreturn
 
 default: takeaway kayles connect3
 

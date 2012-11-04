@@ -55,7 +55,6 @@ int main( int argc, char** argv )
 	const int PLAY_ARGS=3;
 	const char* STDIN="-";
 	const char* PLAY="play";
-	const int SUCCESS=0; //return code
 	const int FAILURE=1; //return code
 	
 	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS &&
@@ -139,7 +138,7 @@ int main( int argc, char** argv )
 						cin>>target;
 					}
 					while( target<0 ||
-						(unsigned)target>=game.getCurrentState().COLUMNS ||
+						unsigned( target )>=game.getCurrentState().COLUMNS ||
 						!game.getCurrentState().hasSpaceAt( target ) ||
 						!game.supplyNextState( Connect3State
 							( game.getCurrentState(), target ) ) ); //tried
