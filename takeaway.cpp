@@ -18,6 +18,7 @@ int main( int argc, char** argv )
 	const char* PLAY = "play";
 	const int MIN_ARGS = 2;
 	const int PLAY_ARGS = 3;
+	const int SIG_INDEX = 1;
 	const int MIN_PENNIES = 0;
 	//check argument count and switches
 	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS &&
@@ -36,7 +37,7 @@ int main( int argc, char** argv )
 	int startingNumber;
 	if ( argc==MIN_ARGS ) { //Not in play mode
 		if ( !( in >> startingNumber ) ) {
-			cerr << argv[1] << " is an invalid number of pennies."
+			cerr << argv[SIG_INDEX] << " is an invalid number of pennies."
 				<< endl;
 			return 0;
 		}
@@ -54,7 +55,7 @@ int main( int argc, char** argv )
 		}
 		stringstream in2( num, ios_base::in);
 		if ( !( in2 >> startingNumber) ) {
-			cerr << argv[2] << " is an invalid number of pennies."
+			cerr << argv[SIG_INDEX+1] << " is an invalid number of pennies."
 				<< endl;
 			return 0;
 		}

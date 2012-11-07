@@ -17,10 +17,11 @@ int main( int argc, char** argv )
 	const int PLAY_ARGS=3;
 	const char* STDIN="-";
 	const char* PLAY="play";
+	const int SIG_INDEX=1; //significant index
 	const int FAILURE=1; //return code
 	
 	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS &&
-		strcmp( argv[1], PLAY )!=0 ) )
+		strcmp( argv[SIG_INDEX], PLAY )!=0 ) )
 	{
 		cerr<<"USAGE: connect3 [play] -"<<endl;
 		

@@ -18,6 +18,8 @@ int main( int argc, char** argv )
 	const int MIN_ARGS = 3;
 	const int PLAY_ARGS = 4;
 	const int SIG_INDEX = 1; //the first argument we care about
+	const int WHICH_MAX = 0; //where to find board size after parsing
+	const int WHICH_SUM = 1; //where to find max sum after parsing
 	const int FAILURE = 1;
 	
 	//check argument count and switches
@@ -63,7 +65,7 @@ int main( int argc, char** argv )
 	//all systems go
 	if( argc==MIN_ARGS ) //advisory mode
 	{
-		CrossoutState starting( descriptors[1], descriptors[0] ); //our turn
+		CrossoutState starting( descriptors[WHICH_SUM], descriptors[WHICH_MAX] ); //our turn
 		Solver< CrossoutState > game( starting );
 		
 		if( starting.gameOver() )
@@ -83,7 +85,7 @@ int main( int argc, char** argv )
 	}
 	else //argc==3 ... interactive mode
 	{
-		CrossoutState current( descriptors[1], descriptors[0], false ); //human's turn
+		CrossoutState current( descriptors[WHICH_SUM], descriptors[WHICH_MAX], false ); //human's turn
 		Solver< CrossoutState > game( current );
 		
 		while( !game.getCurrentState().gameOver() )
