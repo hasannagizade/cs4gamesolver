@@ -1,3 +1,4 @@
+//Version history in git-log.txt
 #ifndef CROSSOUTSTATE_H
 #define CROSSOUTSTATE_H
 

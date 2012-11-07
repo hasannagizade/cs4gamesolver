@@ -1,9 +1,4 @@
-/**
-Represents the Kayles game state at some fixed point in time.
-
-@author Sol Boucher <slb1566@rit.edu>
-@author Kyle Savarese <kms7341@rit.edu>
-*/
+//Version history in git-log.txt
 #ifndef KAYLESSTATE_H
 #define KAYLESSTATE_H
 
@@ -11,6 +6,12 @@ Represents the Kayles game state at some fixed point in time.
 #include <utility>
 #include <vector>
 
+/**
+Represents the Kayles game state at some fixed point in time.
+
+@author Sol Boucher <slb1566@rit.edu>
+@author Kyle Savarese <kms7341@rit.edu>
+*/
 class KaylesState
 {
 	public: //gameplay constants

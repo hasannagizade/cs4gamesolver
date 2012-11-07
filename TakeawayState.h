@@ -1,14 +1,15 @@
-/**
-Represents the Takeaway game state at some fixed point in time.
-
-@author Sol Boucher <slb1566@rit.edu>
-*/
+//Version history in git-log.txt
 #ifndef TAKEAWAYSTATE_H
 #define TAKEAWAYSTATE_H
 
 #include <string>
 #include <vector>
 
+/**
+Represents the Takeaway game state at some fixed point in time.
+
+@author Sol Boucher <slb1566@rit.edu>
+*/
 class TakeawayState
 {
 	public: //gameplay constants

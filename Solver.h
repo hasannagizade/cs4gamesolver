@@ -1,13 +1,14 @@
-/**
-A game tree traverser for two-player, perfect knowledge contests.
-
-@author Sol Boucher <slb1566@rit.edu>
-*/
+//Version history in git-log.txt
 #ifndef SOLVER_H
 #define SOLVER_H
 
 #include "HashTable.h"
 
+/**
+A game tree traverser for two-player, perfect knowledge contests.
+
+@author Sol Boucher <slb1566@rit.edu>
+*/
 template< typename State > class Solver
 {
 	private:

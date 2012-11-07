@@ -1,14 +1,15 @@
-/**
-Represents the Connect-3 game state at some fixed point in time.
-
-@author Sol Boucher <slb1566@rit.edu>
-*/
+//Version history in git-log.txt
 #ifndef CONNECT3STATE_H
 #define CONNECT3STATE_H
 
 #include <string>
 #include <vector>
 
+/**
+Represents the Connect-3 game state at some fixed point in time.
+
+@author Sol Boucher <slb1566@rit.edu>
+*/
 class Connect3State
 {
 	public: //gameplay constants
