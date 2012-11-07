@@ -22,6 +22,16 @@ Format of Command-line Argument
 The num_pennies argument referenced in the two subsections on program mode is required to be a positive integer.
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
 
+Status
+------
+1. Executes normally
+2. Has no known issues producing the best move and next position
+3. Produces a score value at the end of an interactive game
+4. Has no known issues in interactive mode
+5. Guilty of reporting no known incorrect answers
+6. If I truly knew whether it halted, I'd be working on my doctoral thesis instead of this project.
+7. Contains no known memory leaks
+
 The Kayles Game
 ===============
 This program is a coach and simulator for the Kayles game, and can be run in either of two modes:
@@ -40,6 +50,16 @@ Format of Command-line Arguments
 --------------------------------
 Each of the num_pins arguments referenced in the two subsections on program mode is required to be a positive integer.
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+Status
+------
+1. Executes normally
+2. Has no known issues producing the best move (and, in interactive mode, the next position)
+3. Produces a score value at the end of an interactive game
+4. Has no known issues in interactive mode
+5. Guilty of reporting no known incorrect answers
+6. If I truly knew whether it halted, I'd be working on my doctoral thesis instead of this project.
+7. Contains no known memory leaks
 
 The Connect-3 Game
 ==================
@@ -64,6 +84,45 @@ width height
 [a line for every height, each of which consists of width chars]
 
 The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+Status
+------
+1. Executes normally
+2. Has no known issues producing the best move (and, in interactive mode, the next position)
+3. Produces a score value at the end of an interactive game
+4. Has no known issues in interactive mode
+5. Guilty of reporting no known incorrect answers
+6. If I truly knew whether it halted, I'd be working on my doctoral thesis instead of this project.
+7. Contains no known memory leaks
+
+The Crossout Game
+===============
+This program is a coach and simulator for the Crossout game, and can be run in either of two modes:
+
+Coach (Advisory) Mode
+---------------------
+In this mode, given the current state of the game, the program advises the user the optimal number of pins to take on this turn and from which line.  This functionality is the default when invoked as follows:
+$ ./crossout max_num max_sum
+
+Simulator (Interactive) Mode
+----------------------------
+This mode allows the user to duel the computer to the death.  The human player is allowed to go first, and she is asked to enter one or two integers within the given constraints on this and each subsequent turn.  (If her input is out of range, she will be prompted again, although the result of entering non-integral requests is undefined.)  The computer takes turns with her.  In order to enter this (more exciting and less cheap [from the opponent's perspective, at least]) mode, invoke the executable as:
+$ ./crossout play max_num max_sum
+
+Format of Command-line Arguments
+--------------------------------
+The max_num and max_sum arguments referenced in the two subsections on program mode are required to be positive integers.
+The play argument---used to switch into interactive---is case-sensitive and must be provided exactly as written.
+
+Status
+------
+1. Executes normally
+2. Has no known issues producing the best move (and, in interactive mode, the next position)
+3. Produces a score value at the end of an interactive game
+4. Has no known issues in interactive mode
+5. Guilty of reporting no known incorrect answers
+6. If I truly knew whether it halted, I'd be working on my doctoral thesis instead of this project.
+7. Contains no known memory leaks
 
 Design
 ======

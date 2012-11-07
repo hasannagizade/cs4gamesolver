@@ -61,7 +61,7 @@ int main( int argc, char** argv )
 			num += s[i];
 			i++;
 		}
-		cout << num << endl;
+		
 		stringstream in2( num, ios_base::in );
 		while( in2 >> data ) {
 			world.push_back( data );
