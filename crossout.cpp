@@ -83,8 +83,8 @@ int main( int argc, char** argv )
 	}
 	else //argc==3 ... interactive mode
 	{
-		/*TakeawayState current( startingNumber, false ); //human's turn
-		Solver< TakeawayState > game( current );
+		CrossoutState current( descriptors[1], descriptors[0], false ); //human's turn
+		Solver< CrossoutState > game( current );
 		
 		while( !game.getCurrentState().gameOver() )
 		{
@@ -93,42 +93,49 @@ int main( int argc, char** argv )
 			if( game.getCurrentState().computersTurn() )
 			{
 				current=game.getCurrentState();
-				cout<<"Computer: takes "<<TakeawayState::diff(
-					current, game.nextBestState() )
-					<<" pennies"<<endl;
+				cout<<"Computer: crosses";
+				vector< int > action=CrossoutState::diff( current, game.nextBestState() );
+				for( vector< int >::iterator piece=action.begin();
+					piece!=action.end(); ++piece )
+					cout<<' '<<*piece;
+				cout<<endl;
 			}
 			else //player's turn
 			{
-				int response;
+				int response, optional;
 				
 				do
 				{
-					cout<<"You take how many ["
-						<<TakeawayState::MIN_TAKEN
-						<<','<<( game.getCurrentState
-						().getPileSize()>=
-						TakeawayState::MAX_TAKEN ?
-						TakeawayState::MAX_TAKEN :
-						game.getCurrentState().
-						getPileSize() )<<"] ? ";
+					optional=0; //the second chioce, if opted
+					
+					cout<<"First uncrossed number you remove ? ";
 					cout.flush();
 					cin>>response;
+					cin.get(); //clear the newline
+					cout<<"Second number (enter for none) ? ";
+					cout.flush();
+					if( cin.peek()!='\n' ) cin>>optional;
 				}
-				while( !game.supplyNextState( TakeawayState
-					( game.getCurrentState(), response ) )
+				while( response<=0 ||
+					response>game.getCurrentState().traySize() ||
+					optional<0 || optional==response ||
+					optional>game.getCurrentState().traySize() ||
+					!game.supplyNextState( CrossoutState
+					( game.getCurrentState(), response, optional ) )
 					); //tried and failed to make the
 					//given move
 				
-				cout<<"Human: took "<<response<<" pennies"
-					<<endl;
+				stringstream nicelyFormatted;
+				nicelyFormatted<<' '<<optional;
+				cout<<"Human: crosses "<<response<<( optional ? nicelyFormatted.str() : "" )<<endl;
 			}
 		}
 		
-		cout<<"No pennies remain."<<endl;
+		cout<<"Nothing more may be crossed out."<<endl;
 		cout<<"=================="<<endl;
 		cout<<( game.getCurrentState().scoreGame()==
-			TakeawayState::VICTORY ? "Computer wins" : "You win" )
+			CrossoutState::VICTORY ? "Computer wins" : "You win" )
 			<<"!  (Your score was "<<-game.getCurrentState().
-			scoreGame()<<".)"<<endl;*/
+			scoreGame()<<".)"<<endl;
 	}
 }
