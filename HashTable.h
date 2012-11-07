@@ -1,3 +1,9 @@
+//Version history in git-log-hashtable.txt
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
+#include <utility>
+
 /**
 A hash table implementation to store copies of objects providing a
 <tt>public</tt> copy constructor and supporting the <tt>public int hash(void)
@@ -6,11 +12,6 @@ const</tt> and <tt>public operator==(const Content&) const</tt> methods.
 @author Sol Boucher <slb1566@rit.edu>
 @author Kyle Savarese <kms7341@rit.edu>
 */
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
-
-#include <utility>
-
 template< class Content >
 class HashTable
 {
