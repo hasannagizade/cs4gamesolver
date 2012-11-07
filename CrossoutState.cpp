@@ -28,20 +28,22 @@ CrossoutState::CrossoutState( const CrossoutState& baseState,
 	assert( firstTheft>=0 && unsigned( firstTheft )<tray.size() );
 	assert( secondTheft<signed( tray.size() ) );
 	
-	assert( tray[firstTheft] );
 	tray[firstTheft]=false;
 	
 	if( secondTheft>-1 )
-	{
-		assert( tray[secondTheft] );
 		tray[secondTheft]=false;
-	}
 	
 	cacheHash();
 }
 
 /** @brief Destructor */
 CrossoutState::~CrossoutState() {}
+
+/** @brief An idea of our bounds */
+int CrossoutState::traySize() const
+{
+	return tray.size();
+}
 
 /** @brief Are we out of objects? */
 bool CrossoutState::gameOver() const
@@ -79,20 +81,14 @@ const vector< CrossoutState > CrossoutState::successors() const
 	for( unsigned int first=1; first<=tray.size() && first<=MAX_SUM; ++first )
 		if( tray[first-1] )
 		{
-			cout<<"first: "<<first<<endl;
 			possibilities.push_back( CrossoutState( *this, first ) );
 			assert( possibilities.size() );
 			for( unsigned int second=first+1; second<=tray.size() && first+second<=MAX_SUM;
 				++second )
-			{
-				cout<<"\tsecond: "<<second<<endl;
 				if( tray[second-1] ) possibilities.push_back(
 					CrossoutState( *this, first, second ) );
-			}
 		}
 	
-	if( !possibilities.size() ) cout<<tray[0]<<' '<<tray[1]<<endl;
-	cout<<"left"<<endl;
 	return possibilities;
 }
 
@@ -105,7 +101,8 @@ string CrossoutState::str() const
 		"'s turn and the pins are: ";
 	for( vector< bool >::const_iterator num=tray.begin();
 		num<tray.end(); ++num )
-		assembler<<( num-tray.begin()+1 )<<' ';
+		if( *num )
+			assembler<<( num-tray.begin()+1 )<<' ';
 	assembler.flush();
 	
 	return assembler.str();

@@ -54,8 +54,8 @@ class CrossoutState
 		/**
 		Creates the move resulting from taking away a specified number
 			of pins.  This makes the most sense when a positive nu
-			mber of them are taken, and preferably a legal number;
-			however, this is not required.
+			mber of them are taken, and preferably ones that haven
+			't already been taken; however, this is not required.
 		@pre The theft targets are in range.
 		@pre The targets haven't yet been crossed out.
 		@post The new state reflects the fact that it is now the oppos
@@ -71,6 +71,12 @@ class CrossoutState
 		Destroys the game state.
 		*/
 		~CrossoutState( void );
+		
+		/**
+		Reveals the number of numbers in this game.
+		@return the count
+		*/
+		int traySize( void ) const;
 		
 		/**
 		Judges whether the game is over.
