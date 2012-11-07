@@ -2,7 +2,6 @@
 #define CROSSOUTSTATE_H
 
 #include <string>
-#include <utility>
 #include <vector>
 
 /**

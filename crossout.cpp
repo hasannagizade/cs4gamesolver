@@ -1,0 +1,134 @@
+/**
+The Crossout game.
+
+@author Sol Boucher <slb1566@rit.edu>
+*/
+#include "Solver.h"
+#include "CrossoutState.h"
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
+#include <sstream>
+#include <iostream>
+using namespace std;
+
+int main( int argc, char** argv )
+{
+	const char* PLAY = "play";
+	const int MIN_ARGS = 3;
+	const int PLAY_ARGS = 4;
+	const int SIG_INDEX = 1; //the first argument we care about
+	const int FAILURE = 1;
+	
+	//check argument count and switches
+	if( argc<MIN_ARGS || argc>PLAY_ARGS || ( argc==PLAY_ARGS &&
+		strcmp( argv[SIG_INDEX], PLAY )!=0 ) ) //ba
+		//d arguments
+	{
+		cerr<<"USAGE: crossout [play] max_num max_sum"<<endl;
+		
+		return FAILURE; //I have failed, Master
+	}
+	
+	int index=SIG_INDEX;
+	if( argc>MIN_ARGS ) ++index; //play mode
+	string s = "";
+	for ( int i = index; i < argc; ++i ) {
+		s+= argv[i];
+		s+=' ';
+	}
+	
+	stringstream in( s, ios_base::in);
+	vector< int > descriptors;
+	for( ; index<PLAY_ARGS; ++index )
+	{
+		int data;
+		
+		while( in>>data )
+		{
+			descriptors.push_back( data );
+			if( data<=0 )
+			{
+				cerr<<data<<" is not a valid argument."<<endl;
+				return FAILURE;
+			}
+		}
+		if( !in.eof() )
+		{
+			cerr<<in.get()<<" argument unexpected."<<endl;
+			return FAILURE;
+		}
+	}
+	
+	//all systems go
+	if( argc==MIN_ARGS ) //advisory mode
+	{
+		CrossoutState starting( descriptors[1], descriptors[0] ); //our turn
+		Solver< CrossoutState > game( starting );
+		
+		if( starting.gameOver() )
+			cout<<"There is nothing you can cross out; you have already won."
+				<<endl;
+		else
+		{
+			vector< int > advice=CrossoutState::diff( starting, game.nextBestState() );
+			cout<<"Cross out:";
+			for( vector< int >::iterator piece=advice.begin();
+				piece!=advice.end(); ++piece )
+				cout<<' '<<*piece;
+			cout<<endl;
+			//cout<<"to leave "<<game.getCurrentState().
+				//getPileSize()<<" for the opponent."<<endl;
+		}
+	}
+	else //argc==3 ... interactive mode
+	{
+		/*TakeawayState current( startingNumber, false ); //human's turn
+		Solver< TakeawayState > game( current );
+		
+		while( !game.getCurrentState().gameOver() )
+		{
+			cout<<game.getCurrentState().str()<<endl;
+			
+			if( game.getCurrentState().computersTurn() )
+			{
+				current=game.getCurrentState();
+				cout<<"Computer: takes "<<TakeawayState::diff(
+					current, game.nextBestState() )
+					<<" pennies"<<endl;
+			}
+			else //player's turn
+			{
+				int response;
+				
+				do
+				{
+					cout<<"You take how many ["
+						<<TakeawayState::MIN_TAKEN
+						<<','<<( game.getCurrentState
+						().getPileSize()>=
+						TakeawayState::MAX_TAKEN ?
+						TakeawayState::MAX_TAKEN :
+						game.getCurrentState().
+						getPileSize() )<<"] ? ";
+					cout.flush();
+					cin>>response;
+				}
+				while( !game.supplyNextState( TakeawayState
+					( game.getCurrentState(), response ) )
+					); //tried and failed to make the
+					//given move
+				
+				cout<<"Human: took "<<response<<" pennies"
+					<<endl;
+			}
+		}
+		
+		cout<<"No pennies remain."<<endl;
+		cout<<"=================="<<endl;
+		cout<<( game.getCurrentState().scoreGame()==
+			TakeawayState::VICTORY ? "Computer wins" : "You win" )
+			<<"!  (Your score was "<<-game.getCurrentState().
+			scoreGame()<<".)"<<endl;*/
+	}
+}
