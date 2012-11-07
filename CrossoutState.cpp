@@ -25,8 +25,8 @@ CrossoutState::CrossoutState( const CrossoutState& baseState,
 {
 	--firstTheft; //switch to 0-based indexing
 	--secondTheft; //likewise
-	assert( firstTheft>=0 && firstTheft<tray.size() );
-	assert( secondTheft<tray.size() );
+	assert( firstTheft>=0 && unsigned( firstTheft )<tray.size() );
+	assert( secondTheft<signed( tray.size() ) );
 	
 	assert( tray[firstTheft] );
 	tray[firstTheft]=false;
@@ -46,9 +46,9 @@ CrossoutState::~CrossoutState() {}
 /** @brief Are we out of objects? */
 bool CrossoutState::gameOver() const
 {
-	for( int location=0; location<tray.size() &&
-		location<MAX_TAKEN; ++location )
-		if( tray[location] ) return false;
+	for( unsigned int location=1; location<=tray.size() &&
+		location<=MAX_SUM; ++location )
+		if( tray[location-1] ) return false;
 	
 	return true;
 }
@@ -76,16 +76,23 @@ const vector< CrossoutState > CrossoutState::successors() const
 	#endif
 	
 	vector< CrossoutState > possibilities;
-	for( int first=1; first<=tray.size() && first<=MAX_SUM; ++first )
+	for( unsigned int first=1; first<=tray.size() && first<=MAX_SUM; ++first )
 		if( tray[first-1] )
 		{
+			cout<<"first: "<<first<<endl;
 			possibilities.push_back( CrossoutState( *this, first ) );
-			for( int second=1; second<=tray.size() && first+second<=MAX_SUM;
+			assert( possibilities.size() );
+			for( unsigned int second=first+1; second<=tray.size() && first+second<=MAX_SUM;
 				++second )
+			{
+				cout<<"\tsecond: "<<second<<endl;
 				if( tray[second-1] ) possibilities.push_back(
 					CrossoutState( *this, first, second ) );
+			}
 		}
 	
+	if( !possibilities.size() ) cout<<tray[0]<<' '<<tray[1]<<endl;
+	cout<<"left"<<endl;
 	return possibilities;
 }
 
@@ -130,6 +137,8 @@ CrossoutState& CrossoutState::operator=( const CrossoutState& another )
 		this->ourTurn=another.ourTurn;
 		this->hashCode=another.hashCode;
 	}
+	
+	return *this;
 }
 
 /** @brief Are these subsequent? */
@@ -140,8 +149,8 @@ bool CrossoutState::areSubsequent( const CrossoutState& first, const CrossoutSta
 		first.ourTurn==next.ourTurn )
 		return false;
 	
-	int count=0, sum=0;
-	for( int num=0; num<first.tray.size(); ++num )
+	unsigned int count=0, sum=0;
+	for( unsigned int num=0; num<first.tray.size(); ++num )
 	{
 		if( next.tray[num] && !first.tray[num] ) //UNcrossed something!
 			return false;
@@ -163,7 +172,7 @@ vector< int > CrossoutState::diff( const CrossoutState& first, const
 	
 	assert( subsequentStates );
 	vector< int > diffs;
-	for( int num=0; num<first.tray.size(); ++num )
+	for( unsigned int num=0; num<first.tray.size(); ++num )
 		if( first.tray[num]!=next.tray[num] )
 			diffs.push_back( num+1 );
 	
