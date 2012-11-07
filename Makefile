@@ -11,8 +11,8 @@ takeaway: takeaway.o TakeawayState.o Solver.h.gch
 kayles: kayles.o KaylesState.o Solver.h.gch
 	$(CXX) -o kayles kayles.o KaylesState.o
 
-connect3: connect3.o Connect3State.o Solver.h.gch
-	$(CXX) -o connect3 connect3.o Connect3State.o
+connect3: connect3.o Connect3State.o Solver.h.gch Connect3Helper.o
+	$(CXX) -o connect3 connect3.o Connect3State.o Connect3Helper.o
 
 crossout: crossout.o CrossoutState.o Solver.h.gch
 	$(CXX) -o crossout crossout.o CrossoutState.o
