@@ -73,13 +73,13 @@ class CrossoutState
 		/**
 		Destroys the game state.
 		*/
-		~CrossoutState( void );
+		inline ~CrossoutState( void );
 		
 		/**
 		Reveals the number of numbers in this game.
 		@return the count
 		*/
-		int traySize( void ) const;
+		inline int traySize( void ) const;
 		
 		/**
 		Judges whether the game is over.
@@ -94,13 +94,13 @@ class CrossoutState
 			t>Score::LOSS</tt> for opponent's victory, or <tt>Scor
 			e::TIE</tt> for an unterminated game
 		*/
-		Score scoreGame( void ) const;
+		inline Score scoreGame( void ) const;
 		
 		/**
 		Determines whether it is our turn.
 		@return whether the "good guy" is taking his turn
 		*/
-		bool computersTurn( void ) const;
+		inline bool computersTurn( void ) const;
 		
 		/**
 		Returns all possible successor states.
@@ -120,7 +120,7 @@ class CrossoutState
 		@post The result is nonnegative.
 		@return a hash code 
 		*/
-		int hash( void ) const;
+		inline int hash( void ) const;
 		
 		/**
 		Checks identity
@@ -128,7 +128,7 @@ class CrossoutState
 		@param another comparable <tt>State</tt>
 		@return whether the turns and pin groups are the same
 		*/
-		bool operator==( const CrossoutState& another ) const;
+		inline bool operator==( const CrossoutState& another ) const;
 		
 		/**
 		Performs assignment.
@@ -169,5 +169,44 @@ class CrossoutState
 		*/
 		void cacheHash( void );
 };
+
+/** @brief Destructor */
+CrossoutState::~CrossoutState() {}
+
+/** @brief An idea of our bounds */
+int CrossoutState::traySize() const
+{
+	return tray.size();
+}
+
+/** @brief Who won? */
+CrossoutState::Score CrossoutState::scoreGame() const
+{
+	if( gameOver() )
+		if( ourTurn ) return LOSS;
+		else /*!ourTurn*/ return VICTORY;
+	else /*!gameOver()*/ return TIE;
+}
+
+/** @brief Is it our turn? */
+bool CrossoutState::computersTurn() const
+{
+	return ourTurn;
+}
+
+/** @brief Hashing */
+int CrossoutState::hash() const
+{
+	return hashCode;
+}
+
+/** @brief Same state? */
+bool CrossoutState::operator==( const CrossoutState& another ) const
+{
+	return this->MAX_SUM==another.MAX_SUM &&
+		equal( this->tray.begin(), this->tray.end(),
+		another.tray.begin() ) &&
+		this->ourTurn==another.ourTurn;
+}
 
 #endif
