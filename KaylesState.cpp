@@ -272,12 +272,14 @@ vector< int > KaylesState::diff( const KaylesState& first, const
 		if ( first.pins.size() > next.pins.size() ) {
 		for( unsigned int group=0; group<next.pins.size(); ++group ) {
 			if( first.pins[group]!=next.pins[group] ) {
+				//removed non-final line
 				diffs.push_back( group );
+				diffs.push_back( 0 );
 				diffs.push_back( first.pins[group] );
-				diffs.push_back( next.pins[group] );
 				return diffs;
 			}
 		}
+		//removed final line
 		diffs.push_back( next.pins.size() );
 		diffs.push_back( 0 );
 		diffs.push_back( first.pins[next.pins.size()] );
@@ -287,6 +289,7 @@ vector< int > KaylesState::diff( const KaylesState& first, const
 		for ( unsigned int group = 0; group<first.pins.size();
 			++group ) {
 			if( first.pins[group]!=next.pins[group] ) {
+				//split up a line
 				diffs.push_back( group );
 				diffs.push_back( next.pins[group] );
 				diffs.push_back( first.pins[group]
@@ -300,6 +303,7 @@ vector< int > KaylesState::diff( const KaylesState& first, const
 		for ( unsigned int group = 0; group<first.pins.size();
 			++group ) {
 			if( first.pins[group]!=next.pins[group] ) {
+				//shrank a line
 				diffs.push_back( group );
 				diffs.push_back( next.pins[group] );
 				diffs.push_back( first.pins[group]
