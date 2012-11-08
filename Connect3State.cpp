@@ -36,8 +36,8 @@ Connect3State::Connect3State( const Connect3State& baseState,
 	ourTurn ( !baseState.ourTurn )
 {
 	assert( column<board.size() );
-	board[column].push_back( SYMBOLS[1-mySymbol] ); //the other player placed
-		//it!
+	board[column].push_back( SYMBOLS[1-mySymbol] ); //the other player
+		//placed it!
 	assert( board[column].size()<=ELEMENTS );
 	
 	finalOutcome=computeWinner( column );
@@ -89,7 +89,8 @@ const vector< Connect3State > Connect3State::successors() const
 	vector< Connect3State > possibilities;
 	for( unsigned int column=0; column<board.size(); ++column )
 		if( board[column].size()<ELEMENTS )
-			possibilities.push_back( Connect3State( *this, column ) );
+			possibilities.push_back( Connect3State( *this, column
+				) );
 	
 	return possibilities;
 }
@@ -105,9 +106,8 @@ string Connect3State::str() const
 	for( int el=ELEMENTS-1; el>=0; --el )
 	{
 		assembler<<PRINTVBAR;
-		for( vector< vector< char > >::const_iterator col=board.begin();
-			col!=board.end();
-			++col )
+		for( vector< vector< char > >::const_iterator
+			col=board.begin(); col!=board.end(); ++col )
 		{
 			if( unsigned( el )<col->size() )
 				assembler<<(*col)[el];
@@ -138,14 +138,17 @@ int Connect3State::hash() const
 /** @brief Same state? */
 bool Connect3State::operator==( const Connect3State& another ) const
 {
-	if( this->mySymbol!=another.mySymbol || this->COLUMNS!=another.COLUMNS ||
-		this->ELEMENTS!=another.ELEMENTS || this->ourTurn!=another.ourTurn ||
+	if( this->mySymbol!=another.mySymbol ||
+		this->COLUMNS!=another.COLUMNS ||
+		this->ELEMENTS!=another.ELEMENTS ||
+		this->ourTurn!=another.ourTurn ||
 		this->board.size()!=another.board.size() )
 		return false;
 	
 	for( unsigned int group=0; group<COLUMNS; ++group )
 		if( this->board[group].size()!=another.board[group].size() ||
-			!equal( this->board[group].begin(), this->board[group].end(),
+			!equal( this->board[group].begin(),
+			this->board[group].end(),
 			another.board[group].begin() ) )
 			return false;
 	
@@ -175,15 +178,16 @@ bool Connect3State::areSubsequent( const Connect3State& first,
 	const Connect3State& next )
 {
 	if( first.mySymbol==next.mySymbol || first.COLUMNS!=next.COLUMNS ||
-		first.ELEMENTS!=next.ELEMENTS || first.ourTurn==next.ourTurn ||
-		first.board.size()!=next.board.size() )
+		first.ELEMENTS!=next.ELEMENTS || first.ourTurn==next.ourTurn
+		|| first.board.size()!=next.board.size() )
 		return false;
 	
 	bool seenDifference=false;
 	for( unsigned int group=0; group<first.COLUMNS; ++group )
 	{
 		if( first.board[group]>next.board[group] ||
-			!equal( first.board[group].begin(), first.board[group].end(),
+			!equal( first.board[group].begin(),
+			first.board[group].end(),
 			next.board[group].begin() ) )
 			return false;
 		else if( first.board[group]<next.board[group] )
@@ -224,7 +228,8 @@ void Connect3State::cacheHash()
 	hashCode=( ourTurn ? 1 : 0 )<<COLUMNS*ELEMENTS;
 	for( vector< vector< char > >::iterator col=board.begin();
 		col!=board.end(); ++col )
-		for( vector< char >::iterator el=col->begin(); el!=col->end(); ++el )
+		for( vector< char >::iterator el=col->begin(); el!=col->end();
+			++el )
 			hashCode+=( *el )<<( ELEMENTS*( col-board.begin() )
 				+( el-col->begin() ) );
 	hashCode=abs( hashCode );
@@ -234,8 +239,8 @@ void Connect3State::cacheHash()
 /** @brief Compute winner */
 Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 {
-	if( baseCol!=-1 ) //only check things related to the move that was just
-		//made
+	if( baseCol!=-1 ) //only check things related to the move that was
+		//just made
 	{
 		if( baseEl==-1 ) baseEl=board[baseCol].size()-1;
 		char match=board[baseCol][baseEl];
@@ -245,37 +250,69 @@ Connect3State::Score Connect3State::computeWinner( int baseCol, int baseEl )
 				if( deltaCol!=0 || deltaEl!=0 )
 					{
 						int inARow=0;
-						for( int advance=-CONNECTABLE+1; advance<CONNECTABLE;
+						for( int advance=
+							-CONNECTABLE+1;
+							advance<CONNECTABLE;
 							++advance )
 						{
-							int colIndex=baseCol+deltaCol*advance;
-							int elIndex=baseEl+deltaEl*advance;
+							int colIndex=baseCol+
+								deltaCol*
+								advance;
+							int elIndex=baseEl+
+								deltaEl*
+								advance;
 							
 							#ifdef DEBUG
-								cout<<'('<<colIndex<<','<<elIndex<<')'<<endl;
+								cout<<'('
+								<<colIndex
+								<<','<<elIndex
+								<<')'<<endl;
 							#endif
 							
 							++inARow;
 							
-							if( colIndex<0 || unsigned( colIndex )>=board.size()
-								|| elIndex<0 ||
-								unsigned( elIndex )>=board[colIndex].size() ||
-								board[colIndex][elIndex]!=match )
-								inARow=0; //here's a discontinuity
-							else if( inARow==CONNECTABLE )
-								//&& board[colIndex][elIndex]==match
+							if( colIndex<0 ||
+								unsigned(
+								colIndex )>=
+								board.size()
+								|| elIndex<0
+								|| unsigned(
+								elIndex )>=
+								board[colIndex
+								].size() ||
+								board[colIndex
+								][elIndex]!=
+								match )
+								inARow=0;
+								//here's a
+								//discontinui
+								//ty
+							else if( inARow==
+								CONNECTABLE )
+								//&& board
+								//[colIndex]
+								//[elIndex]==
+								//match
 							{
-								#ifdef DEBUG
-									cout<<"Game ovah, bitches!"<<endl;
-								#endif
-								
-								if( ourTurn ^ (match!=SYMBOLS[mySymbol]) )
-									return VICTORY;
+								if( ourTurn ^
+									(match
+									!=
+									SYMBOLS
+									[
+									mySymbol
+									]) )
+									return
+									VICTORY
+									;
 								else
-									return LOSS;
+									return
+									LOSS;
 							}
-							//else we need more matches to make CONNECTABLE of
-								//them
+							//else we need more
+								//matches to
+								//make
+								//CONNECTABLE
+								//of them
 						}
 					}
 	}

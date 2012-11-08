@@ -15,10 +15,12 @@ class CrossoutState
 	public: //gameplay constants
 		/** The maximum number of values a player may snatch per turn.
 			*/
-		static const unsigned int MAX_TAKEN=2; //changing requires code change
+		static const unsigned int MAX_TAKEN=2; //changing requires
+			//code change
 		
 		/** The minimum number of numbers permissible to eradicate. */
-		static const unsigned int MIN_TAKEN=1; //changing requires code change
+		static const unsigned int MIN_TAKEN=1; //changing requires
+			//code change
 		
 		/** The maximum sum of the stolen values */
 		const unsigned int MAX_SUM;

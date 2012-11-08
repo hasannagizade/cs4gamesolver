@@ -78,15 +78,18 @@ const vector< CrossoutState > CrossoutState::successors() const
 	#endif
 	
 	vector< CrossoutState > possibilities;
-	for( unsigned int first=1; first<=tray.size() && first<=MAX_SUM; ++first )
+	for( unsigned int first=1; first<=tray.size() && first<=MAX_SUM;
+		++first )
 		if( tray[first-1] )
 		{
-			possibilities.push_back( CrossoutState( *this, first ) );
+			possibilities.push_back( CrossoutState( *this, first
+				) );
 			assert( possibilities.size() );
-			for( unsigned int second=first+1; second<=tray.size() && first+second<=MAX_SUM;
-				++second )
+			for( unsigned int second=first+1; second<=tray.size()
+				&& first+second<=MAX_SUM; ++second )
 				if( tray[second-1] ) possibilities.push_back(
-					CrossoutState( *this, first, second ) );
+					CrossoutState( *this, first, second )
+						);
 		}
 	
 	return possibilities;
@@ -139,17 +142,19 @@ CrossoutState& CrossoutState::operator=( const CrossoutState& another )
 }
 
 /** @brief Are these subsequent? */
-bool CrossoutState::areSubsequent( const CrossoutState& first, const CrossoutState&
-	next )
+bool CrossoutState::areSubsequent( const CrossoutState& first, const
+	CrossoutState& next )
 {
-	if( first.MAX_SUM!=next.MAX_SUM || first.tray.size()!=next.tray.size() ||
+	if( first.MAX_SUM!=next.MAX_SUM ||
+		first.tray.size()!=next.tray.size() ||
 		first.ourTurn==next.ourTurn )
 		return false;
 	
 	unsigned int count=0, sum=0;
 	for( unsigned int num=0; num<first.tray.size(); ++num )
 	{
-		if( next.tray[num] && !first.tray[num] ) //UNcrossed something!
+		if( next.tray[num] && !first.tray[num] ) //UNcrossed
+			//something!
 			return false;
 		else if( first.tray[num] && !next.tray[num] )
 		{

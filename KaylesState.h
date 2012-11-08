@@ -148,19 +148,19 @@ class KaylesState
 		@pre The states must be exactly one move apart.
 		@param first the original state
 		@param next the new state
-		@return a <tt>vector</tt> containing the group from which one or
-			more pins were removed, the first pin that was removed,
-			and how many were taken, or an 
-			empty <tt>vector</tt> in the case of a poorly-phrased qu
-			estion
+		@return a <tt>vector</tt> containing the group from which one
+			or more pins were removed, the first pin that was
+			removed, and how many were taken, or an empty
+			<tt>vector</tt> in the case of a poorly-phrased
+			question
 		*/
 		static std::vector< int > diff( const KaylesState& first,
 			const KaylesState& next );
 	
 	private: //helpers
 		/**
-		Recomputes hash code; must be called every time <tt>pins</tt> is
-			mutated.
+		Recomputes hash code; must be called every time <tt>pins</tt>
+			is mutated.
 		*/
 		void cacheHash( void );
 };

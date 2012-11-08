@@ -27,22 +27,25 @@ template< typename State > class Solver
 			typename State::Score value;
 			
 			/**
-			Constructor; assumes that the <tt>State::Score</tt>'s default (zer
-				o) value indicates a balanced (or at least undetermined-as-yet
-				) match.
+			Constructor; assumes that the <tt>State::Score</tt>'s
+				default (zero) value indicates a balanced (or
+				at least undetermined-as-yet) match.
 			@param initial the starting <tt>State</tt>
 			*/
 			StatePlusScore( State initial );
 			
 			/**
-			Checks whether the player whose turn this is would prefer to have 
-				the <tt>alternative</tt> score.  Assumes that higher scores ar
-				e better for the computer player, regardless of who's up.
-			@param alternative the other score we're offering the player
-			@return whether our <tt>State<tt>'s player prefers the score it's 
-				been offered
+			Checks whether the player whose turn this is would
+				prefer to have the <tt>alternative</tt> score.
+				Assumes that higher scores are better for the
+				computer player, regardless of who's up.
+			@param alternative the other score we're offering the
+				player
+			@return whether our <tt>State<tt>'s player prefers
+				the score it's been offered
 			*/
-			bool prefersScore( typename State::Score alternative ) const;
+			bool prefersScore( typename State::Score alternative
+				) const;
 			
 			/**
 			Retrieves hash code.
@@ -55,15 +58,16 @@ template< typename State > class Solver
 			@param another <tt>StatePlusScore</tt> instance
 			@return whether our <tt>State</tt>s identify
 			*/
-			bool operator==( const StatePlusScore& another ) const;
+			bool operator==( const StatePlusScore& another )
+				const;
 		};
 		
 		/** Previously-determined states for memoization */
 		mutable HashTable< StatePlusScore > remembered;
 		
 		/**
-		Determines the ideal end-of-turn state given the state at the beginnin
-			g of the turn.
+		Determines the ideal end-of-turn state given the state at the
+			beginning of the turn.
 		@param state the <tt>State</tt> being evaluated
 		@return the preferred position and score
 		*/
@@ -71,7 +75,8 @@ template< typename State > class Solver
 	
 	public:
 		/**
-		Makes a <tt>Solver</tt> over a specific type of <tt>State</tt>.
+		Makes a <tt>Solver</tt> over a specific type of
+			<tt>State</tt>.
 		@param initial the initial game <tt>State</tt>
 		*/
 		Solver( const State& initial );
@@ -94,11 +99,11 @@ template< typename State > class Solver
 		const State& nextBestState( void );
 		
 		/**
-		Manually make <i>one</i> move and advances the game to the specified o
-			utcome state.
+		Manually make <i>one</i> move and advances the game to the
+			specified outcome state.
 		@param move the outcome of the move
-		@return <tt>true</tt> if only one move was made, <tt>false</tt> otherw
-			ise
+		@return <tt>true</tt> if only one move was made,
+			<tt>false</tt> otherwise
 		*/
 		bool supplyNextState( const State& future );
 };
