@@ -65,27 +65,28 @@ int main( int argc, char** argv )
 	//all systems go
 	if( argc==MIN_ARGS ) //advisory mode
 	{
-		CrossoutState starting( descriptors[WHICH_SUM], descriptors[WHICH_MAX] ); //our turn
+		CrossoutState starting( descriptors[WHICH_SUM],
+			descriptors[WHICH_MAX] ); //our turn
 		Solver< CrossoutState > game( starting );
 		
 		if( starting.gameOver() )
-			cout<<"There is nothing you can cross out; you have already won."
-				<<endl;
+			cout<<"There is nothing you can cross out; you have "
+				<<"already won."<<endl;
 		else
 		{
-			vector< int > advice=CrossoutState::diff( starting, game.nextBestState() );
+			vector< int > advice=CrossoutState::diff( starting,
+				game.nextBestState() );
 			cout<<"Cross out:";
 			for( vector< int >::iterator piece=advice.begin();
 				piece!=advice.end(); ++piece )
 				cout<<' '<<*piece;
 			cout<<endl;
-			//cout<<"to leave "<<game.getCurrentState().
-				//getPileSize()<<" for the opponent."<<endl;
 		}
 	}
 	else //argc==3 ... interactive mode
 	{
-		CrossoutState current( descriptors[WHICH_SUM], descriptors[WHICH_MAX], false ); //human's turn
+		CrossoutState current( descriptors[WHICH_SUM],
+			descriptors[WHICH_MAX], false ); //human's turn
 		Solver< CrossoutState > game( current );
 		
 		while( !game.getCurrentState().gameOver() )
@@ -96,8 +97,10 @@ int main( int argc, char** argv )
 			{
 				current=game.getCurrentState();
 				cout<<"Computer: crosses";
-				vector< int > action=CrossoutState::diff( current, game.nextBestState() );
-				for( vector< int >::iterator piece=action.begin();
+				vector< int > action=CrossoutState::diff(
+					current, game.nextBestState() );
+				for( vector< int >::iterator
+					piece=action.begin();
 					piece!=action.end(); ++piece )
 					cout<<' '<<*piece;
 				cout<<endl;
@@ -108,32 +111,37 @@ int main( int argc, char** argv )
 				
 				do
 				{
-					optional=0; //the second chioce, if opted
+					optional=0; //the second chioce, if
+						//opted
 					
-					cout<<"First uncrossed number you remove ? ";
+					cout<<"First uncrossed number you "
+						<<"remove ? ";
 					cout.flush();
 					cin>>response;
 					cin.get(); //clear the newline
-					cout<<"Second number (enter for none) ? ";
+					cout<<"Second number (enter for none)"
+						<<" ? ";
 					cout.flush();
 					if( cin.peek()!='\n' ) cin>>optional;
 				}
 				while( response<=0 ||
-					response>game.getCurrentState().traySize() ||
-					optional<0 || optional==response ||
-					optional>game.getCurrentState().traySize() ||
+					response>game.getCurrentState().
+					traySize() || optional<0 ||
+					optional==response || optional>game.
+					getCurrentState().traySize() ||
 					!game.supplyNextState( CrossoutState
-					( game.getCurrentState(), response, optional ) )
-					); //tried and failed to make the
-					//given move
+					( game.getCurrentState(), response,
+					optional ) ) ); //tried and failed to
+					//make the given move
 				
 				stringstream nicelyFormatted;
 				nicelyFormatted<<' '<<optional;
-				cout<<"Human: crosses "<<response<<( optional ? nicelyFormatted.str() : "" )<<endl;
+				cout<<"Human: crosses "<<response<<( optional
+					? nicelyFormatted.str() : "" )<<endl;
 			}
 		}
 		
-		cout<<"Nothing more may be crossed out."<<endl;
+		cout<<endl<<"Nothing more may be crossed out."<<endl;
 		cout<<"=================="<<endl;
 		cout<<( game.getCurrentState().scoreGame()==
 			CrossoutState::VICTORY ? "Computer wins" : "You win" )

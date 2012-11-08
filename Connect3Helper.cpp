@@ -7,8 +7,8 @@
 using namespace std;
 
 /** @brief Helper function gone method */
-bool Connect3Helper::decodeBoard( istream& save, vector< vector< char > >& use,
-	int& height )
+bool Connect3Helper::decodeBoard( istream& save, vector< vector< char > >&
+	use, int& height )
 {
 	int width;
 	
@@ -26,10 +26,11 @@ bool Connect3Helper::decodeBoard( istream& save, vector< vector< char > >& use,
 			save>>( *col )[level];
 			if( ( *col )[level]==Connect3State::PLACEHOLDER )
 				col->pop_back(); //turn jagged
-			else if( !Connect3State::validChar( ( *col )[level] ) )
+			else if( !Connect3State::validChar( ( *col )[level]
+				) )
 			{
-				cerr<<"FATAL: Board contains invalid marker "<<( *col )[level]
-					<<endl;
+				cerr<<"FATAL: Board contains invalid marker "
+					<<( *col )[level]<<endl;
 				
 				return false;
 			}

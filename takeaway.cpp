@@ -37,8 +37,8 @@ int main( int argc, char** argv )
 	int startingNumber;
 	if ( argc==MIN_ARGS ) { //Not in play mode
 		if ( !( in >> startingNumber ) ) {
-			cerr << argv[SIG_INDEX] << " is an invalid number of pennies."
-				<< endl;
+			cerr << argv[SIG_INDEX] << " is an invalid number of"
+				<<"pennies."<< endl;
 			return 0;
 		}
 	}
@@ -55,8 +55,8 @@ int main( int argc, char** argv )
 		}
 		stringstream in2( num, ios_base::in);
 		if ( !( in2 >> startingNumber) ) {
-			cerr << argv[SIG_INDEX+1] << " is an invalid number of pennies."
-				<< endl;
+			cerr << argv[SIG_INDEX+1] << " is an invalid number"
+				<<"of pennies." << endl;
 			return 0;
 		}
 	}
@@ -130,7 +130,7 @@ int main( int argc, char** argv )
 			}
 		}
 		
-		cout<<"No pennies remain."<<endl;
+		cout<<endl<<"No pennies remain."<<endl;
 		cout<<"=================="<<endl;
 		cout<<( game.getCurrentState().scoreGame()==
 			TakeawayState::VICTORY ? "Computer wins" : "You win" )

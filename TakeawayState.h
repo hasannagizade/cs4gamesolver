@@ -41,15 +41,16 @@ class TakeawayState
 		@param thingsInPile the number of things in the pile
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit TakeawayState( int thingsInPile=0, bool weAreUp=true );
+		explicit TakeawayState( int thingsInPile=0, bool weAreUp=true
+			);
 		
 		/**
-		Creates the move resulting from taking away a specified number of obje
-			cts.  This makes the most sense when a positive number of things a
-			re taken, and preferably a legal number; however, this is not requ
-			ired.
-		@post The new state reflects the fact that it is now the opposite play
-			er's turn.
+		Creates the move resulting from taking away a specified
+			number of objects.  This makes the most sense when a
+			positive number of things are taken, and preferably a
+			legal number; however, this is not required.
+		@post The new state reflects the fact that it is now the
+			opposite player's turn.
 		@param baseState the starting state
 		@param stolen the number of objects that have been taken
 		*/
@@ -67,10 +68,11 @@ class TakeawayState
 		bool gameOver( void ) const;
 		
 		/**
-		Devines the match score, which is only meaningful if the game is over.
-		@return the score: <tt>Score::VICTORY</tt> for our victory, <tt>Score:
-			:LOSS</tt> for opponent's victory, or <tt>Score::TIE</tt> for an u
-			nterminated game
+		Devines the match score, which is only meaningful if the game
+			is over.
+		@return the score: <tt>Score::VICTORY</tt> for our victory,
+			<tt>Score::LOSS</tt> for opponent's victory, or
+			<tt>Score::TIE</tt> for an unterminated game
 		*/
 		Score scoreGame( void ) const;
 		
@@ -126,11 +128,11 @@ class TakeawayState
 		@pre The states must be exactly one move apart.
 		@param first the original state
 		@param next the new state
-		@return the number of stones taken, or <tt>0</tt> if the question was
-			invalid
+		@return the number of stones taken, or <tt>0</tt> if the
+			question was invalid
 		*/
-		static int diff( const TakeawayState& first, const TakeawayState& next
-			);
+		static int diff( const TakeawayState& first, const
+			TakeawayState& next );
 };
 
 #endif
