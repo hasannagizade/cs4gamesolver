@@ -51,13 +51,12 @@ bool KaylesState::gameOver() const
 }
 
 /** @brief What might happen next? */
-const vector< KaylesState > KaylesState::successors() const
+void KaylesState::successors( vector< KaylesState >& possibilities ) const
 {
 	#ifdef DEBUG
 		cout<<"Success calculating successors for "<<str()<<'\n';
 	#endif
 	
-	vector< KaylesState > possibilities;
 	for( unsigned int group=0; group<pins.size(); ++group ) {
 		for( int pos = 0; pos < pins[group]; pos++ ) {
 			for ( int taken = 1; pos + taken <= pins[group] &&
@@ -76,8 +75,6 @@ const vector< KaylesState > KaylesState::successors() const
 	#ifdef DEBUG
 		cout.flush();
 	#endif
-	
-	return possibilities;
 }
 
 /** @brief Textualizes */

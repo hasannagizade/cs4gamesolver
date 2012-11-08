@@ -61,15 +61,12 @@ bool Connect3State::gameOver() const
 }
 
 /** @brief What might happen next? */
-const vector< Connect3State > Connect3State::successors() const
+void Connect3State::successors( vector< Connect3State >& possibilities ) const
 {
-	vector< Connect3State > possibilities;
 	for( unsigned int column=0; column<board.size(); ++column )
 		if( board[column].size()<ELEMENTS )
 			possibilities.push_back( Connect3State( *this, column
 				) );
-	
-	return possibilities;
 }
 
 /** @brief Textualizes */

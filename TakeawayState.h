@@ -87,7 +87,7 @@ class TakeawayState
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const std::vector< TakeawayState > successors( void ) const;
+		void successors( std::vector< TakeawayState >& result ) const;
 		
 		/**
 		Retrieves the pile size.

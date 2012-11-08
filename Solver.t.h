@@ -57,10 +57,9 @@ const State& Solver< State >::getCurrentState() const
 
 /** @brief Solver/bruteforcer */
 template< typename State >
-typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
-	State& state ) const
+void Solver< State >::nextBestState( const
+	State& state, StatePlusScore& decision ) const
 {
-	StatePlusScore decision( state );
 	State* bestConfig=NULL;
 	
 	if( state.gameOver() )
@@ -75,17 +74,19 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 			std::cout<<"Memoization saved us work for "
 				<<state.str()<<std::endl;
 		#endif
-		return remembered.matching( decision );
+		remembered.matching( decision, decision );
 	}
 	else //this situation is new to us
 	{
-		std::vector< State > successors=state.successors();
+		std::vector< State > successors;
+		state.successors( successors );
 		
 		for( typename std::vector< State >::iterator
 			follower=successors.begin();
 			follower<successors.end(); ++follower )
 		{
-			StatePlusScore ofTheMoment=nextBestState( *follower );
+			StatePlusScore ofTheMoment( *follower );
+			nextBestState( *follower, ofTheMoment );
 			
 			if( bestConfig==NULL || decision.prefersScore(
 				ofTheMoment.value ) )
@@ -113,15 +114,15 @@ typename Solver< State >::StatePlusScore Solver< State >::nextBestState( const
 				<<std::endl;
 		#endif
 	}
-	
-	return decision;
 }
 
 /** @brief Solver frontend */
 template< typename State >
 const State& Solver< State >::nextBestState()
 {
-	current=nextBestState( current ).config;
+	StatePlusScore outcome( current );
+	nextBestState( current, outcome );
+	current=outcome.config;
 	
 	return current;
 }

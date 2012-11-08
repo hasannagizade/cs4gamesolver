@@ -120,13 +120,13 @@ bool HashTable< Content >::contains( const Content& object ) const
 
 /** @brief Retrieves a copy of our own copy */
 template< class Content >
-Content HashTable< Content >::matching( const Content& object ) const
+void HashTable< Content >::matching( const Content& object, Content& result ) const
 {
 	int _index=index( object );
 	
 	assert( _index>=0 ); //present in table
 	
-	return table[_index]->second;
+	result=table[_index]->second;
 }
 
 /** @brief Current *utilized* size */

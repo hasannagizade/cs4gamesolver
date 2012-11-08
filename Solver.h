@@ -69,9 +69,9 @@ template< typename State > class Solver
 		Determines the ideal end-of-turn state given the state at the
 			beginning of the turn.
 		@param state the <tt>State</tt> being evaluated
-		@return the preferred position and score
+		@param result the preferred position and score
 		*/
-		StatePlusScore nextBestState( const State& state ) const;
+		void nextBestState( const State& state, StatePlusScore& result ) const;
 	
 	public:
 		/**

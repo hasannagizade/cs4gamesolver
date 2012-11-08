@@ -110,7 +110,7 @@ class KaylesState
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const std::vector< KaylesState > successors( void ) const;
+		void successors( std::vector< KaylesState >& result ) const;
 		
 		/**
 		Produces a synopsis of this <tt>State</tt>'s particulars.

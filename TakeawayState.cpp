@@ -5,13 +5,11 @@
 using namespace std;
 
 /** @brief What might happen next? */
-const vector< TakeawayState > TakeawayState::successors() const
+void TakeawayState::successors( vector< TakeawayState >& possibilities ) const
 {
 	#ifdef DEBUG
 		cout<<"Success calculating successors for "<<str()<<'\n';
 	#endif
-	
-	vector< TakeawayState > possibilities;
 	
 	for( int take=MIN_TAKEN; take<=MAX_TAKEN && take<=pileSize; ++take )
 	{
@@ -26,8 +24,6 @@ const vector< TakeawayState > TakeawayState::successors() const
 	#ifdef DEBUG
 		cout.flush();
 	#endif
-	
-	return possibilities;
 }
 
 /** @brief Textualizes */

@@ -47,13 +47,12 @@ bool CrossoutState::gameOver() const
 }
 
 /** @brief What might happen next? */
-const vector< CrossoutState > CrossoutState::successors() const
+void CrossoutState::successors( vector< CrossoutState >& possibilities ) const
 {
 	#ifdef DEBUG
 		cout<<"Success calculating successors for "<<str()<<'\n';
 	#endif
 	
-	vector< CrossoutState > possibilities;
 	for( unsigned int first=1; first<=tray.size() && first<=MAX_SUM;
 		++first )
 		if( tray[first-1] )
@@ -67,8 +66,6 @@ const vector< CrossoutState > CrossoutState::successors() const
 					CrossoutState( *this, first, second )
 						);
 		}
-	
-	return possibilities;
 }
 
 /** @brief Textualizes */

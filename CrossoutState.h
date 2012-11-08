@@ -51,7 +51,7 @@ class CrossoutState
 		@param highValue the highest-numbered piece to generate
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit CrossoutState( int greedyDivide, int highValue,
+		explicit CrossoutState( int greedyDivide=0, int highValue=0,
 			bool weAreUp=true );
 		
 		/**
@@ -106,7 +106,7 @@ class CrossoutState
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const std::vector< CrossoutState > successors( void ) const;
+		void successors( std::vector< CrossoutState >& result ) const;
 		
 		/**
 		Produces a synopsis of this <tt>State</tt>'s particulars.

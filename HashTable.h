@@ -75,9 +75,10 @@ class HashTable
 		Retrieves a copy of the table's value corresponding to the
 			specified key.
 		@param object the caller's copy of a key
+		@return result the match
 		@pre The table contains a copy of <tt>object</tt>.
 		*/
-		inline Content matching( const Content& object ) const;
+		inline void matching( const Content& object, Content& result ) const;
 		
 		/**
 		Determines the current number of objects stored in the table.

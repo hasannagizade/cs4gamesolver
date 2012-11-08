@@ -74,8 +74,8 @@ class Connect3State
 		@param original the starting board state
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		Connect3State( unsigned int columnCount,
-			unsigned int elementCount, 
+		Connect3State( unsigned int columnCount=0,
+			unsigned int elementCount=0, 
 			const std::vector< std::vector< char > >&
 				original=std::vector< std::vector< char > >(),
 			bool weAreUp=true );
@@ -130,7 +130,7 @@ class Connect3State
 		Returns all possible successor states.
 		@return whatever might happen next
 		*/
-		const std::vector< Connect3State > successors( void ) const;
+		void successors( std::vector< Connect3State >& result ) const;
 		
 		/**
 		Produces a synopsis of this <tt>State</tt>'s particulars.
