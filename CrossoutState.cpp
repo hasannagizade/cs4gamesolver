@@ -36,15 +36,6 @@ CrossoutState::CrossoutState( const CrossoutState& baseState,
 	cacheHash();
 }
 
-/** @brief Destructor */
-CrossoutState::~CrossoutState() {}
-
-/** @brief An idea of our bounds */
-int CrossoutState::traySize() const
-{
-	return tray.size();
-}
-
 /** @brief Are we out of objects? */
 bool CrossoutState::gameOver() const
 {
@@ -53,21 +44,6 @@ bool CrossoutState::gameOver() const
 		if( tray[location-1] ) return false;
 	
 	return true;
-}
-
-/** @brief Who won? */
-CrossoutState::Score CrossoutState::scoreGame() const
-{
-	if( gameOver() )
-		if( ourTurn ) return LOSS;
-		else /*!ourTurn*/ return VICTORY;
-	else /*!gameOver()*/ return TIE;
-}
-
-/** @brief Is it our turn? */
-bool CrossoutState::computersTurn() const
-{
-	return ourTurn;
 }
 
 /** @brief What might happen next? */
@@ -109,21 +85,6 @@ string CrossoutState::str() const
 	assembler.flush();
 	
 	return assembler.str();
-}
-
-/** @brief Hashing */
-int CrossoutState::hash() const
-{
-	return hashCode;
-}
-
-/** @brief Same state? */
-bool CrossoutState::operator==( const CrossoutState& another ) const
-{
-	return this->MAX_SUM==another.MAX_SUM &&
-		equal( this->tray.begin(), this->tray.end(),
-		another.tray.begin() ) &&
-		this->ourTurn==another.ourTurn;
 }
 
 /** @brief Assignment */

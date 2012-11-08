@@ -47,7 +47,7 @@ class KaylesState
 		@param startingPins the initial pin arrangement
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit KaylesState( const std::vector< int >& startingPins=
+		inline explicit KaylesState( const std::vector< int >& startingPins=
 			std::vector< int >(), bool weAreUp=true );
 		
 		/**
@@ -69,7 +69,7 @@ class KaylesState
 		/**
 		Destroys the game state.
 		*/
-		~KaylesState( void );
+		inline ~KaylesState( void );
 		
 		/**
 		Judges whether the game is over.
@@ -84,19 +84,19 @@ class KaylesState
 			t>Score::LOSS</tt> for opponent's victory, or <tt>Scor
 			e::TIE</tt> for an unterminated game
 		*/
-		Score scoreGame( void ) const;
+		inline Score scoreGame( void ) const;
 		
 		/**
 		Determines whether it is our turn.
 		@return whether the "good guy" is taking his turn
 		*/
-		bool computersTurn( void ) const;
+		inline bool computersTurn( void ) const;
 		
 		/**
 		Counts the pin groups.
 		@return how many groups exist
 		*/
-		int groupsOfPins( void ) const;
+		inline int groupsOfPins( void ) const;
 		
 		/**
 		Counts the pins in a group.
@@ -104,7 +104,7 @@ class KaylesState
 		@return how many pins occupy it, or <tt>-1</tt> if it doesn't
 			exist
 		*/
-		int pinsInGroup( unsigned int group ) const;
+		inline int pinsInGroup( unsigned int group ) const;
 		
 		/**
 		Returns all possible successor states.
@@ -124,7 +124,7 @@ class KaylesState
 		@post The result is nonnegative.
 		@return a hash code 
 		*/
-		int hash( void ) const;
+		inline int hash( void ) const;
 		
 		/**
 		Checks identity
@@ -132,7 +132,7 @@ class KaylesState
 		@param another comparable <tt>State</tt>
 		@return whether the turns and pin groups are the same
 		*/
-		bool operator==( const KaylesState& another ) const;
+		inline bool operator==( const KaylesState& another ) const;
 		
 		/**
 		Determines whether two game states are subsequent.
@@ -148,10 +148,10 @@ class KaylesState
 		@pre The states must be exactly one move apart.
 		@param first the original state
 		@param next the new state
-		@return a <tt>vector</tt> containing the group from which one
+		@return a <tt>std::vector</tt> containing the group from which one
 			or more pins were removed, the first pin that was
 			removed, and how many were taken, or an empty
-			<tt>vector</tt> in the case of a poorly-phrased
+			<tt>std::vector</tt> in the case of a poorly-phrased
 			question
 		*/
 		static std::vector< int > diff( const KaylesState& first,
@@ -164,5 +164,58 @@ class KaylesState
 		*/
 		void cacheHash( void );
 };
+
+/** @brief Constructor */
+KaylesState::KaylesState( const std::vector< int >& startingPins, bool weAreUp ):
+	pins( startingPins ), ourTurn( weAreUp ), hashCode( 0 )
+{
+	cacheHash();
+}
+
+/** @brief Destructor */
+KaylesState::~KaylesState() {}
+
+/** @brief Who won? */
+KaylesState::Score KaylesState::scoreGame() const
+{
+	if( gameOver() )
+		if( ourTurn ) return LOSS;
+		else /*!ourTurn*/ return VICTORY;
+	else /*!gameOver()*/ return TIE;
+}
+
+/** @brief Is it our turn? */
+bool KaylesState::computersTurn() const
+{
+	return ourTurn;
+}
+
+/** @brief How many groups? */
+int KaylesState::groupsOfPins() const
+{
+	return pins.size();
+}
+
+/** @brief How many pins? */
+int KaylesState::pinsInGroup( unsigned int group ) const
+{
+	if( group>=pins.size() ) return -1;
+	else return pins[group];
+}
+
+/** @brief Hashing */
+int KaylesState::hash() const
+{
+	return hashCode;
+}
+
+/** @brief Same state? */
+bool KaylesState::operator==( const KaylesState& another ) const
+{
+	return this->ourTurn==another.ourTurn &&
+		this->pins.size()==another.pins.size() &&
+		equal( this->pins.begin(), this->pins.end(),
+		another.pins.begin() );
+}
 
 #endif

@@ -2,6 +2,7 @@
 #ifndef TAKEAWAYSTATE_H
 #define TAKEAWAYSTATE_H
 
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -41,7 +42,7 @@ class TakeawayState
 		@param thingsInPile the number of things in the pile
 		@param weAreUp whether or not the "good guy" is up
 		*/
-		explicit TakeawayState( int thingsInPile=0, bool weAreUp=true
+		inline explicit TakeawayState( int thingsInPile=0, bool weAreUp=true
 			);
 		
 		/**
@@ -54,18 +55,18 @@ class TakeawayState
 		@param baseState the starting state
 		@param stolen the number of objects that have been taken
 		*/
-		TakeawayState( const TakeawayState& baseState, int stolen );
+		inline TakeawayState( const TakeawayState& baseState, int stolen );
 		
 		/**
 		Destroys the game state.
 		*/
-		~TakeawayState( void );
+		inline ~TakeawayState( void );
 		
 		/**
 		Judges whether the game is over.
 		@return whether there are no objects left in the pile
 		*/
-		bool gameOver( void ) const;
+		inline bool gameOver( void ) const;
 		
 		/**
 		Devines the match score, which is only meaningful if the game
@@ -74,13 +75,13 @@ class TakeawayState
 			<tt>Score::LOSS</tt> for opponent's victory, or
 			<tt>Score::TIE</tt> for an unterminated game
 		*/
-		Score scoreGame( void ) const;
+		inline Score scoreGame( void ) const;
 		
 		/**
 		Determines whether it is our turn.
 		@return whether the "good guy" is taking his turn
 		*/
-		bool computersTurn( void ) const;
+		inline bool computersTurn( void ) const;
 		
 		/**
 		Returns all possible successor states.
@@ -92,7 +93,7 @@ class TakeawayState
 		Retrieves the pile size.
 		@return the pile size
 		*/
-		int getPileSize( void ) const;
+		inline int getPileSize( void ) const;
 		
 		/**
 		Produces a synopsis of this <tt>State</tt>'s particulars.
@@ -105,14 +106,14 @@ class TakeawayState
 		@post The result is nonnegative.
 		@return a hash code
 		*/
-		int hash( void ) const;
+		inline int hash( void ) const;
 		
 		/**
 		Checks identity
 		@param another comparable <tt>State</tt>
 		@return whether the turns and <tt>pileSize</tt>s are the same
 		*/
-		bool operator==( const TakeawayState& another ) const;
+		inline bool operator==( const TakeawayState& another ) const;
 		
 		/**
 		Determines whether two game states are subsequent.
@@ -120,7 +121,7 @@ class TakeawayState
 		@param next the new state
 		@return whether they would appear in a game in sequence
 		*/
-		static bool areSubsequent( const TakeawayState& first, const
+		inline static bool areSubsequent( const TakeawayState& first, const
 			TakeawayState& next );
 		
 		/**
@@ -131,8 +132,89 @@ class TakeawayState
 		@return the number of stones taken, or <tt>0</tt> if the
 			question was invalid
 		*/
-		static int diff( const TakeawayState& first, const
+		inline static int diff( const TakeawayState& first, const
 			TakeawayState& next );
 };
+
+/** @brief Constructor */
+TakeawayState::TakeawayState( int thingsInPile, bool weAreUp ):
+	pileSize( thingsInPile ), ourTurn( weAreUp ) {}
+
+/** @brief Advancing constructor */
+TakeawayState::TakeawayState( const TakeawayState& baseState, int stolen ):
+	pileSize( baseState.pileSize-stolen ), ourTurn( !baseState.ourTurn )
+	{}
+
+/** @brief Destructor */
+TakeawayState::~TakeawayState() {}
+
+/** @brief Are we out of objects? */
+bool TakeawayState::gameOver() const
+{
+	return pileSize==0;
+}
+
+/** @brief Who won? */
+TakeawayState::Score TakeawayState::scoreGame() const
+{
+	if( gameOver() )
+		if( ourTurn ) return VICTORY;
+		else /*!ourTurn*/ return LOSS;
+	else /*!gameOver()*/ return TIE;
+}
+
+/** @brief Is it our turn? */
+bool TakeawayState::computersTurn() const
+{
+	return ourTurn;
+}
+
+/** @brief How many remain? */
+int TakeawayState::getPileSize() const
+{
+	return pileSize;
+}
+
+/** @brief Hashing */
+int TakeawayState::hash() const
+{
+	int res=( ( ourTurn ? 1 : 0 )<<1 )+pileSize;
+	assert( res>=0 );
+	return res;
+}
+
+/** @brief Same state? */
+bool TakeawayState::operator==( const TakeawayState& another ) const
+{
+	return this->ourTurn==another.ourTurn &&
+		this->pileSize==another.pileSize;
+}
+
+/** @brief Are these subsequent? */
+bool TakeawayState::areSubsequent( const TakeawayState& first, const
+	TakeawayState& next )
+{
+	int taken=first.pileSize-next.pileSize;
+	
+	return first.ourTurn!=next.ourTurn && taken>=MIN_TAKEN &&
+		taken<=MAX_TAKEN && next.pileSize>=0;
+}
+
+/** @brief What just happened? */
+int TakeawayState::diff( const TakeawayState& first, const TakeawayState& next
+	)
+{
+	#ifdef DEBUG
+		cout<<"Diffing "<<first.str()<<" and "<<next.str()<<endl;
+	#endif
+	
+	bool subsequentStates=areSubsequent( first, next );
+	
+	assert( subsequentStates );
+	if( subsequentStates )
+		return first.pileSize-next.pileSize;
+	else //!areSubsequent( first, next )
+		return 0;
+}
 
 #endif

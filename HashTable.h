@@ -69,7 +69,7 @@ class HashTable
 		@param object the key for which to search
 		@return whether the object was found
 		*/
-		bool contains( const Content& object ) const;
+		inline bool contains( const Content& object ) const;
 		
 		/**
 		Retrieves a copy of the table's value corresponding to the
@@ -77,7 +77,7 @@ class HashTable
 		@param object the caller's copy of a key
 		@pre The table contains a copy of <tt>object</tt>.
 		*/
-		Content matching( const Content& object ) const;
+		inline Content matching( const Content& object ) const;
 		
 		/**
 		Determines the current number of objects stored in the table.

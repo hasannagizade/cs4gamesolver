@@ -2,6 +2,7 @@
 #ifndef CONNECT3STATE_H
 #define CONNECT3STATE_H
 
+#include <cassert>
 #include <string>
 #include <vector>
 
@@ -93,7 +94,7 @@ class Connect3State
 		/**
 		Destroys the game state.
 		*/
-		~Connect3State( void );
+		inline ~Connect3State( void );
 		
 		/**
 		Judges whether the game is over.
@@ -108,13 +109,13 @@ class Connect3State
 			t>Score::LOSS</tt> for opponent's victory, or <tt>Scor
 			e::TIE</tt> for an unterminated game
 		*/
-		Score scoreGame( void ) const;
+		inline Score scoreGame( void ) const;
 		
 		/**
 		Determines whether it is our turn.
 		@return whether the "good guy" is taking his turn
 		*/
-		bool computersTurn( void ) const;
+		inline bool computersTurn( void ) const;
 		
 		/**
 		Asks whether there's space in a particular column to accomodat
@@ -123,7 +124,7 @@ class Connect3State
 		@param column dat column
 		@return whether it'll fit
 		*/
-		bool hasSpaceAt( unsigned int column ) const;
+		inline bool hasSpaceAt( unsigned int column ) const;
 		
 		/**
 		Returns all possible successor states.
@@ -143,7 +144,7 @@ class Connect3State
 		@post The result is non-negative.
 		@return a hash code 
 		*/
-		int hash( void ) const;
+		inline int hash( void ) const;
 		
 		/**
 		Checks identity.
@@ -187,7 +188,7 @@ class Connect3State
 		@param character to check
 		@return whether it should be present 
 		*/
-		static bool validChar( char character );
+		inline static bool validChar( char character );
 	
 	private: //helpers
 		/**
@@ -212,5 +213,40 @@ class Connect3State
 		*/
 		Score computeWinner( int baseCol=-1, int baseEl=-1 );
 };
+
+/** @brief Destructor */
+Connect3State::~Connect3State() {}
+
+/** @brief Who won? */
+Connect3State::Score Connect3State::scoreGame() const
+{
+	return finalOutcome;
+}
+
+/** @brief Is it our turn? */
+bool Connect3State::computersTurn() const
+{
+	return ourTurn;
+}
+
+/** @brief Will it fit? */
+bool Connect3State::hasSpaceAt( unsigned int column ) const
+{
+	assert( column<COLUMNS );
+	
+	return board[column].size()<ELEMENTS; //room to grow
+}
+
+/** @brief Hashing */
+int Connect3State::hash() const
+{
+	return hashCode;
+}
+
+/** @brief Board-building check */
+bool Connect3State::validChar( char character )
+{
+	return character==SYMBOLS[0] || character==SYMBOLS[1];
+}
 
 #endif

@@ -9,13 +9,6 @@
 #include <utility>
 using namespace std;
 
-/** @brief Constructor */
-KaylesState::KaylesState( const vector< int >& startingPins, bool weAreUp ):
-	pins( startingPins ), ourTurn( weAreUp ), hashCode( 0 )
-{
-	cacheHash();
-}
-
 /** @brief Advancing constructor */
 KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 	int taken, int target ):
@@ -47,9 +40,6 @@ KaylesState::KaylesState( const KaylesState& baseState, unsigned int position,
 	cacheHash();
 }
 
-/** @brief Destructor */
-KaylesState::~KaylesState() {}
-
 /** @brief Are we out of objects? */
 bool KaylesState::gameOver() const
 {
@@ -58,34 +48,6 @@ bool KaylesState::gameOver() const
 		if( *group!=0 ) return false;
 	
 	return true;
-}
-
-/** @brief Who won? */
-KaylesState::Score KaylesState::scoreGame() const
-{
-	if( gameOver() )
-		if( ourTurn ) return LOSS;
-		else /*!ourTurn*/ return VICTORY;
-	else /*!gameOver()*/ return TIE;
-}
-
-/** @brief Is it our turn? */
-bool KaylesState::computersTurn() const
-{
-	return ourTurn;
-}
-
-/** @brief How many groups? */
-int KaylesState::groupsOfPins() const
-{
-	return pins.size();
-}
-
-/** @brief How many pins? */
-int KaylesState::pinsInGroup( unsigned int group ) const
-{
-	if( group>=pins.size() ) return -1;
-	else return pins[group];
 }
 
 /** @brief What might happen next? */
@@ -131,21 +93,6 @@ string KaylesState::str() const
 	assembler.flush();
 	
 	return assembler.str();
-}
-
-/** @brief Hashing */
-int KaylesState::hash() const
-{
-	return hashCode;
-}
-
-/** @brief Same state? */
-bool KaylesState::operator==( const KaylesState& another ) const
-{
-	return this->ourTurn==another.ourTurn &&
-		this->pins.size()==another.pins.size() &&
-		equal( this->pins.begin(), this->pins.end(),
-		another.pins.begin() );
 }
 
 /** @brief Are these subsequent? */

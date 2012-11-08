@@ -5,6 +5,9 @@ default: takeaway kayles connect3 crossout
 debug: CXX+=-DDEBUG -ggdb
 debug: takeaway kayles connect3 crossout
 
+prof: CXX+=-pg
+prof: takeaway kayles connect3 crossout
+
 takeaway: takeaway.o TakeawayState.o Solver.h.gch
 	$(CXX) -o takeaway takeaway.o TakeawayState.o
 

@@ -44,9 +44,6 @@ Connect3State::Connect3State( const Connect3State& baseState,
 	cacheHash();
 }
 
-/** @brief Destructor */
-Connect3State::~Connect3State() {}
-
 /** @brief Are we out of objects? */
 bool Connect3State::gameOver() const
 {
@@ -61,26 +58,6 @@ bool Connect3State::gameOver() const
 		}
 	
 	return boardFull || finalOutcome!=TIE; //has anyone won?
-}
-
-/** @brief Who won? */
-Connect3State::Score Connect3State::scoreGame() const
-{
-	return finalOutcome;
-}
-
-/** @brief Is it our turn? */
-bool Connect3State::computersTurn() const
-{
-	return ourTurn;
-}
-
-/** @brief Will it fit? */
-bool Connect3State::hasSpaceAt( unsigned int column ) const
-{
-	assert( column<COLUMNS );
-	
-	return board[column].size()<ELEMENTS; //room to grow
 }
 
 /** @brief What might happen next? */
@@ -129,15 +106,11 @@ string Connect3State::str() const
 	return assembler.str();
 }
 
-/** @brief Hashing */
-int Connect3State::hash() const
-{
-	return hashCode;
-}
-
 /** @brief Same state? */
 bool Connect3State::operator==( const Connect3State& another ) const
 {
+	if( this->hash()!=another.hash() ) return false;
+	
 	if( this->mySymbol!=another.mySymbol ||
 		this->COLUMNS!=another.COLUMNS ||
 		this->ELEMENTS!=another.ELEMENTS ||
@@ -214,12 +187,6 @@ int Connect3State::diff( const Connect3State& first, const
 	
 	assert( true ); //shouldn't have gotten here!
 	return -1;
-}
-
-/** @brief Board-building check */
-bool Connect3State::validChar( char character )
-{
-	return character==SYMBOLS[0] || character==SYMBOLS[1];
 }
 
 /** @brief Sorting */
